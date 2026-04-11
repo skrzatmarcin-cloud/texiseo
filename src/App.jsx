@@ -15,6 +15,9 @@ import PageDetail from './pages/PageDetail';
 import BriefBuilder from './pages/BriefBuilder';
 import BriefDetail from './pages/BriefDetail';
 import InternalLinks from './pages/InternalLinks';
+import FAQSchema from './pages/FAQSchema';
+import RefreshCenter from './pages/RefreshCenter';
+import SEOQAChecker from './pages/SEOQAChecker';
 import PublishingQueue from './pages/PublishingQueue';
 import SettingsPage from './pages/SettingsPage';
 
@@ -54,6 +57,9 @@ const AuthenticatedApp = () => {
         <Route path="/brief-builder" element={<BriefBuilder />} />
         <Route path="/brief-builder/:id" element={<BriefDetail />} />
         <Route path="/internal-links" element={<InternalLinks />} />
+        <Route path="/faq-schema" element={<FAQSchema />} />
+        <Route path="/refresh-center" element={<RefreshCenter />} />
+        <Route path="/seo-qa" element={<SEOQAChecker />} />
         <Route path="/publishing-queue" element={<PublishingQueue />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />

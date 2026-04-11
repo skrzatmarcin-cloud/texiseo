@@ -1,0 +1,71 @@
+{
+  "name": "RefreshTasks",
+  "type": "object",
+  "properties": {
+    "page_id": {
+      "type": "string",
+      "title": "Page ID"
+    },
+    "task_type": {
+      "type": "string",
+      "title": "Task Type",
+      "enum": [
+        "light_refresh",
+        "expansion",
+        "rewrite_intro",
+        "add_faq",
+        "add_trust_section",
+        "update_cta",
+        "add_examples",
+        "add_internal_links",
+        "add_comparison_block",
+        "rewrite_outdated_section",
+        "full_rewrite"
+      ]
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priority",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "title": "Reason"
+    },
+    "recommendation": {
+      "type": "string",
+      "title": "Recommendation"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "in_progress",
+        "completed",
+        "dismissed"
+      ]
+    },
+    "effort_estimate": {
+      "type": "string",
+      "title": "Effort Estimate",
+      "enum": [
+        "30min",
+        "1-2h",
+        "half_day",
+        "full_day"
+      ]
+    }
+  },
+  "required": [
+    "page_id",
+    "task_type",
+    "priority",
+    "status"
+  ]
+}

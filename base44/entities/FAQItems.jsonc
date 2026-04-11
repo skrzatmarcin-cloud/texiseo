@@ -1,0 +1,67 @@
+{
+  "name": "FAQItems",
+  "type": "object",
+  "properties": {
+    "related_page_id": {
+      "type": "string",
+      "title": "Related Page ID"
+    },
+    "question": {
+      "type": "string",
+      "title": "Question"
+    },
+    "answer": {
+      "type": "string",
+      "title": "Answer"
+    },
+    "faq_type": {
+      "type": "string",
+      "title": "FAQ Type",
+      "enum": [
+        "seo_support",
+        "conversion",
+        "objection_handling",
+        "service_clarification",
+        "process",
+        "pricing_format"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "title": "Language",
+      "enum": [
+        "en",
+        "pl",
+        "es",
+        "fr"
+      ]
+    },
+    "seo_value_score": {
+      "type": "number",
+      "title": "SEO Value Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "conversion_value_score": {
+      "type": "number",
+      "title": "Conversion Value Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "active",
+        "draft",
+        "archived"
+      ]
+    }
+  },
+  "required": [
+    "question",
+    "answer",
+    "faq_type",
+    "status"
+  ]
+}

@@ -1,7 +1,8 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Lightbulb, Network, FileText, ClipboardList,
-  Link2, CalendarClock, Settings, Search, ChevronLeft, Menu
+  Link2, CalendarClock, Settings, Search, ChevronLeft, Menu,
+  HelpCircle, RefreshCw, ShieldCheck
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -14,6 +15,9 @@ const NAV_ITEMS = [
   { to: "/brief-builder", icon: ClipboardList, label: "Brief Builder" },
   { to: "/internal-links", icon: Link2, label: "Internal Links" },
   { to: "/publishing-queue", icon: CalendarClock, label: "Publishing Queue" },
+  { to: "/faq-schema", icon: HelpCircle, label: "FAQ & Schema" },
+  { to: "/refresh-center", icon: RefreshCw, label: "Refresh Center" },
+  { to: "/seo-qa", icon: ShieldCheck, label: "SEO QA" },
   { to: "/settings", icon: Settings, label: "Settings" },
 ];
 
