@@ -52,13 +52,17 @@ export default function Layout() {
           "flex items-center h-16 px-4 border-b border-sidebar-border",
           collapsed ? "justify-center" : "gap-3"
         )}>
-          <div className="h-8 w-8 rounded-lg bg-sidebar-primary flex items-center justify-center flex-shrink-0">
-            <span className="text-sidebar-primary-foreground font-bold text-sm">T</span>
+          <div className={cn("flex items-center justify-center flex-shrink-0", collapsed ? "h-9 w-9" : "h-10 w-10")}>
+            <img
+              src="https://media.base44.com/images/public/69da036b1797baa333fdb6c1/f24cb9015_ChatGPTImage11kwi202616_54_09.png"
+              alt="TexiSEO Logo"
+              className="h-full w-full object-contain"
+            />
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
               <h1 className="text-sm font-bold text-sidebar-accent-foreground tracking-tight">LinguaSEO OS</h1>
-              <p className="text-[10px] text-sidebar-foreground/60 truncate">Linguatoons.com</p>
+              <p className="text-[10px] text-sidebar-foreground/60 truncate">linguatoons.com</p>
             </div>
           )}
         </div>
