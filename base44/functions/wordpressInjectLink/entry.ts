@@ -6,7 +6,7 @@ Deno.serve(async (req) => {
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { source_slug, source_title, target_url, anchor_text } = await req.json();
+    const { source_page_id, source_slug, source_title, target_url, anchor_text } = await req.json();
 
     // Get WP settings
     const settings = await base44.asServiceRole.entities.WordPressSettings.list();
@@ -20,59 +20,87 @@ Deno.serve(async (req) => {
     const auth = btoa(`${wp.username}:${wp.app_password}`);
     const headers = { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' };
 
-    // Extract slug candidates
-    const urlPath = (source_slug || "").replace(/^\//, '').replace(/\/$/, '');
-    const slugLast = urlPath.split('/').pop();
-
-    // Normalize for fuzzy matching
-    const norm = (str) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const titleNorm = norm(source_title);
-
-    // Fetch all posts/pages from WP
-    const fetchAll = async (endpoint) => {
-      const res = await fetch(`${api}/${endpoint}?per_page=100&_fields=id,content,slug,link,title`, { headers });
-      const data = await res.json();
-      return Array.isArray(data) ? data : [];
-    };
-
-    const findInList = (items) => {
-      if (!items.length) return null;
-      // 1. Exact slug match
-      const bySlug = items.find(i => i.slug === slugLast || i.slug === urlPath);
-      if (bySlug) return bySlug;
-      // 2. Title exact match
-      if (titleNorm) {
-        const byTitle = items.find(i => norm(i.title?.rendered) === titleNorm);
-        if (byTitle) return byTitle;
-        // 3. Title contains
-        const byTitleContains = items.find(i => norm(i.title?.rendered).includes(titleNorm) || titleNorm.includes(norm(i.title?.rendered)));
-        if (byTitleContains) return byTitleContains;
-        // 4. First 5 chars
-        const prefix = titleNorm.slice(0, 5);
-        const byPrefix = items.find(i => norm(i.title?.rendered).startsWith(prefix));
-        if (byPrefix) return byPrefix;
+    // --- Step 1: Try to find WP post ID via WordPressContentMap ---
+    let wpPostId = null;
+    let wpPostType = null;
+    if (source_page_id) {
+      const maps = await base44.asServiceRole.entities.WordPressContentMap.filter({ base44_record_id: source_page_id });
+      const map = maps.find(m => m.wordpress_post_id);
+      if (map) {
+        wpPostId = map.wordpress_post_id;
+        wpPostType = map.wordpress_post_type === 'page' ? 'pages' : 'posts';
       }
-      return null;
-    };
-
-    const [allPosts, allPages] = await Promise.all([fetchAll('posts'), fetchAll('pages')]);
-    const found = findInList(allPosts) || findInList(allPages);
-
-    if (!found) {
-      return Response.json({
-        success: false,
-        error: `Nie znaleziono strony "${source_title || slugLast}" w WordPress. Sprawdź czy strona istnieje i jest opublikowana.`,
-        manual: true
-      });
     }
 
-    const isPage = allPages.some(p => p.id === found.id);
-    const postType = isPage ? 'pages' : 'posts';
-    const rawContent = found.content?.rendered || '';
-    const wpEditUrl = `${base}/wp-admin/post.php?post=${found.id}&action=edit`;
+    // --- Step 2: If no map, fetch all WP posts/pages and fuzzy match ---
+    const norm = (str) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const urlPath = (source_slug || '').replace(/^\//, '').replace(/\/$/, '');
+    const slugLast = urlPath.split('/').pop();
+    const titleNorm = norm(source_title);
 
-    // Build link HTML
-    const linkHtml = `<a href="${target_url}">${anchor_text}</a>`;
+    let found = null;
+    let allPosts = [];
+    let allPages = [];
+
+    if (!wpPostId) {
+      const fetchAll = async (endpoint) => {
+        const res = await fetch(`${api}/${endpoint}?per_page=100&_fields=id,content,slug,link,title`, { headers });
+        const data = await res.json();
+        return Array.isArray(data) ? data : [];
+      };
+
+      [allPosts, allPages] = await Promise.all([fetchAll('posts'), fetchAll('pages')]);
+
+      const findInList = (items) => {
+        if (!items.length) return null;
+        // 1. Exact slug
+        const bySlug = items.find(i => i.slug === slugLast || i.slug === urlPath);
+        if (bySlug) return bySlug;
+        // 2. Slug contains (handles partial paths)
+        const bySlugContains = items.find(i => slugLast && i.slug.includes(slugLast));
+        if (bySlugContains) return bySlugContains;
+        // 3. Exact title
+        if (titleNorm) {
+          const byTitle = items.find(i => norm(i.title?.rendered) === titleNorm);
+          if (byTitle) return byTitle;
+          // 4. Title cross-contains
+          const byContains = items.find(i => {
+            const t = norm(i.title?.rendered);
+            return t.includes(titleNorm) || titleNorm.includes(t);
+          });
+          if (byContains) return byContains;
+          // 5. First 5-char prefix match
+          const prefix = titleNorm.replace(/\s/g, '').slice(0, 5);
+          if (prefix.length >= 3) {
+            const byPrefix = items.find(i => norm(i.title?.rendered).startsWith(prefix));
+            if (byPrefix) return byPrefix;
+          }
+        }
+        return null;
+      };
+
+      found = findInList(allPosts) || findInList(allPages);
+
+      if (!found) {
+        return Response.json({
+          success: false,
+          error: `Nie znaleziono strony "${source_title || slugLast}" w WordPress. Upewnij się, że strona jest zsynchronizowana (WordPress → Import) lub dodaj ją ręcznie do Pages.`,
+          manual: true
+        });
+      }
+
+      wpPostType = allPages.some(p => p.id === found.id) ? 'pages' : 'posts';
+      wpPostId = found.id;
+    }
+
+    // --- Step 3: Fetch actual content if we matched via map (didn't load it yet) ---
+    if (!found) {
+      const res = await fetch(`${api}/${wpPostType}/${wpPostId}?_fields=id,content,slug,link,title`, { headers });
+      found = await res.json();
+    }
+
+    const rawContent = found.content?.rendered || '';
+    const wpEditUrl = `${base}/wp-admin/post.php?post=${wpPostId}&action=edit`;
 
     // Check if already linked
     const alreadyLinked = rawContent.includes(`href="${target_url}"`) || rawContent.includes(`href='${target_url}'`);
@@ -94,10 +122,10 @@ Deno.serve(async (req) => {
     }
 
     // Replace first occurrence
+    const linkHtml = `<a href="${target_url}">${anchor_text}</a>`;
     const newContent = rawContent.replace(regex, linkHtml);
 
-    // Update post/page in WP
-    const updateRes = await fetch(`${api}/${postType}/${found.id}`, {
+    const updateRes = await fetch(`${api}/${wpPostType}/${wpPostId}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify({ content: newContent })
