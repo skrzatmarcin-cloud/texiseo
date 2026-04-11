@@ -1,0 +1,67 @@
+{
+  "name": "InternalLinkSuggestions",
+  "type": "object",
+  "properties": {
+    "source_page_id": {
+      "type": "string",
+      "title": "Source Page ID"
+    },
+    "target_page_id": {
+      "type": "string",
+      "title": "Target Page ID"
+    },
+    "anchor_text": {
+      "type": "string",
+      "title": "Anchor Text"
+    },
+    "anchor_type": {
+      "type": "string",
+      "title": "Anchor Type",
+      "enum": [
+        "exact",
+        "partial_match",
+        "branded",
+        "natural_language",
+        "cta_anchor",
+        "support_anchor"
+      ]
+    },
+    "context_note": {
+      "type": "string",
+      "title": "Context Note"
+    },
+    "relevance_score": {
+      "type": "number",
+      "title": "Relevance Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priority",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "implemented",
+        "dismissed",
+        "in_review"
+      ]
+    }
+  },
+  "required": [
+    "source_page_id",
+    "target_page_id",
+    "anchor_text",
+    "anchor_type",
+    "status"
+  ]
+}
