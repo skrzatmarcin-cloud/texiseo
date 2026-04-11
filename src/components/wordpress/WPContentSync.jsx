@@ -42,6 +42,15 @@ export default function WPContentSync() {
     load();
   };
 
+  const runAutoImport = async () => {
+    setSyncing("auto");
+    setResult(null);
+    const res = await base44.functions.invoke("wordpressAutoImport", {});
+    setResult(res.data);
+    setSyncing(null);
+    load();
+  };
+
   const filtered = maps.filter(m => filter === "all" || m.sync_state === filter || m.wordpress_post_type === filter);
 
   const toggleSelect = (id) => setSelected(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
@@ -52,6 +61,16 @@ export default function WPContentSync() {
       {/* Sync controls */}
       <div className="bg-card border border-border rounded-xl p-4 mb-4">
         <p className="text-xs font-semibold mb-3">Importuj z WordPress</p>
+        <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 mb-3 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold">🔄 Pełny Auto-Import</p>
+            <p className="text-[10px] text-muted-foreground mt-0.5">Pobiera wszystkie strony i posty z WordPress i zapisuje ich slugi — dzięki temu Internal Linking Engine będzie znajdować polskie adresy URL.</p>
+          </div>
+          <Button size="sm" className="gap-1.5 text-xs h-8 flex-shrink-0" onClick={runAutoImport} disabled={!!syncing}>
+            {syncing === "auto" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />}
+            {syncing === "auto" ? "Importuję..." : "Uruchom teraz"}
+          </Button>
+        </div>
         <div className="flex flex-wrap gap-2 mb-3">
           <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" onClick={() => runSync("posts")} disabled={!!syncing}>
             {syncing === "posts" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />}
