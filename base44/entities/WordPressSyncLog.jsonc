@@ -1,0 +1,70 @@
+{
+  "name": "WordPressSyncLog",
+  "type": "object",
+  "properties": {
+    "action_type": {
+      "type": "string",
+      "title": "Action Type",
+      "enum": [
+        "connection_test",
+        "import_posts",
+        "import_pages",
+        "create_draft",
+        "update_draft",
+        "update_page",
+        "sync_conflict",
+        "failed_auth",
+        "failed_api",
+        "manual_sync",
+        "bulk_sync",
+        "credentials_check"
+      ]
+    },
+    "item_name": {
+      "type": "string",
+      "title": "Item Name"
+    },
+    "base44_record_id": {
+      "type": "string",
+      "title": "Base44 Record ID"
+    },
+    "wordpress_id": {
+      "type": "number",
+      "title": "WordPress ID"
+    },
+    "triggered_by": {
+      "type": "string",
+      "title": "Triggered By"
+    },
+    "result": {
+      "type": "string",
+      "title": "Result",
+      "enum": [
+        "success",
+        "failed",
+        "skipped",
+        "conflict"
+      ]
+    },
+    "error_message": {
+      "type": "string",
+      "title": "Error Message"
+    },
+    "retry_count": {
+      "type": "number",
+      "title": "Retry Count"
+    },
+    "content_type": {
+      "type": "string",
+      "title": "Content Type"
+    },
+    "details": {
+      "type": "string",
+      "title": "Details (JSON)"
+    }
+  },
+  "required": [
+    "action_type",
+    "result"
+  ]
+}

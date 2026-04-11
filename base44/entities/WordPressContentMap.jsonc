@@ -1,0 +1,125 @@
+{
+  "name": "WordPressContentMap",
+  "type": "object",
+  "properties": {
+    "base44_entity": {
+      "type": "string",
+      "title": "Base44 Entity",
+      "enum": [
+        "Pages",
+        "ContentIdeas",
+        "Briefs"
+      ]
+    },
+    "base44_record_id": {
+      "type": "string",
+      "title": "Base44 Record ID"
+    },
+    "base44_title": {
+      "type": "string",
+      "title": "Base44 Title"
+    },
+    "base44_content_type": {
+      "type": "string",
+      "title": "Base44 Content Type"
+    },
+    "wordpress_post_id": {
+      "type": "number",
+      "title": "WordPress Post ID"
+    },
+    "wordpress_post_type": {
+      "type": "string",
+      "title": "WordPress Post Type",
+      "enum": [
+        "post",
+        "page",
+        "custom"
+      ]
+    },
+    "wordpress_status": {
+      "type": "string",
+      "title": "WordPress Status",
+      "enum": [
+        "draft",
+        "publish",
+        "private",
+        "pending",
+        "trash",
+        "not_created"
+      ]
+    },
+    "wordpress_permalink": {
+      "type": "string",
+      "title": "WordPress Permalink"
+    },
+    "wordpress_slug": {
+      "type": "string",
+      "title": "WordPress Slug"
+    },
+    "wordpress_author_id": {
+      "type": "number",
+      "title": "WordPress Author ID"
+    },
+    "wordpress_category_ids": {
+      "type": "array",
+      "title": "Category IDs",
+      "items": {
+        "type": "number"
+      }
+    },
+    "wordpress_tag_ids": {
+      "type": "array",
+      "title": "Tag IDs",
+      "items": {
+        "type": "number"
+      }
+    },
+    "wordpress_featured_media_id": {
+      "type": "number",
+      "title": "Featured Media ID"
+    },
+    "wordpress_modified_gmt": {
+      "type": "string",
+      "title": "WP Last Modified (GMT)"
+    },
+    "wordpress_last_synced_at": {
+      "type": "string",
+      "title": "Last Synced At"
+    },
+    "sync_state": {
+      "type": "string",
+      "title": "Sync State",
+      "enum": [
+        "not_synced",
+        "imported",
+        "synced",
+        "changed_in_wordpress",
+        "changed_in_base44",
+        "conflict",
+        "failed",
+        "archived_in_wordpress"
+      ]
+    },
+    "last_push_at": {
+      "type": "string",
+      "title": "Last Pushed At"
+    },
+    "last_push_result": {
+      "type": "string",
+      "title": "Last Push Result"
+    },
+    "conflict_note": {
+      "type": "string",
+      "title": "Conflict Note"
+    },
+    "language": {
+      "type": "string",
+      "title": "Language"
+    }
+  },
+  "required": [
+    "base44_entity",
+    "base44_record_id",
+    "sync_state"
+  ]
+}

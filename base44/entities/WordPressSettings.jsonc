@@ -1,0 +1,99 @@
+{
+  "name": "WordPressSettings",
+  "type": "object",
+  "properties": {
+    "site_url": {
+      "type": "string",
+      "title": "WordPress Site URL"
+    },
+    "api_base": {
+      "type": "string",
+      "title": "REST API Base Path"
+    },
+    "username": {
+      "type": "string",
+      "title": "WordPress Username"
+    },
+    "app_password": {
+      "type": "string",
+      "title": "Application Password (encrypted)"
+    },
+    "default_post_status": {
+      "type": "string",
+      "title": "Default Post Status",
+      "enum": [
+        "draft",
+        "pending",
+        "private",
+        "publish"
+      ]
+    },
+    "default_page_status": {
+      "type": "string",
+      "title": "Default Page Status",
+      "enum": [
+        "draft",
+        "pending",
+        "private",
+        "publish"
+      ]
+    },
+    "default_author_id": {
+      "type": "number",
+      "title": "Default Author ID"
+    },
+    "default_category_id": {
+      "type": "number",
+      "title": "Default Category ID"
+    },
+    "posts_enabled": {
+      "type": "boolean",
+      "title": "Sync Posts"
+    },
+    "pages_enabled": {
+      "type": "boolean",
+      "title": "Sync Pages"
+    },
+    "media_enabled": {
+      "type": "boolean",
+      "title": "Sync Media"
+    },
+    "sync_active": {
+      "type": "boolean",
+      "title": "Sync Active"
+    },
+    "slug_controlled_by": {
+      "type": "string",
+      "title": "Slug Controlled By",
+      "enum": [
+        "base44",
+        "wordpress"
+      ]
+    },
+    "language_mapping": {
+      "type": "string",
+      "title": "Language Mapping (JSON)"
+    },
+    "connection_status": {
+      "type": "string",
+      "title": "Connection Status",
+      "enum": [
+        "untested",
+        "connected",
+        "failed",
+        "auth_error"
+      ]
+    },
+    "last_tested_at": {
+      "type": "string",
+      "title": "Last Tested At"
+    },
+    "last_successful_sync": {
+      "type": "string",
+      "title": "Last Successful Sync"
+    }
+  },
+  "required": [
+    "site_url"
+  ]
+}
