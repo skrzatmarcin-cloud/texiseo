@@ -6,7 +6,7 @@ Deno.serve(async (req) => {
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { source_slug, target_url, anchor_text, context_note } = await req.json();
+    const { source_slug, source_title, target_url, anchor_text, context_note } = await req.json();
 
     // Get WP settings
     const settings = await base44.asServiceRole.entities.WordPressSettings.list();
@@ -20,21 +20,31 @@ Deno.serve(async (req) => {
     const auth = btoa(`${wp.username}:${wp.app_password}`);
     const headers = { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' };
 
-    // Find post by slug
-    const slug = source_slug.replace(/^\//, '').replace(/\/$/, '').split('/').pop();
-    const searchRes = await fetch(`${api}/posts?slug=${slug}&_fields=id,content,slug,link`, { headers });
-    let posts = await searchRes.json();
+    // Extract slug from URL (last non-empty segment)
+    const slug = (source_slug || "").replace(/^\//, '').replace(/\/$/, '').split('/').pop();
 
-    // Try pages if not found in posts
-    if (!posts || posts.length === 0) {
-      const pagesRes = await fetch(`${api}/pages?slug=${slug}&_fields=id,content,slug,link`, { headers });
-      posts = await pagesRes.json();
-    }
+    // Helper: search WP endpoint by slug, then by title
+    const searchWP = async (endpoint) => {
+      let res = await fetch(`${api}/${endpoint}?slug=${encodeURIComponent(slug)}&_fields=id,content,slug,link`, { headers });
+      let items = await res.json();
+      if (items?.length) return items;
+
+      // Fallback: search by title (handles multilingual slugs)
+      if (source_title) {
+        res = await fetch(`${api}/${endpoint}?search=${encodeURIComponent(source_title)}&_fields=id,content,slug,link,title`, { headers });
+        items = await res.json();
+        if (items?.length) return items;
+      }
+      return [];
+    };
+
+    let posts = await searchWP('posts');
+    if (!posts.length) posts = await searchWP('pages');
 
     if (!posts || posts.length === 0) {
       return Response.json({
         success: false,
-        error: `Nie znaleziono posta ze slug "${slug}" w WordPress. Sprawdź czy strona źródłowa istnieje.`,
+        error: `Nie znaleziono strony ze slug "${slug}"${source_title ? ` ani tytułem "${source_title}"` : ''} w WordPress.`,
         manual: true
       });
     }

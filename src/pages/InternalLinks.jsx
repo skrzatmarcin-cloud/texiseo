@@ -97,6 +97,7 @@ export default function InternalLinks() {
     try {
       const res = await base44.functions.invoke("wordpressInjectLink", {
         source_slug: sourceSlug,
+        source_title: src?.title || "",
         target_url: targetUrl,
         anchor_text: s.anchor_text,
         context_note: s.context_note || "",
