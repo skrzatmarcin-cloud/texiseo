@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { base44 } from "@/api/base44Client";
 import PageHeader from "../components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Globe, BarChart3, Search, Calendar, Radio, CheckCircle2, AlertCircle, Clock, ExternalLink } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Globe, BarChart3, Search, Calendar, Radio, CheckCircle2, AlertCircle, Clock, ExternalLink, Loader2, XCircle, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TABS = [
@@ -58,6 +60,44 @@ export default function Integrations() {
   const [wpSettings, setWpSettings] = useState({ site_url: "", api_endpoint: "/wp-json/wp/v2", auth_method: "application_password", username: "", password: "", default_status: "draft", post_type: "post" });
   const [gscSettings, setGscSettings] = useState({ property_url: "", auth_method: "oauth", data_range: "28" });
   const [saving, setSaving] = useState(false);
+  const [testing, setTesting] = useState(false);
+  const [testDialog, setTestDialog] = useState(false);
+  const [testResult, setTestResult] = useState(null);
+  const [testError, setTestError] = useState(null);
+
+  const handleTest = async () => {
+    if (!wpSettings.site_url) {
+      setTestResult(null);
+      setTestError("Wpisz adres URL strony WordPress przed testem połączenia.");
+      setTestDialog(true);
+      return;
+    }
+    if (!wpSettings.username || !wpSettings.password) {
+      setTestResult(null);
+      setTestError("Wpisz nazwę użytkownika i hasło aplikacji przed testem.");
+      setTestDialog(true);
+      return;
+    }
+    setTesting(true);
+    setTestResult(null);
+    setTestError(null);
+    try {
+      const res = await base44.functions.invoke("wordpressProxy", {
+        action: "test_connection",
+        settings: {
+          site_url: wpSettings.site_url,
+          api_base: wpSettings.api_endpoint,
+          username: wpSettings.username,
+          app_password: wpSettings.password,
+        },
+      });
+      setTestResult(res.data || res);
+    } catch (err) {
+      setTestError(err?.message || "Nie udało się wywołać funkcji testowej.");
+    }
+    setTesting(false);
+    setTestDialog(true);
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -149,9 +189,85 @@ export default function Integrations() {
           </Section>
 
           <div className="flex gap-2">
-            <Button size="sm" variant="outline" className="text-xs">Test Connection</Button>
+            <Button size="sm" variant="outline" className="text-xs gap-1.5" onClick={handleTest} disabled={testing}>
+              {testing && <Loader2 className="h-3 w-3 animate-spin" />}
+              {testing ? "Testuję połączenie…" : "Test Connection"}
+            </Button>
             <Button size="sm" onClick={handleSave} disabled={saving} className="text-xs">{saving ? "Saving…" : "Save Settings"}</Button>
           </div>
+
+          <Dialog open={testDialog} onOpenChange={setTestDialog}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  {testError ? (
+                    <><AlertCircle className="h-5 w-5 text-amber-500" />Błąd konfiguracji</>
+                  ) : testResult?.status === "connected" ? (
+                    <><CheckCircle2 className="h-5 w-5 text-emerald-500" />Połączono pomyślnie!</>
+                  ) : (
+                    <><XCircle className="h-5 w-5 text-red-500" />Połączenie nieudane</>
+                  )}
+                </DialogTitle>
+              </DialogHeader>
+
+              {testError && (
+                <div className="space-y-3">
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800">{testError}</div>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-[11px] text-blue-800 space-y-1">
+                    <p className="font-semibold flex items-center gap-1"><Info className="h-3.5 w-3.5" />Panel WordPress Linguatoons:</p>
+                    <a href="https://linguatoons.com/logowanie" target="_blank" rel="noopener noreferrer"
+                      className="flex items-center gap-1 font-mono text-blue-700 hover:underline">
+                      linguatoons.com/logowanie <ExternalLink className="h-3 w-3" />
+                    </a>
+                    <p className="mt-1">Po zalogowaniu: <strong>Użytkownicy → Twój profil → Hasła aplikacji</strong></p>
+                  </div>
+                </div>
+              )}
+
+              {!testError && testResult && (() => {
+                const c = testResult.checks || {};
+                const checks_list = [
+                  { label: "Strona WordPress osiągalna", ok: c.site_reachable, hint: "Sprawdź czy URL jest poprawny" },
+                  { label: "REST API osiągalne", ok: c.api_reachable, hint: "REST API może być zablokowane przez plugin bezpieczeństwa" },
+                  { label: "Dane uwierzytelniające poprawne", ok: c.auth_valid, hint: "Użyj Hasła Aplikacji, nie hasła do konta WP!" },
+                  { label: "Dostęp do odczytu", ok: c.can_read, hint: "Konto nie ma wystarczających uprawnień" },
+                  { label: "Dostęp do zapisu", ok: c.can_write, hint: "Wymagana rola Edytora lub Admina" },
+                ];
+                const failed = checks_list.filter(ch => !ch.ok);
+                return (
+                  <div className="space-y-3">
+                    <div className={`rounded-lg p-3 text-xs border ${testResult.status === "connected" ? "bg-emerald-50 border-emerald-200 text-emerald-800" : "bg-red-50 border-red-200 text-red-800"}`}>
+                      {testResult.status === "connected"
+                        ? "Wszystkie testy przeszły. System może komunikować się z WordPress."
+                        : "Wykryto problemy. Sprawdź szczegóły poniżej."}
+                    </div>
+                    <div className="space-y-2">
+                      {checks_list.map(ch => (
+                        <div key={ch.label} className={`flex items-start gap-2 rounded-lg px-3 py-2 text-xs ${ch.ok ? "bg-emerald-50" : "bg-red-50"}`}>
+                          {ch.ok
+                            ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                            : <XCircle className="h-3.5 w-3.5 text-red-500 flex-shrink-0 mt-0.5" />}
+                          <div>
+                            <p className={`font-medium ${ch.ok ? "text-emerald-800" : "text-red-800"}`}>{ch.label}</p>
+                            {!ch.ok && <p className="text-red-600 mt-0.5">{ch.hint}</p>}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    {failed.length > 0 && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-[11px] text-blue-800 space-y-1">
+                        <p className="font-semibold flex items-center gap-1"><Info className="h-3.5 w-3.5" />Jak naprawić?</p>
+                        <p>1. Zaloguj się: <a href="https://linguatoons.com/logowanie" target="_blank" rel="noopener noreferrer" className="font-mono underline">linguatoons.com/logowanie</a></p>
+                        <p>2. Przejdź: <strong>Użytkownicy → Twój profil → Hasła aplikacji</strong></p>
+                        <p>3. Utwórz nowe hasło o nazwie <em>"Base44 SEO OS"</em> i wklej powyżej</p>
+                        <p>4. Upewnij się że REST API nie jest blokowane</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </DialogContent>
+          </Dialog>
         </>
       )}
 
