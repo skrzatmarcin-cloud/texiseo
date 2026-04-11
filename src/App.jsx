@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/toaster"
+import LoginGate from './components/LoginGate';
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -80,9 +81,11 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <AuthenticatedApp />
-        </Router>
+        <LoginGate>
+          <Router>
+            <AuthenticatedApp />
+          </Router>
+        </LoginGate>
         <Toaster />
       </QueryClientProvider>
     </AuthProvider>
