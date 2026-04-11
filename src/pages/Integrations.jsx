@@ -208,8 +208,9 @@ export default function Integrations() {
                 { from: "brief.slug", to: "post.slug", note: "Stripped of leading slash" },
                 { from: "brief.language", to: "post.lang (WPML/Polylang)", note: "Requires multilingual plugin" },
                 { from: "brief.page_type", to: "post.category", note: "Mapped via category rules below" },
-                { from: "brief.primary_keyword", to: "Yoast SEO focus keyword", note: "Requires Yoast plugin" },
-                { from: "brief.meta_title", to: "Yoast SEO title", note: "Requires Yoast plugin" },
+                { from: "brief.primary_keyword", to: "Rank Math — Focus Keyword", note: "Requires Rank Math plugin" },
+                { from: "brief.meta_title", to: "Rank Math — SEO Title", note: "Requires Rank Math plugin" },
+                { from: "brief.meta_description", to: "Rank Math — Meta Description", note: "Requires Rank Math plugin" },
               ].map((m, i) => (
                 <div key={i} className="flex items-center gap-3 bg-secondary/40 rounded px-3 py-1.5">
                   <span className="font-mono text-primary flex-shrink-0">{m.from}</span>

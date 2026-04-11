@@ -1,0 +1,51 @@
+{
+  "name": "PlatformSettings",
+  "type": "object",
+  "properties": {
+    "platform": {
+      "type": "string",
+      "title": "Platforma",
+      "enum": [
+        "medium",
+        "blogger",
+        "pinterest",
+        "facebook",
+        "instagram",
+        "tiktok",
+        "reddit",
+        "quora"
+      ]
+    },
+    "api_key": {
+      "type": "string",
+      "title": "API Key / Client ID"
+    },
+    "api_secret": {
+      "type": "string",
+      "title": "API Secret / Client Secret"
+    },
+    "access_token": {
+      "type": "string",
+      "title": "Access Token"
+    },
+    "extra_id": {
+      "type": "string",
+      "title": "Blog ID / Page ID / Board ID"
+    },
+    "username": {
+      "type": "string",
+      "title": "Login / Username"
+    },
+    "enabled": {
+      "type": "boolean",
+      "title": "Aktywne"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    }
+  },
+  "required": [
+    "platform"
+  ]
+}

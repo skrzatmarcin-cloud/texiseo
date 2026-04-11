@@ -2,8 +2,20 @@ import { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
 import PageHeader from "../components/PageHeader";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Clock, XCircle, ExternalLink, Copy, Zap, Hand, AlertCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { CheckCircle2, ExternalLink, Copy, Zap, Hand, AlertCircle, Settings, Save, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const PLATFORM_CONFIG = {
+  medium:    { fields: [{ key: "access_token", label: "Integration Token", hint: "Settings → Security → Integration tokens", link: "https://medium.com/me/settings" }] },
+  blogger:   { fields: [{ key: "extra_id", label: "Blog ID", hint: "Twój Blog ID z dashboardu Blogger", link: "https://draft.blogger.com" }, { key: "access_token", label: "Google OAuth Token", hint: "Wymagany OAuth 2.0 access token" }] },
+  pinterest: { fields: [{ key: "access_token", label: "Access Token", hint: "Pinterest Developers → Apps", link: "https://developers.pinterest.com" }, { key: "extra_id", label: "Board ID", hint: "ID tablicy docelowej" }] },
+  facebook:  { fields: [{ key: "access_token", label: "Page Access Token", hint: "Meta for Developers → Graph API Explorer", link: "https://developers.facebook.com" }, { key: "extra_id", label: "Page ID", hint: "ID strony Facebook" }] },
+  instagram: { fields: [{ key: "access_token", label: "Access Token", hint: "Meta for Developers → Instagram Basic Display API", link: "https://developers.facebook.com" }, { key: "extra_id", label: "Instagram Account ID" }] },
+  tiktok:    { fields: [{ key: "api_key", label: "Client Key", hint: "TikTok for Developers", link: "https://developers.tiktok.com" }, { key: "access_token", label: "Access Token" }] },
+  reddit:    { fields: [{ key: "username", label: "Nazwa uzytkownika Reddit" }, { key: "api_key", label: "Client ID", hint: "reddit.com/prefs/apps", link: "https://www.reddit.com/prefs/apps" }, { key: "api_secret", label: "Client Secret" }] },
+  quora:     { fields: [{ key: "username", label: "Profil URL / Username", hint: "Quora wymaga recznej publikacji" }] },
+};
 
 const PLATFORMS = [
   { id: "wordpress",  label: "WordPress",  emoji: "🌐", mode: "auto",   color: "border-blue-200 bg-blue-50/30",    connected: true },
@@ -43,8 +55,44 @@ const PLATFORM_LINKS = {
   quora: "https://www.quora.com",
 };
 
-function PlatformCard({ platform, posts, onMarkPublished, onCopy }) {
+function PlatformSettingsForm({ platform, savedSettings, onSave }) {
+  const cfg = PLATFORM_CONFIG[platform.id];
+  const existing = savedSettings[platform.id] || {};
+  const [vals, setVals] = useState(() => {
+    const init = {};
+    (cfg?.fields || []).forEach(f => { init[f.key] = existing[f.key] || ""; });
+    return init;
+  });
+  const [saving, setSaving] = useState(false);
+  const [ok, setOk] = useState(false);
+  if (!cfg) return null;
+  const set = (k, v) => setVals(p => ({ ...p, [k]: v }));
+  const handleSave = async () => {
+    setSaving(true);
+    await onSave(platform.id, vals, existing.id);
+    setSaving(false); setOk(true); setTimeout(() => setOk(false), 2500);
+  };
+  return (
+    <div className="bg-white/60 border border-border rounded-lg p-3 mt-2 space-y-2">
+      <p className="text-xs font-semibold flex items-center gap-1.5"><Settings className="h-3.5 w-3.5" />Konfiguracja API — {platform.label}</p>
+      {cfg.fields.map(f => (
+        <div key={f.key}>
+          <label className="text-[10px] font-medium text-muted-foreground block mb-0.5">{f.label}</label>
+          {f.hint && <p className="text-[10px] text-muted-foreground mb-0.5">{f.hint}{f.link && <> — <a href={f.link} target="_blank" rel="noopener noreferrer" className="text-primary underline">otworz <ExternalLink className="h-2.5 w-2.5 inline" /></a></>}</p>}
+          <Input type={f.key.includes("secret") || f.key.includes("token") ? "password" : "text"}
+            value={vals[f.key]} onChange={e => set(f.key, e.target.value)} className="h-7 text-xs" />
+        </div>
+      ))}
+      <Button size="sm" className={`h-7 text-xs gap-1.5 ${ok ? "bg-emerald-600 hover:bg-emerald-700" : ""}`} onClick={handleSave} disabled={saving}>
+        <Save className="h-3 w-3" />{saving ? "Zapisuje..." : ok ? "✓ Zapisano" : "Zapisz"}
+      </Button>
+    </div>
+  );
+}
+
+function PlatformCard({ platform, posts, savedSettings, onSave, onMarkPublished, onCopy }) {
   const [open, setOpen] = useState(false);
+  const [configOpen, setConfigOpen] = useState(false);
   const platformPosts = posts.filter(p => p.platform === platform.id);
   const published = platformPosts.filter(p => p.status === "published").length;
   const pending = platformPosts.filter(p => p.status === "approved" || p.status === "pending").length;
@@ -68,28 +116,27 @@ function PlatformCard({ platform, posts, onMarkPublished, onCopy }) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {platform.connected
-            ? <span className="flex items-center gap-1 text-[10px] text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md font-medium"><CheckCircle2 className="h-3 w-3" />Połączony</span>
-            : <span className="flex items-center gap-1 text-[10px] text-muted-foreground bg-secondary px-2 py-1 rounded-md"><AlertCircle className="h-3 w-3" />Konfiguruj</span>
+          {savedSettings[platform.id]?.access_token || savedSettings[platform.id]?.api_key
+            ? <span className="flex items-center gap-1 text-[10px] text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md font-medium"><CheckCircle2 className="h-3 w-3" />Skonfigurowany</span>
+            : <span className="flex items-center gap-1 text-[10px] text-muted-foreground bg-secondary px-2 py-1 rounded-md"><AlertCircle className="h-3 w-3" />Brak konfiguracji</span>
           }
+          {platform.id !== "wordpress" && (
+            <button onClick={e => { e.stopPropagation(); setConfigOpen(v => !v); }}
+              className="flex items-center gap-1 text-[10px] text-primary bg-primary/10 px-2 py-1 rounded-md hover:bg-primary/20">
+              <Settings className="h-3 w-3" />{configOpen ? <ChevronUp className="h-2.5 w-2.5" /> : <ChevronDown className="h-2.5 w-2.5" />}
+            </button>
+          )}
         </div>
       </button>
 
+      {configOpen && platform.id !== "wordpress" && (
+        <div className="px-4 pb-3 border-t border-border/30">
+          <PlatformSettingsForm platform={platform} savedSettings={savedSettings} onSave={onSave} />
+        </div>
+      )}
+
       {open && (
         <div className="px-4 pb-4 border-t border-border/30 space-y-2">
-          {/* Connection config */}
-          {!platform.connected && (
-            <div className="bg-white/60 border border-border rounded-lg p-3 mt-2">
-              <p className="text-xs font-semibold mb-1">Konfiguracja połączenia</p>
-              <p className="text-[11px] text-muted-foreground mb-2">
-                {platform.mode === "auto"
-                  ? `Skonfiguruj połączenie API dla ${platform.label}, aby umożliwić auto-publikację.`
-                  : `Platforma ${platform.label} wymaga ręcznej publikacji. Przejdź do Integracji, aby skonfigurować.`
-                }
-              </p>
-              <a href="/integrations" className="text-xs text-primary hover:underline">Przejdź do Integracji →</a>
-            </div>
-          )}
 
           {/* Posts */}
           {platformPosts.length === 0 ? (
@@ -135,10 +182,29 @@ function PlatformCard({ platform, posts, onMarkPublished, onCopy }) {
 
 export default function SocialMedia() {
   const [posts, setPosts] = useState([]);
+  const [savedSettings, setSavedSettings] = useState({});
   const [loading, setLoading] = useState(true);
 
+  const loadSettings = async () => {
+    const list = await base44.entities.PlatformSettings.list();
+    const map = {};
+    list.forEach(s => { map[s.platform] = s; });
+    setSavedSettings(map);
+  };
+
+  const handleSavePlatform = async (platformId, vals, existingId) => {
+    const data = { platform: platformId, ...vals };
+    if (existingId) {
+      const updated = await base44.entities.PlatformSettings.update(existingId, data);
+      setSavedSettings(p => ({ ...p, [platformId]: updated }));
+    } else {
+      const created = await base44.entities.PlatformSettings.create(data);
+      setSavedSettings(p => ({ ...p, [platformId]: created }));
+    }
+  };
+
   const load = () => base44.entities.PlatformPosts.list("-created_date", 100).then(p => { setPosts(p); setLoading(false); });
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); loadSettings(); }, []);
 
   const handleMarkPublished = async (post) => {
     await base44.entities.PlatformPosts.update(post.id, { status: "published", published_at: new Date().toISOString().split("T")[0] });
@@ -167,7 +233,7 @@ export default function SocialMedia() {
 
       <div className="space-y-3">
         {PLATFORMS.map(platform => (
-          <PlatformCard key={platform.id} platform={platform} posts={posts} onMarkPublished={handleMarkPublished} onCopy={handleCopy} />
+          <PlatformCard key={platform.id} platform={platform} posts={posts} savedSettings={savedSettings} onSave={handleSavePlatform} onMarkPublished={handleMarkPublished} onCopy={handleCopy} />
         ))}
       </div>
     </div>

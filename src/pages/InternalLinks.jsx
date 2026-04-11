@@ -87,7 +87,11 @@ export default function InternalLinks() {
 
   return (
     <div className="p-4 lg:p-6 max-w-[1200px] mx-auto">
-      <PageHeader title="Internal Linking Engine" description="Link suggestions, orphan detection, and anchor strategy for Linguatoons" />
+      <PageHeader title="Internal Linking Engine" description="Sugestie linkowania wewnętrznego — zmiany musisz wdrożyć ręcznie w WordPress" />
+
+      <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-2.5 mb-4 text-[11px] text-blue-800">
+        <strong>Ważne:</strong> &quot;Mark Done&quot; zmienia tylko status w tym systemie — <strong>nie dodaje automatycznie linków na stronie WordPress</strong>. Po zatwierdzeniu musisz ręcznie wkleić link do treści w edytorze WordPress, a następnie oznaczyć jako wykonane.
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
@@ -183,8 +187,12 @@ export default function InternalLinks() {
                     </td>
                     <td className="px-4 py-2.5">
                       <div className="flex items-center gap-1">
-                        <p className="font-semibold text-primary truncate max-w-[140px]">{tgt?.title || <span className="text-muted-foreground italic">Planned page</span>}</p>
-                        {tgt?.url && <ExternalLink className="h-3 w-3 text-muted-foreground flex-shrink-0" />}
+                        {tgt?.url
+                          ? <a href={tgt.url.startsWith("http") ? tgt.url : `https://linguatoons.com${tgt.url}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary truncate max-w-[140px] hover:underline flex items-center gap-1">
+                              {tgt?.title || "Strona"} <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                            </a>
+                          : <p className="font-semibold text-primary truncate max-w-[140px]">{tgt?.title || <span className="text-muted-foreground italic">Planned page</span>}</p>
+                        }
                       </div>
                       {tgt?.page_type && <p className="text-[10px] text-muted-foreground capitalize">{tgt.page_type}</p>}
                     </td>
