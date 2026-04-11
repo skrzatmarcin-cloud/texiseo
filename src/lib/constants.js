@@ -46,12 +46,14 @@ export const PAGE_TYPES = [
   { value: "service", label: "Service" },
   { value: "landing", label: "Landing" },
   { value: "blog", label: "Blog" },
-  { value: "support", label: "Support" },
+  { value: "support", label: "Support Article" },
   { value: "faq", label: "FAQ" },
   { value: "about", label: "About" },
   { value: "pricing", label: "Pricing" },
   { value: "signup", label: "Sign-up" },
   { value: "pillar", label: "Pillar" },
+  { value: "comparison", label: "Comparison" },
+  { value: "course", label: "Course" },
 ];
 
 export const FUNNEL_STAGES = [

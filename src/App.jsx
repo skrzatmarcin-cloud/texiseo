@@ -11,6 +11,7 @@ import ContentIdeas from './pages/ContentIdeas';
 import Clusters from './pages/Clusters';
 import ClusterDetail from './pages/ClusterDetail';
 import PagesModule from './pages/PagesModule';
+import PageDetail from './pages/PageDetail';
 import BriefBuilder from './pages/BriefBuilder';
 import InternalLinks from './pages/InternalLinks';
 import PublishingQueue from './pages/PublishingQueue';
@@ -48,6 +49,7 @@ const AuthenticatedApp = () => {
         <Route path="/clusters" element={<Clusters />} />
         <Route path="/clusters/:id" element={<ClusterDetail />} />
         <Route path="/pages" element={<PagesModule />} />
+        <Route path="/pages/:id" element={<PageDetail />} />
         <Route path="/brief-builder" element={<BriefBuilder />} />
         <Route path="/internal-links" element={<InternalLinks />} />
         <Route path="/publishing-queue" element={<PublishingQueue />} />
