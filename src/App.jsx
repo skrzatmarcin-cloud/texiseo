@@ -20,6 +20,8 @@ import RefreshCenter from './pages/RefreshCenter';
 import SEOQAChecker from './pages/SEOQAChecker';
 import PublishingQueue from './pages/PublishingQueue';
 import SettingsPage from './pages/SettingsPage';
+import Automations from './pages/Automations';
+import Integrations from './pages/Integrations';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -61,6 +63,8 @@ const AuthenticatedApp = () => {
         <Route path="/refresh-center" element={<RefreshCenter />} />
         <Route path="/seo-qa" element={<SEOQAChecker />} />
         <Route path="/publishing-queue" element={<PublishingQueue />} />
+        <Route path="/automations" element={<Automations />} />
+        <Route path="/integrations" element={<Integrations />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
