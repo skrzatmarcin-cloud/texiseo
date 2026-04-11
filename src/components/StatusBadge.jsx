@@ -21,12 +21,12 @@ const STATUS_STYLES = {
 };
 
 const LABELS = {
-  idea: "Idea", approved: "Approved", in_progress: "In Progress",
-  draft_ready: "Draft Ready", published: "Published", archived: "Archived",
-  live: "Live", draft: "Draft", needs_update: "Needs Update",
-  deprecated: "Deprecated", pending: "Pending", completed: "Completed",
-  dismissed: "Dismissed", critical: "Critical", high: "High",
-  medium: "Medium", low: "Low",
+  idea: "Pomysł", approved: "Zatwierdzony", in_progress: "W trakcie",
+  draft_ready: "Szkic gotowy", published: "Opublikowany", archived: "Zarchiwizowany",
+  live: "Aktywna", draft: "Szkic", needs_update: "Wymaga aktualizacji",
+  deprecated: "Przestarzała", pending: "Oczekuje", completed: "Ukończony",
+  dismissed: "Odrzucony", critical: "Krytyczny", high: "Wysoki",
+  medium: "Średni", low: "Niski",
 };
 
 export default function StatusBadge({ status }) {

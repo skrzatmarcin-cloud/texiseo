@@ -48,41 +48,41 @@ export default function Dashboard() {
   return (
     <div className="p-4 lg:p-6 max-w-[1400px] mx-auto">
       <PageHeader
-        title="Dashboard"
-        description="SEO command center for Linguatoons.com"
+        title="Panel główny"
+        description="Centrum dowodzenia SEO dla Linguatoons.com"
       />
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
         <DashboardStatCard
           icon={Lightbulb}
-          label="Content Ideas"
+          label="Pomysły na treści"
           value={ideas.length}
-          sub={`${highOpp.length} high opportunity`}
+          sub={`${highOpp.length} wysokich możliwości`}
           color="text-amber-500"
           to="/content-ideas"
         />
         <DashboardStatCard
           icon={Network}
-          label="Clusters"
+          label="Klastry"
           value={clusters.length}
-          sub={`${avgCompleteness}% avg completeness`}
+          sub={`${avgCompleteness}% śr. kompletność`}
           color="text-violet-500"
           to="/clusters"
         />
         <DashboardStatCard
           icon={FileText}
-          label="Pages"
+          label="Strony"
           value={pages.length}
-          sub={`${weakPages.length} need attention`}
+          sub={`${weakPages.length} wymaga uwagi`}
           color="text-blue-500"
           to="/pages"
         />
         <DashboardStatCard
           icon={Zap}
-          label="Recommendations"
+          label="Rekomendacje"
           value={recommendations.filter(r => r.status === "pending").length}
-          sub="pending actions"
+          sub="oczekujące działania"
           color="text-emerald-500"
         />
       </div>

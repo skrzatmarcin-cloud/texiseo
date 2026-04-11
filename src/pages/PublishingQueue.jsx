@@ -11,17 +11,17 @@ import QueueTable from "../components/queue/QueueTable";
 import { LANGUAGES, AUDIENCES } from "../lib/constants";
 
 export const WORKFLOW_STATUSES = [
-  { value: "idea", label: "Idea", color: "bg-slate-100 text-slate-600 border-slate-200" },
-  { value: "research_needed", label: "Research Needed", color: "bg-orange-50 text-orange-700 border-orange-200" },
-  { value: "approved", label: "Approved", color: "bg-blue-50 text-blue-700 border-blue-200" },
-  { value: "brief_ready", label: "Brief Ready", color: "bg-violet-50 text-violet-700 border-violet-200" },
-  { value: "writing", label: "Writing", color: "bg-amber-50 text-amber-700 border-amber-200" },
-  { value: "review", label: "In Review", color: "bg-pink-50 text-pink-700 border-pink-200" },
-  { value: "seo_qa", label: "SEO QA", color: "bg-indigo-50 text-indigo-700 border-indigo-200" },
-  { value: "ready_to_publish", label: "Ready to Publish", color: "bg-teal-50 text-teal-700 border-teal-200" },
-  { value: "published", label: "Published", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
-  { value: "refresh_needed", label: "Refresh Needed", color: "bg-red-50 text-red-600 border-red-200" },
-  { value: "archived", label: "Archived", color: "bg-gray-100 text-gray-400 border-gray-200" },
+  { value: "idea", label: "Pomysł", color: "bg-slate-100 text-slate-600 border-slate-200" },
+  { value: "research_needed", label: "Wymaga badań", color: "bg-orange-50 text-orange-700 border-orange-200" },
+  { value: "approved", label: "Zatwierdzony", color: "bg-blue-50 text-blue-700 border-blue-200" },
+  { value: "brief_ready", label: "Brief gotowy", color: "bg-violet-50 text-violet-700 border-violet-200" },
+  { value: "writing", label: "Pisanie", color: "bg-amber-50 text-amber-700 border-amber-200" },
+  { value: "review", label: "Recenzja", color: "bg-pink-50 text-pink-700 border-pink-200" },
+  { value: "seo_qa", label: "Kontrola SEO", color: "bg-indigo-50 text-indigo-700 border-indigo-200" },
+  { value: "ready_to_publish", label: "Gotowy do publikacji", color: "bg-teal-50 text-teal-700 border-teal-200" },
+  { value: "published", label: "Opublikowany", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  { value: "refresh_needed", label: "Wymaga odświeżenia", color: "bg-red-50 text-red-600 border-red-200" },
+  { value: "archived", label: "Zarchiwizowany", color: "bg-gray-100 text-gray-400 border-gray-200" },
 ];
 
 const KANBAN_STATUSES = ["approved", "brief_ready", "writing", "review", "seo_qa", "ready_to_publish", "published"];
@@ -74,7 +74,7 @@ export default function PublishingQueue() {
 
   return (
     <div className="p-4 lg:p-6 max-w-[1400px] mx-auto">
-      <PageHeader title="Publishing Queue" description={`${items.length} pieces in the editorial pipeline`}>
+      <PageHeader title="Kolejka publikacji" description={`${items.length} artykułów w pipeline redakcyjnym`}>
         <div className="flex items-center gap-1 bg-secondary rounded-lg p-1">
           <button onClick={() => setView("kanban")} className={cn("p-1.5 rounded-md transition-colors", view === "kanban" ? "bg-card shadow-sm" : "text-muted-foreground hover:text-foreground")}>
             <LayoutGrid className="h-4 w-4" />
@@ -104,7 +104,7 @@ export default function PublishingQueue() {
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search queue…" className="h-8 w-44 pl-8 text-xs" />
+          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Szukaj w kolejce…" className="h-8 w-44 pl-8 text-xs" />
         </div>
         {[
           { key: "language", label: "Language", options: LANGUAGES },

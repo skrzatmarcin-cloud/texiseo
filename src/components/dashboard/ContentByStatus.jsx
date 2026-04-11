@@ -3,8 +3,8 @@ import ScoreBar from "../ScoreBar";
 
 const STATUS_ORDER = ["idea", "approved", "in_progress", "draft_ready", "published", "archived"];
 const STATUS_LABELS = {
-  idea: "Idea", approved: "Approved", in_progress: "In Progress",
-  draft_ready: "Draft Ready", published: "Published", archived: "Archived"
+  idea: "Pomysł", approved: "Zatwierdzony", in_progress: "W trakcie",
+  draft_ready: "Szkic gotowy", published: "Opublikowany", archived: "Zarchiwizowany"
 };
 
 export default function ContentByStatus({ ideas }) {
@@ -20,7 +20,7 @@ export default function ContentByStatus({ ideas }) {
 
   return (
     <div className="bg-card rounded-xl border border-border p-4">
-      <h3 className="text-sm font-semibold mb-4">Content Ideas by Status</h3>
+      <h3 className="text-sm font-semibold mb-4">Pomysły na treści według statusu</h3>
       <div className="space-y-3">
         {STATUS_ORDER.map(s => (
           <div key={s}>

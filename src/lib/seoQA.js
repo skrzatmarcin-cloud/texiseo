@@ -75,8 +75,8 @@ export function runSEOQA(brief) {
 }
 
 export const DECISION_LABELS = {
-  publish: "✓ Publish",
-  publish_after_minor_fixes: "Publish After Minor Fixes",
-  hold_for_revision: "Hold for Revision",
-  not_ready: "Not Ready",
+  publish: "✓ Opublikuj",
+  publish_after_minor_fixes: "Opublikuj po drobnych poprawkach",
+  hold_for_revision: "Wstrzymaj do rewizji",
+  not_ready: "Nie gotowy",
 };

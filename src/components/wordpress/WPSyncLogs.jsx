@@ -7,10 +7,10 @@ import { Search, X, FileText, CheckCircle2, XCircle, AlertTriangle } from "lucid
 import { cn } from "@/lib/utils";
 
 const ACTION_LABELS = {
-  connection_test: "Connection Test", import_posts: "Import Posts", import_pages: "Import Pages",
-  create_draft: "Create Draft", update_draft: "Update Draft", update_page: "Update Page",
-  sync_conflict: "Sync Conflict", failed_auth: "Auth Failed", failed_api: "API Failed",
-  manual_sync: "Manual Sync", bulk_sync: "Bulk Sync", credentials_check: "Credentials Check",
+  connection_test: "Test połączenia", import_posts: "Import wpisów", import_pages: "Import stron",
+  create_draft: "Utwórz szkic", update_draft: "Aktualizuj szkic", update_page: "Aktualizuj stronę",
+  sync_conflict: "Konflikt synchronizacji", failed_auth: "Błąd uwierzytelniania", failed_api: "Błąd API",
+  manual_sync: "Ręczna synchronizacja", bulk_sync: "Synchronizacja masowa", credentials_check: "Sprawdzenie danych",
 };
 
 const RESULT_STYLES = {
@@ -50,22 +50,22 @@ export default function WPSyncLogs() {
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by title or ID…" className="h-8 w-52 pl-8 text-xs" />
+          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Szukaj po tytule lub ID…" className="h-8 w-52 pl-8 text-xs" />
         </div>
         <Select value={filters.result || "all"} onValueChange={v => setFilters(p => ({ ...p, result: v }))}>
           <SelectTrigger className="h-8 w-auto min-w-[110px] text-xs"><SelectValue placeholder="Result" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Results</SelectItem>
-            <SelectItem value="success">Success</SelectItem>
-            <SelectItem value="failed">Failed</SelectItem>
-            <SelectItem value="skipped">Skipped</SelectItem>
-            <SelectItem value="conflict">Conflict</SelectItem>
+            <SelectItem value="all">Wszystkie wyniki</SelectItem>
+            <SelectItem value="success">Sukces</SelectItem>
+            <SelectItem value="failed">Błąd</SelectItem>
+            <SelectItem value="skipped">Pominięty</SelectItem>
+            <SelectItem value="conflict">Konflikt</SelectItem>
           </SelectContent>
         </Select>
         <Select value={filters.action_type || "all"} onValueChange={v => setFilters(p => ({ ...p, action_type: v }))}>
           <SelectTrigger className="h-8 w-auto min-w-[140px] text-xs"><SelectValue placeholder="Action Type" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Actions</SelectItem>
+            <SelectItem value="all">Wszystkie działania</SelectItem>
             {Object.entries(ACTION_LABELS).map(([v, l]) => <SelectItem key={v} value={v}>{l}</SelectItem>)}
           </SelectContent>
         </Select>
@@ -93,7 +93,7 @@ export default function WPSyncLogs() {
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={7} className="py-12 text-center">
                   <FileText className="h-6 w-6 text-muted-foreground mx-auto mb-2 opacity-40" />
-                  <p className="text-sm text-muted-foreground">No log entries yet. Run a sync to generate logs.</p>
+                  <p className="text-sm text-muted-foreground">Brak wpisów dziennika. Uruchom synchronizację, aby wygenerować logi.</p>
                 </td></tr>
               ) : filtered.map((log, i) => (
                 <tr key={log.id || i} className={cn("border-b border-border/40 hover:bg-secondary/20", i % 2 === 1 ? "bg-secondary/10" : "")}>

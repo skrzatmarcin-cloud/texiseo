@@ -19,14 +19,14 @@ export default function QueueTable({ items, workflowStatuses, clusterMap, onUpda
         <table className="w-full text-xs">
           <thead>
             <tr className="border-b border-border bg-secondary/40">
-              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground">Title</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Language</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Cluster</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground">Tytuł</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Język</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Klaster</th>
               <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground">Status</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Priority</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Owner</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Due</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden xl:table-cell">Publish</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Priorytet</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Osoba</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Termin</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-muted-foreground hidden xl:table-cell">Publikacja</th>
             </tr>
           </thead>
           <tbody>
@@ -84,7 +84,7 @@ export default function QueueTable({ items, workflowStatuses, clusterMap, onUpda
         </table>
         {items.length === 0 && (
           <div className="py-12 text-center">
-            <p className="text-sm text-muted-foreground">No queue items match your filters.</p>
+            <p className="text-sm text-muted-foreground">Brak elementów pasujących do filtrów.</p>
           </div>
         )}
       </div>

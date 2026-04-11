@@ -39,7 +39,7 @@ export default function Clusters() {
 
   return (
     <div className="p-4 lg:p-6 max-w-[1400px] mx-auto">
-      <PageHeader title="Topic Clusters" description={`${clusters.length} clusters mapped`}>
+      <PageHeader title="Klastry tematyczne" description={`${clusters.length} klastrów zmapowanych`}>
         <div className="flex items-center gap-1 bg-secondary rounded-lg p-0.5">
           <button onClick={() => setView("table")} className={cn("p-1.5 rounded-md", view === "table" ? "bg-card shadow-sm" : "")}>
             <List className="h-4 w-4" />
@@ -77,9 +77,9 @@ export default function Clusters() {
                 <ScoreBar value={c.authority_score} label="Authority" />
               </div>
               <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                <span className="text-[10px] text-muted-foreground">{c.support_content_count || 0} support articles</span>
+                <span className="text-[10px] text-muted-foreground">{c.support_content_count || 0} artykułów</span>
                 {c.missing_topics?.length > 0 && (
-                  <span className="text-[10px] text-amber-600 font-medium">{c.missing_topics.length} gaps</span>
+                  <span className="text-[10px] text-amber-600 font-medium">{c.missing_topics.length} luk</span>
                 )}
               </div>
             </Link>
@@ -91,12 +91,12 @@ export default function Clusters() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-border bg-secondary/40">
-                  <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground">Name</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Lang</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Authority</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Completeness</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Articles</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Gaps</th>
+                  <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground">Nazwa</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Język</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Autorytet</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Kompletność</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Artykuły</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Luki</th>
                 </tr>
               </thead>
               <tbody>

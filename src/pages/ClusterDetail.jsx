@@ -43,8 +43,8 @@ export default function ClusterDetail() {
   if (!cluster) {
     return (
       <div className="p-6 text-center">
-        <p className="text-sm text-muted-foreground">Cluster not found</p>
-        <Link to="/clusters" className="text-sm text-primary hover:underline mt-2 inline-block">Back to clusters</Link>
+        <p className="text-sm text-muted-foreground">Klaster nie znaleziony</p>
+        <Link to="/clusters" className="text-sm text-primary hover:underline mt-2 inline-block">Powrót do klastrów</Link>
       </div>
     );
   }
@@ -54,7 +54,7 @@ export default function ClusterDetail() {
   return (
     <div className="p-4 lg:p-6 max-w-[1200px] mx-auto">
       <Link to="/clusters" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4 transition-colors">
-        <ArrowLeft className="h-3 w-3" /> Back to Clusters
+        <ArrowLeft className="h-3 w-3" /> Powrót do klastrów
       </Link>
 
       <PageHeader
@@ -72,11 +72,11 @@ export default function ClusterDetail() {
         </div>
         <div className="bg-card rounded-xl border border-border p-4 flex flex-col justify-center">
           <span className="text-2xl font-bold">{cluster.support_content_count || 0}</span>
-          <span className="text-[11px] text-muted-foreground">Support Articles</span>
+          <span className="text-[11px] text-muted-foreground">Artykuły wspierające</span>
         </div>
         <div className="bg-card rounded-xl border border-border p-4 flex flex-col justify-center">
           <span className="text-2xl font-bold">{cluster.missing_topics?.length || 0}</span>
-          <span className="text-[11px] text-muted-foreground">Missing Topics</span>
+          <span className="text-[11px] text-muted-foreground">Brakujące tematy</span>
         </div>
       </div>
 
@@ -85,7 +85,7 @@ export default function ClusterDetail() {
         <div className="bg-card rounded-xl border border-primary/20 p-4 mb-6">
           <div className="flex items-center gap-2 mb-2">
             <FileText className="h-4 w-4 text-primary" />
-            <span className="text-xs font-semibold">Pillar Page</span>
+            <span className="text-xs font-semibold">Strona filarowa</span>
           </div>
           <p className="text-sm font-medium">{pillarPage.title}</p>
           <p className="text-[11px] text-muted-foreground">{pillarPage.url}</p>
@@ -97,10 +97,10 @@ export default function ClusterDetail() {
         <div className="bg-card rounded-xl border border-border p-4">
           <div className="flex items-center gap-2 mb-3">
             <FileText className="h-4 w-4 text-blue-500" />
-            <h3 className="text-sm font-semibold">Assigned Pages ({clusterPages.length})</h3>
+            <h3 className="text-sm font-semibold">Przypisane strony ({clusterPages.length})</h3>
           </div>
           {clusterPages.length === 0 ? (
-            <p className="text-xs text-muted-foreground py-4 text-center">No pages assigned yet</p>
+            <p className="text-xs text-muted-foreground py-4 text-center">Brak przypisanych stron</p>
           ) : (
             <div className="space-y-2">
               {clusterPages.map(p => (
@@ -120,10 +120,10 @@ export default function ClusterDetail() {
         <div className="bg-card rounded-xl border border-border p-4">
           <div className="flex items-center gap-2 mb-3">
             <Lightbulb className="h-4 w-4 text-amber-500" />
-            <h3 className="text-sm font-semibold">Content Ideas ({clusterIdeas.length})</h3>
+            <h3 className="text-sm font-semibold">Pomysły na treści ({clusterIdeas.length})</h3>
           </div>
           {clusterIdeas.length === 0 ? (
-            <p className="text-xs text-muted-foreground py-4 text-center">No ideas assigned yet</p>
+            <p className="text-xs text-muted-foreground py-4 text-center">Brak przypisanych pomysłów</p>
           ) : (
             <div className="space-y-2">
               {clusterIdeas.map(i => (
@@ -146,7 +146,7 @@ export default function ClusterDetail() {
         <div className="bg-card rounded-xl border border-amber-200 p-4 mb-6">
           <div className="flex items-center gap-2 mb-3">
             <AlertCircle className="h-4 w-4 text-amber-500" />
-            <h3 className="text-sm font-semibold">Missing Topics</h3>
+            <h3 className="text-sm font-semibold">Brakujące tematy</h3>
           </div>
           <div className="flex flex-wrap gap-2">
             {cluster.missing_topics.map((t, idx) => (
@@ -161,7 +161,7 @@ export default function ClusterDetail() {
       {/* Notes */}
       {cluster.notes && (
         <div className="bg-card rounded-xl border border-border p-4">
-          <h3 className="text-sm font-semibold mb-2">Strategic Notes</h3>
+          <h3 className="text-sm font-semibold mb-2">Notatki strategiczne</h3>
           <p className="text-xs text-muted-foreground leading-relaxed">{cluster.notes}</p>
         </div>
       )}

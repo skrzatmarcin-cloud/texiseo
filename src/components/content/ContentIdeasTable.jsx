@@ -10,13 +10,13 @@ export default function ContentIdeasTable({ ideas, clusterMap, onEdit }) {
         <table className="w-full text-xs">
           <thead>
             <tr className="border-b border-border bg-secondary/40">
-              <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground">Title</th>
-              <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Type</th>
-              <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Lang</th>
-              <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Cluster</th>
-              <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Priority</th>
-              <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Conv.</th>
-              <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Biz Rel.</th>
+              <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground">Tytuł</th>
+              <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Typ</th>
+              <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Język</th>
+              <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Klaster</th>
+              <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Priorytet</th>
+              <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Konw.</th>
+              <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Biz. rel.</th>
               <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Status</th>
               <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground w-10"></th>
             </tr>

@@ -13,14 +13,14 @@ import { Search, X, LayoutGrid, List, AlertTriangle, CheckCircle2, ChevronRight 
 import { cn } from "@/lib/utils";
 
 const BOOLEAN_OPTIONS = [
-  { value: "yes", label: "Present" },
-  { value: "no", label: "Missing" },
+  { value: "yes", label: "Obecne" },
+  { value: "no", label: "Brak" },
 ];
 
 const HEALTH_OPTIONS = [
-  { value: "healthy", label: "Healthy" },
-  { value: "fair", label: "Fair" },
-  { value: "weak", label: "Weak" },
+  { value: "healthy", label: "Zdrowe" },
+  { value: "fair", label: "Przeciętne" },
+  { value: "weak", label: "Słabe" },
 ];
 
 function HealthBadge({ health }) {
@@ -29,7 +29,7 @@ function HealthBadge({ health }) {
     fair: "bg-amber-50 text-amber-700 ring-amber-200",
     weak: "bg-red-50 text-red-600 ring-red-200",
   };
-  const labels = { healthy: "Healthy", fair: "Fair", weak: "Weak" };
+  const labels = { healthy: "Zdrowe", fair: "Przeciętne", weak: "Słabe" };
   return (
     <span className={cn("inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium ring-1", styles[health] || styles.fair)}>
       {labels[health] || health}
@@ -92,7 +92,7 @@ export default function PagesModule() {
 
   return (
     <div className="p-4 lg:p-6 max-w-[1400px] mx-auto">
-      <PageHeader title="Pages" description={`${pages.length} pages tracked — ${filtered.length} shown`}>
+      <PageHeader title="Strony" description={`${pages.length} stron śledzonych — ${filtered.length} wyświetlanych`}>
         <div className="flex items-center gap-1 bg-secondary rounded-lg p-0.5">
           <button onClick={() => setView("table")} className={cn("p-1.5 rounded-md transition-colors", view === "table" ? "bg-card shadow-sm" : "")}>
             <List className="h-4 w-4" />
@@ -107,17 +107,17 @@ export default function PagesModule() {
       <div className="flex flex-wrap items-center gap-2 mb-4">
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search pages..." className="h-8 w-48 pl-8 text-xs" />
+          <Input value={search} onChange={e => setSearch(e.target.value)} placeholder="Szukaj stron..." className="h-8 w-48 pl-8 text-xs" />
         </div>
         {[
-          { key: "page_type", label: "Type", options: PAGE_TYPES },
-          { key: "language", label: "Language", options: LANGUAGES },
-          { key: "audience", label: "Audience", options: AUDIENCES },
+          { key: "page_type", label: "Typ", options: PAGE_TYPES },
+          { key: "language", label: "Język", options: LANGUAGES },
+          { key: "audience", label: "Odbiorcy", options: AUDIENCES },
           { key: "status", label: "Status", options: PAGE_STATUSES },
-          { key: "health", label: "Health", options: HEALTH_OPTIONS },
+          { key: "health", label: "Zdrowie", options: HEALTH_OPTIONS },
           { key: "faq", label: "FAQ", options: BOOLEAN_OPTIONS },
-          { key: "schema", label: "Schema", options: BOOLEAN_OPTIONS },
-          { key: "weak_only", label: "Weak Only", options: [{ value: "yes", label: "Weak pages only" }] },
+          { key: "schema", label: "Schemat", options: BOOLEAN_OPTIONS },
+          { key: "weak_only", label: "Tylko słabe", options: [{ value: "yes", label: "Tylko słabe strony" }] },
         ].map(f => (
           <Select key={f.key} value={filters[f.key] || "all"} onValueChange={v => setFilters(prev => ({ ...prev, [f.key]: v }))}>
             <SelectTrigger className="h-8 w-auto min-w-[110px] text-xs">
@@ -142,16 +142,16 @@ export default function PagesModule() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-border bg-secondary/40">
-                  <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground">Page</th>
-                  <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Type</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Lang</th>
-                  <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Cluster</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Trust</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Conv.</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Depth</th>
+                  <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground">Strona</th>
+                  <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Typ</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Język</th>
+                  <th className="text-left px-3 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Klaster</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Zaufanie</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden md:table-cell">Konw.</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden lg:table-cell">Głębokość</th>
                   <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden xl:table-cell">FAQ</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden xl:table-cell">Schema</th>
-                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Health</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground hidden xl:table-cell">Schemat</th>
+                  <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Zdrowie</th>
                   <th className="text-center px-3 py-2.5 font-semibold text-muted-foreground">Status</th>
                   <th className="px-3 py-2.5"></th>
                 </tr>
@@ -198,7 +198,7 @@ export default function PagesModule() {
               </tbody>
             </table>
             {filtered.length === 0 && (
-              <div className="py-12 text-center text-xs text-muted-foreground">No pages match the current filters.</div>
+              <div className="py-12 text-center text-xs text-muted-foreground">Brak stron pasujących do filtrów.</div>
             )}
           </div>
         </div>
@@ -255,7 +255,7 @@ export default function PagesModule() {
             );
           })}
           {filtered.length === 0 && (
-            <div className="col-span-full py-12 text-center text-xs text-muted-foreground">No pages match the current filters.</div>
+            <div className="col-span-full py-12 text-center text-xs text-muted-foreground">Brak stron pasujących do filtrów.</div>
           )}
         </div>
       )}

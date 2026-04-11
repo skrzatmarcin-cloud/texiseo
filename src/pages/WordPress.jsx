@@ -10,12 +10,12 @@ import { Settings, RefreshCw, Network, Send, FileText, Activity } from "lucide-r
 import { cn } from "@/lib/utils";
 
 const TABS = [
-  { id: "health", label: "Integration Health", icon: Activity },
-  { id: "connection", label: "Connection", icon: Settings },
-  { id: "sync", label: "Content Sync", icon: RefreshCw },
-  { id: "mapping", label: "Content Mapping", icon: Network },
-  { id: "publish", label: "Draft Publishing", icon: Send },
-  { id: "logs", label: "Sync Logs", icon: FileText },
+  { id: "health", label: "Stan integracji", icon: Activity },
+  { id: "connection", label: "Połączenie", icon: Settings },
+  { id: "sync", label: "Synchronizacja", icon: RefreshCw },
+  { id: "mapping", label: "Mapowanie treści", icon: Network },
+  { id: "publish", label: "Publikowanie szkiców", icon: Send },
+  { id: "logs", label: "Dzienniki synchronizacji", icon: FileText },
 ];
 
 export default function WordPress() {
@@ -24,8 +24,8 @@ export default function WordPress() {
   return (
     <div className="p-4 lg:p-6 max-w-[1200px] mx-auto">
       <PageHeader
-        title="WordPress Integration"
-        description="Connect, import, and publish content between Linguatoons Base44 OS and WordPress"
+        title="Integracja WordPress"
+        description="Połącz, importuj i publikuj treści między systemem Linguatoons a WordPress"
       />
 
       {/* Tab bar */}

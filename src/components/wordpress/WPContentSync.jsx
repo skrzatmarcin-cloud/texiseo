@@ -51,18 +51,18 @@ export default function WPContentSync() {
     <div>
       {/* Sync controls */}
       <div className="bg-card border border-border rounded-xl p-4 mb-4">
-        <p className="text-xs font-semibold mb-3">Import from WordPress</p>
+        <p className="text-xs font-semibold mb-3">Importuj z WordPress</p>
         <div className="flex flex-wrap gap-2 mb-3">
           <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" onClick={() => runSync("posts")} disabled={!!syncing}>
             {syncing === "posts" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />}
-            Import Posts
+            Importuj wpisy
           </Button>
           <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" onClick={() => runSync("pages")} disabled={!!syncing}>
             {syncing === "pages" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Download className="h-3 w-3" />}
-            Import Pages
+            Importuj strony
           </Button>
           <Button size="sm" variant="outline" className="gap-1.5 text-xs h-8" onClick={load} disabled={!!syncing}>
-            <RefreshCw className="h-3 w-3" />Refresh Status
+            <RefreshCw className="h-3 w-3" />Odśwież status
           </Button>
         </div>
         {result && (
@@ -81,12 +81,12 @@ export default function WPContentSync() {
       {/* Sync status overview */}
       <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-4">
         {[
-          { state: "all", label: "All", count: maps.length },
-          { state: "synced", label: "Synced", count: maps.filter(m => m.sync_state === "synced").length },
-          { state: "imported", label: "Imported", count: maps.filter(m => m.sync_state === "imported").length },
-          { state: "changed_in_wordpress", label: "WP Changed", count: maps.filter(m => m.sync_state === "changed_in_wordpress").length },
-          { state: "conflict", label: "Conflict", count: maps.filter(m => m.sync_state === "conflict").length },
-          { state: "failed", label: "Failed", count: maps.filter(m => m.sync_state === "failed").length },
+          { state: "all", label: "Wszystkie", count: maps.length },
+          { state: "synced", label: "Zsync.", count: maps.filter(m => m.sync_state === "synced").length },
+          { state: "imported", label: "Zaimportowane", count: maps.filter(m => m.sync_state === "imported").length },
+          { state: "changed_in_wordpress", label: "Zmienione WP", count: maps.filter(m => m.sync_state === "changed_in_wordpress").length },
+          { state: "conflict", label: "Konflikt", count: maps.filter(m => m.sync_state === "conflict").length },
+          { state: "failed", label: "Błąd", count: maps.filter(m => m.sync_state === "failed").length },
         ].map(s => (
           <button key={s.state} onClick={() => setFilter(s.state)}
             className={cn("rounded-lg border p-2 text-center cursor-pointer transition-all text-xs",
@@ -128,7 +128,7 @@ export default function WPContentSync() {
               ) : filtered.length === 0 ? (
                 <tr><td colSpan={8} className="py-12 text-center">
                   <FileText className="h-6 w-6 text-muted-foreground mx-auto mb-2 opacity-40" />
-                  <p className="text-sm text-muted-foreground">No items imported yet — run an import above.</p>
+                  <p className="text-sm text-muted-foreground">Brak zaimportowanych elementów — uruchom import powyżej.</p>
                 </td></tr>
               ) : filtered.map(m => (
                 <tr key={m.id} className="border-b border-border/50 hover:bg-secondary/20">

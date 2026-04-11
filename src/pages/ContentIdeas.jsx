@@ -66,7 +66,7 @@ export default function ContentIdeas() {
 
   return (
     <div className="p-4 lg:p-6 max-w-[1400px] mx-auto">
-      <PageHeader title="Content Ideas" description={`${ideas.length} ideas tracked`}>
+      <PageHeader title="Pomysły na treści" description={`${ideas.length} pomysłów śledzonych`}>
         <div className="flex items-center gap-1 bg-secondary rounded-lg p-0.5">
           <button onClick={() => setView("table")} className={cn("p-1.5 rounded-md transition-colors", view === "table" ? "bg-card shadow-sm" : "")}>
             <List className="h-4 w-4" />
@@ -76,7 +76,7 @@ export default function ContentIdeas() {
           </button>
         </div>
         <Button size="sm" className="gap-1.5" onClick={() => setShowCreate(true)}>
-          <Plus className="h-3.5 w-3.5" /> New Idea
+          <Plus className="h-3.5 w-3.5" /> Nowy pomysł
         </Button>
       </PageHeader>
 

@@ -95,13 +95,13 @@ export default function BriefBuilder() {
 
   return (
     <div className="p-4 lg:p-6 max-w-[1200px] mx-auto">
-      <PageHeader title="Brief Builder" description={`${briefs.length} briefs generated — ${ideasWithoutBrief.length} approved ideas awaiting briefs`} />
+      <PageHeader title="Kreator briefów" description={`${briefs.length} briefów wygenerowanych — ${ideasWithoutBrief.length} zatwierdzonych pomysłów oczekuje`} />
 
       {/* Pending approved ideas */}
       {ideasWithoutBrief.length > 0 && (
         <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6">
           <p className="text-xs font-semibold text-primary mb-3">
-            {ideasWithoutBrief.length} approved idea{ideasWithoutBrief.length !== 1 ? "s" : ""} ready for brief generation
+            {ideasWithoutBrief.length} zatwierdzonych pomysłów gotowych do wygenerowania briefu
           </p>
           <div className="flex flex-wrap gap-2">
             {ideasWithoutBrief.map(idea => (
@@ -112,7 +112,7 @@ export default function BriefBuilder() {
               </div>
             ))}
           </div>
-          <p className="text-[11px] text-muted-foreground mt-2">Go to Content Ideas to change status, or use the seed data to populate briefs.</p>
+          <p className="text-[11px] text-muted-foreground mt-2">Przejdź do Pomysłów na treści, aby zmienić status, lub użyj danych przykładowych.</p>
         </div>
       )}
 
@@ -153,8 +153,8 @@ export default function BriefBuilder() {
       {filtered.length === 0 ? (
         <div className="bg-card rounded-xl border border-border p-12 text-center">
           <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-3 opacity-40" />
-          <p className="text-sm font-medium text-muted-foreground">No briefs found</p>
-          <p className="text-xs text-muted-foreground mt-1">Approve content ideas and seed briefs to get started.</p>
+          <p className="text-sm font-medium text-muted-foreground">Brak briefów</p>
+          <p className="text-xs text-muted-foreground mt-1">Zatwierdź pomysły na treści i dodaj briefy, aby zacząć.</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -189,7 +189,7 @@ export default function BriefBuilder() {
                 {b.target_word_count && (
                   <div className="text-center hidden sm:block">
                     <p className="text-xs font-bold">{b.target_word_count.toLocaleString()}</p>
-                    <p className="text-[9px] text-muted-foreground">words</p>
+                    <p className="text-[9px] text-muted-foreground">słów</p>
                   </div>
                 )}
                 <ScoreBadge score={b.completeness_score} />

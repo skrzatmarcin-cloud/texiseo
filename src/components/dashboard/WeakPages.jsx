@@ -13,14 +13,14 @@ export default function WeakPages({ pages }) {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <AlertTriangle className="h-4 w-4 text-amber-500" />
-          <h3 className="text-sm font-semibold">Weak Pages</h3>
+          <h3 className="text-sm font-semibold">Słabe strony</h3>
         </div>
         <Link to="/pages" className="text-xs text-primary hover:underline flex items-center gap-1">
-          View all <ArrowRight className="h-3 w-3" />
+          Pokaż wszystkie <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
       {weak.length === 0 ? (
-        <p className="text-xs text-muted-foreground py-4 text-center">All pages look healthy!</p>
+        <p className="text-xs text-muted-foreground py-4 text-center">Wszystkie strony wyglądają świetnie!</p>
       ) : (
         <div className="space-y-2">
           {weak.map(page => (

@@ -10,22 +10,22 @@ function HealthGauge({ score, label }) {
     <div className={cn("flex flex-col items-center justify-center rounded-xl p-4 ring-1", bg, ring)}>
       <span className={cn("text-3xl font-bold", color)}>{score}</span>
       <span className={cn("text-xs font-semibold mt-0.5 capitalize", color)}>{label}</span>
-      <span className="text-[10px] text-muted-foreground mt-0.5">Overall Health</span>
+      <span className="text-[10px] text-muted-foreground mt-0.5">Ogólne zdrowie</span>
     </div>
   );
 }
 
 const METRICS = [
-  { key: "trust_score", label: "Trust Signals", Icon: ShieldCheck, weight: "20%" },
-  { key: "conversion_score", label: "Conversion Readiness", Icon: TrendingUp, weight: "20%" },
-  { key: "content_depth_score", label: "Content Depth", Icon: FileText, weight: "20%" },
-  { key: "refresh_score", label: "Content Freshness", Icon: Star, weight: "10%" },
+  { key: "trust_score", label: "Sygnały zaufania", Icon: ShieldCheck, weight: "20%" },
+  { key: "conversion_score", label: "Gotowość konwersji", Icon: TrendingUp, weight: "20%" },
+  { key: "content_depth_score", label: "Głębokość treści", Icon: FileText, weight: "20%" },
+  { key: "refresh_score", label: "Świeżość treści", Icon: Star, weight: "10%" },
 ];
 
 export default function PageHealthPanel({ page, healthScore, healthLabel }) {
   return (
     <div className="bg-card rounded-xl border border-border p-5">
-      <h3 className="text-sm font-semibold mb-4">Page Health Scorecard</h3>
+      <h3 className="text-sm font-semibold mb-4">Karta zdrowia strony</h3>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 mb-4">
         <HealthGauge score={healthScore} label={healthLabel} />
         <div className="col-span-1 sm:col-span-2 lg:col-span-1 xl:col-span-2 space-y-3">
@@ -45,9 +45,9 @@ export default function PageHealthPanel({ page, healthScore, healthLabel }) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-border/50">
         {[
           { label: "FAQ", value: page.faq_present },
-          { label: "Schema", value: page.schema_present },
-          { label: "Has Cluster", value: !!page.cluster_id },
-          { label: "Has CTA", value: !!page.cta_type },
+          { label: "Schemat", value: page.schema_present },
+          { label: "Ma klaster", value: !!page.cluster_id },
+          { label: "Ma CTA", value: !!page.cta_type },
         ].map(({ label, value }) => (
           <div key={label} className={cn("text-center p-2 rounded-lg", value ? "bg-emerald-50 ring-1 ring-emerald-200" : "bg-red-50 ring-1 ring-red-200")}>
             <p className={cn("text-[11px] font-semibold", value ? "text-emerald-700" : "text-red-600")}>{value ? "✓" : "✗"} {label}</p>

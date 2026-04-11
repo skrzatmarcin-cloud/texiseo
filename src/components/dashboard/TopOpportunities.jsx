@@ -12,9 +12,9 @@ export default function TopOpportunities({ ideas }) {
   return (
     <div className="bg-card rounded-xl border border-border p-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold">Top Content Opportunities</h3>
+        <h3 className="text-sm font-semibold">Najlepsze możliwości contentowe</h3>
         <Link to="/content-ideas" className="text-xs text-primary hover:underline flex items-center gap-1">
-          View all <ArrowRight className="h-3 w-3" />
+          Pokaż wszystkie <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
       <div className="space-y-2">

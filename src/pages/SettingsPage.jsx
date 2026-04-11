@@ -29,12 +29,12 @@ export default function SettingsPage() {
 
   return (
     <div className="p-4 lg:p-6 max-w-[900px] mx-auto">
-      <PageHeader title="Settings" description="Brand rules and system configuration" />
+      <PageHeader title="Ustawienia" description="Reguły marki i konfiguracja systemu" />
 
       <div className="bg-card rounded-xl border border-border p-5 mb-6">
         <div className="flex items-center gap-2 mb-1">
           <Shield className="h-4 w-4 text-primary" />
-          <h3 className="text-sm font-semibold">Brand</h3>
+          <h3 className="text-sm font-semibold">Marka</h3>
         </div>
         <p className="text-xs text-muted-foreground mb-1">Linguatoons.com</p>
         <p className="text-xs text-muted-foreground">Online language school for children and adults — English, Spanish, French, Polish for foreigners</p>
@@ -44,9 +44,9 @@ export default function SettingsPage() {
         <div className="px-5 py-4 border-b border-border">
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 text-amber-500" />
-            <h3 className="text-sm font-semibold">Brand Rules</h3>
+            <h3 className="text-sm font-semibold">Reguły marki</h3>
           </div>
-          <p className="text-xs text-muted-foreground mt-0.5">Content strategy guardrails that guide all SEO decisions</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Wytyczne strategii treści kierujące wszystkimi decyzjami SEO</p>
         </div>
         <div className="divide-y divide-border/50">
           {rules.map(rule => (

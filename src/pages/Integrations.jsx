@@ -9,16 +9,16 @@ import { cn } from "@/lib/utils";
 const TABS = [
   { id: "wordpress", label: "WordPress", icon: Globe },
   { id: "gsc", label: "Search Console", icon: Search },
-  { id: "analytics", label: "Analytics", icon: BarChart3 },
-  { id: "serp", label: "SERP Tracking", icon: Radio },
-  { id: "calendar", label: "Content Calendar", icon: Calendar },
+  { id: "analytics", label: "Analityka", icon: BarChart3 },
+  { id: "serp", label: "Śledzenie SERP", icon: Radio },
+  { id: "calendar", label: "Kalendarz treści", icon: Calendar },
 ];
 
 const STATUS_BADGE = {
-  connected: { label: "Connected", color: "bg-emerald-50 text-emerald-700", icon: CheckCircle2 },
-  ready: { label: "Ready to Connect", color: "bg-blue-50 text-blue-700", icon: Clock },
-  planned: { label: "Planned", color: "bg-slate-100 text-slate-500", icon: Clock },
-  error: { label: "Error", color: "bg-red-50 text-red-600", icon: AlertCircle },
+  connected: { label: "Połączony", color: "bg-emerald-50 text-emerald-700", icon: CheckCircle2 },
+  ready: { label: "Gotowy do połączenia", color: "bg-blue-50 text-blue-700", icon: Clock },
+  planned: { label: "Planowane", color: "bg-slate-100 text-slate-500", icon: Clock },
+  error: { label: "Błąd", color: "bg-red-50 text-red-600", icon: AlertCircle },
 };
 
 const INTEGRATION_STATUS = {
@@ -67,7 +67,7 @@ export default function Integrations() {
 
   return (
     <div className="p-4 lg:p-6 max-w-[1000px] mx-auto">
-      <PageHeader title="Integrations" description="External service connections and data sync settings" />
+      <PageHeader title="Integracje" description="Połączenia z zewnętrznymi serwisami i ustawienia synchronizacji danych" />
 
       <div className="flex gap-1 bg-secondary rounded-lg p-1 w-fit mb-5 flex-wrap">
         {TABS.map(t => (

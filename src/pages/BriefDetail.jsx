@@ -11,13 +11,13 @@ import { cn } from "@/lib/utils";
 import { LANG_FLAG } from "../lib/constants";
 
 const PAGE_TYPE_LABELS = {
-  informational_blog: "Informational Blog",
-  service_support: "Service Support",
-  pillar_page: "Pillar Page",
-  faq_page: "FAQ Page",
-  comparison_page: "Comparison Page",
-  landing_page: "Landing Page",
-  commercial_investigation: "Commercial Investigation",
+  informational_blog: "Artykuł informacyjny",
+  service_support: "Wsparcie usługi",
+  pillar_page: "Strona filarowa",
+  faq_page: "Strona FAQ",
+  comparison_page: "Porównanie",
+  landing_page: "Landing page",
+  commercial_investigation: "Analiza komercyjna",
 };
 
 const STATUS_OPTIONS = ["draft", "ready", "in_review", "approved", "archived"];
@@ -90,7 +90,7 @@ export default function BriefDetail() {
   return (
     <div className="p-4 lg:p-6 max-w-[1100px] mx-auto">
       <Link to="/brief-builder" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mb-4 transition-colors">
-        <ArrowLeft className="h-3 w-3" /> Back to Brief Builder
+        <ArrowLeft className="h-3 w-3" /> Powrót do kreatora briefów
       </Link>
 
       {/* Header */}
@@ -109,7 +109,7 @@ export default function BriefDetail() {
           <div className="flex items-center gap-3 flex-shrink-0">
             <div className="text-center">
               <p className={cn("text-2xl font-bold", completenessColor)}>{completeness}</p>
-              <p className="text-[9px] text-muted-foreground">Completeness</p>
+              <p className="text-[9px] text-muted-foreground">Kompletność</p>
             </div>
             {editingStatus ? (
               <select
@@ -133,7 +133,7 @@ export default function BriefDetail() {
           {idea && (
             <div className="flex items-center gap-1.5 text-[11px]">
               <FileText className="h-3 w-3 text-muted-foreground" />
-              <span className="text-muted-foreground">Idea:</span>
+              <span className="text-muted-foreground">Pomysł:</span>
               <span className="font-medium truncate max-w-[200px]">{idea.title}</span>
             </div>
           )}
@@ -153,15 +153,15 @@ export default function BriefDetail() {
 
           {/* Keyword strategy */}
           <div className="bg-card border border-border rounded-xl p-4">
-            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Keyword Strategy</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Strategia słów kluczowych</h3>
             <div className="space-y-2.5">
               <div>
-                <p className="text-[10px] text-muted-foreground mb-0.5">Primary Keyword</p>
+                <p className="text-[10px] text-muted-foreground mb-0.5">Główne słowo kluczowe</p>
                 <p className="text-xs font-semibold">{brief.primary_keyword || "—"}</p>
               </div>
               {brief.secondary_keywords?.length > 0 && (
                 <div>
-                  <p className="text-[10px] text-muted-foreground mb-1">Secondary Keywords</p>
+                  <p className="text-[10px] text-muted-foreground mb-1">Pomocnicze słowa kluczowe</p>
                   <div className="flex flex-wrap gap-1">
                     {brief.secondary_keywords.map((k, i) => (
                       <span key={i} className="text-[10px] bg-secondary px-1.5 py-0.5 rounded">{k}</span>
@@ -171,7 +171,7 @@ export default function BriefDetail() {
               )}
               {brief.semantic_keywords?.length > 0 && (
                 <div>
-                  <p className="text-[10px] text-muted-foreground mb-1">Semantic Keywords</p>
+                  <p className="text-[10px] text-muted-foreground mb-1">Semantyczne słowa kluczowe</p>
                   <div className="flex flex-wrap gap-1">
                     {brief.semantic_keywords.map((k, i) => (
                       <span key={i} className="text-[10px] bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded">{k}</span>
@@ -184,24 +184,24 @@ export default function BriefDetail() {
 
           {/* Meta */}
           <div className="bg-card border border-border rounded-xl p-4">
-            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Meta & URL</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Meta i URL</h3>
             <div className="space-y-2.5">
               <div>
-                <p className="text-[10px] text-muted-foreground mb-0.5">Meta Title</p>
+                <p className="text-[10px] text-muted-foreground mb-0.5">Tytuł Meta</p>
                 <p className="text-xs font-medium leading-snug">{brief.meta_title || "—"}</p>
                 {brief.meta_title && <p className={cn("text-[9px] mt-0.5", brief.meta_title.length > 60 ? "text-red-500" : "text-emerald-600")}>{brief.meta_title.length}/60 chars</p>}
               </div>
               <div>
-                <p className="text-[10px] text-muted-foreground mb-0.5">Meta Description</p>
+                <p className="text-[10px] text-muted-foreground mb-0.5">Opis Meta</p>
                 <p className="text-xs text-muted-foreground leading-snug">{brief.meta_description || "—"}</p>
                 {brief.meta_description && <p className={cn("text-[9px] mt-0.5", brief.meta_description.length > 160 ? "text-red-500" : "text-emerald-600")}>{brief.meta_description.length}/160 chars</p>}
               </div>
               <div>
-                <p className="text-[10px] text-muted-foreground mb-0.5">Suggested Slug</p>
+                <p className="text-[10px] text-muted-foreground mb-0.5">Proponowany slug</p>
                 <p className="text-[11px] font-mono text-primary">{brief.slug || "—"}</p>
               </div>
               <div>
-                <p className="text-[10px] text-muted-foreground mb-0.5">Schema Type</p>
+                <p className="text-[10px] text-muted-foreground mb-0.5">Typ schematu</p>
                 <p className="text-xs font-medium">{brief.schema_type || "—"}</p>
               </div>
             </div>
@@ -209,19 +209,19 @@ export default function BriefDetail() {
 
           {/* Business logic */}
           <div className="bg-card border border-border rounded-xl p-4">
-            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Strategy & Goals</h3>
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Strategia i cele</h3>
             <div className="space-y-2.5 text-[11px]">
-              <div><p className="text-muted-foreground">Search Intent</p><p className="font-medium mt-0.5">{brief.search_intent_summary || "—"}</p></div>
-              <div><p className="text-muted-foreground">Audience</p><p className="font-medium mt-0.5">{brief.audience_summary || "—"}</p></div>
-              <div><p className="text-muted-foreground">Business Goal</p><p className="font-medium mt-0.5">{brief.business_goal || "—"}</p></div>
-              <div><p className="text-muted-foreground">CTA Goal</p><p className="font-medium mt-0.5">{brief.cta_goal || "—"}</p></div>
+              <div><p className="text-muted-foreground">Intencja wyszukiwania</p><p className="font-medium mt-0.5">{brief.search_intent_summary || "—"}</p></div>
+              <div><p className="text-muted-foreground">Odbiorcy</p><p className="font-medium mt-0.5">{brief.audience_summary || "—"}</p></div>
+              <div><p className="text-muted-foreground">Cel biznesowy</p><p className="font-medium mt-0.5">{brief.business_goal || "—"}</p></div>
+              <div><p className="text-muted-foreground">Cel CTA</p><p className="font-medium mt-0.5">{brief.cta_goal || "—"}</p></div>
             </div>
           </div>
 
           {/* Internal links */}
           {internalLinks.length > 0 && (
             <div className="bg-card border border-border rounded-xl p-4">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Internal Links</h3>
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Linki wewnętrzne</h3>
               <div className="space-y-2">
                 {internalLinks.map((l, i) => (
                   <div key={i} className="text-[11px]">
@@ -236,7 +236,7 @@ export default function BriefDetail() {
           {/* Anchor suggestions */}
           {anchorSuggestions.length > 0 && (
             <div className="bg-card border border-border rounded-xl p-4">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Anchor Text Suggestions</h3>
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Sugestie tekstu kotwicy</h3>
               <div className="flex flex-wrap gap-1">
                 {anchorSuggestions.map((a, i) => (
                   <span key={i} className="text-[10px] bg-secondary px-2 py-0.5 rounded font-medium">{a}</span>
@@ -251,8 +251,8 @@ export default function BriefDetail() {
 
           {/* H1 */}
           <div className="bg-card border border-border rounded-xl p-4">
-            <p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wide mb-1.5">Recommended H1</p>
-            <p className="text-base font-bold text-foreground">{brief.h1 || "Not set"}</p>
+            <p className="text-[10px] text-muted-foreground uppercase font-semibold tracking-wide mb-1.5">Zalecany H1</p>
+            <p className="text-base font-bold text-foreground">{brief.h1 || "Nie ustawiono"}</p>
           </div>
 
           {/* H2 Structure */}
@@ -261,7 +261,7 @@ export default function BriefDetail() {
           {/* FAQ */}
           {faqItems.length > 0 && (
             <div className="bg-card border border-border rounded-xl p-4">
-              <h3 className="text-xs font-semibold mb-3">FAQ Section ({faqItems.length} questions)</h3>
+              <h3 className="text-xs font-semibold mb-3">Sekcja FAQ ({faqItems.length} pytań)</h3>
               <div className="space-y-3">
                 {faqItems.map((faq, i) => (
                   <div key={i} className="border-l-2 border-primary/30 pl-3">
@@ -285,14 +285,14 @@ export default function BriefDetail() {
 
           {/* Quality sections */}
           {[
-            { label: "Tone & Voice", field: "tone_notes", accent: "purple" },
-            { label: "E-E-A-T Guidance", field: "eeat_notes", accent: "blue" },
-            { label: "Who This Is For", field: "who_for", accent: "emerald" },
-            { label: "Who This Is Not For", field: "who_not_for", accent: "red" },
-            { label: "Trust-Building Blocks", field: "trust_blocks", accent: "amber" },
-            { label: "Objection Handling", field: "objection_handling", accent: "amber" },
-            { label: "Comparison Block Suggestions", field: "comparison_blocks", accent: "slate" },
-            { label: "Mistakes to Avoid", field: "mistakes_to_avoid", accent: "red" },
+            { label: "Ton i głos", field: "tone_notes", accent: "purple" },
+            { label: "Wytyczne E-E-A-T", field: "eeat_notes", accent: "blue" },
+            { label: "Dla kogo", field: "who_for", accent: "emerald" },
+            { label: "Dla kogo nie jest", field: "who_not_for", accent: "red" },
+            { label: "Elementy budujące zaufanie", field: "trust_blocks", accent: "amber" },
+            { label: "Obsługa obiekcji", field: "objection_handling", accent: "amber" },
+            { label: "Sugestie bloków porównania", field: "comparison_blocks", accent: "slate" },
+            { label: "Błędy do uniknięcia", field: "mistakes_to_avoid", accent: "red" },
           ].filter(s => brief[s.field]).map(s => (
             <BriefSectionBlock
               key={s.field}
@@ -306,12 +306,12 @@ export default function BriefDetail() {
 
           {/* Editable notes */}
           <EditableNotesBlock
-            label="Notes for Editor"
+            label="Notatki dla redaktora"
             value={brief.editor_notes || ""}
             onSave={val => updateField("editor_notes", val)}
           />
           <EditableNotesBlock
-            label="QA / Final Checklist"
+            label="QA / Lista kontrolna"
             value={brief.qa_notes || ""}
             onSave={val => updateField("qa_notes", val)}
           />
@@ -331,21 +331,21 @@ function EditableNotesBlock({ label, value, onSave }) {
         <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{label}</h3>
         {!editing ? (
           <button onClick={() => { setDraft(value); setEditing(true); }} className="text-[10px] text-primary hover:underline flex items-center gap-1">
-            <Edit2 className="h-3 w-3" /> Edit
+            <Edit2 className="h-3 w-3" /> Edytuj
           </button>
         ) : (
           <div className="flex gap-2">
             <button onClick={() => { onSave(draft); setEditing(false); }} className="text-[10px] text-emerald-600 hover:underline flex items-center gap-1">
-              <Check className="h-3 w-3" /> Save
+              <Check className="h-3 w-3" /> Zapisz
             </button>
-            <button onClick={() => setEditing(false)} className="text-[10px] text-muted-foreground hover:underline">Cancel</button>
+            <button onClick={() => setEditing(false)} className="text-[10px] text-muted-foreground hover:underline">Anuluj</button>
           </div>
         )}
       </div>
       {editing ? (
         <Textarea value={draft} onChange={e => setDraft(e.target.value)} className="text-xs min-h-[80px]" />
       ) : (
-        <p className="text-[11px] text-muted-foreground leading-relaxed whitespace-pre-line">{value || "Not yet written."}</p>
+        <p className="text-[11px] text-muted-foreground leading-relaxed whitespace-pre-line">{value || "Jeszcze nie napisane."}</p>
       )}
     </div>
   );

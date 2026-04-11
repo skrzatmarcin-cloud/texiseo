@@ -14,7 +14,7 @@ export default function FilterBar({ filters, values, onChange, onReset, searchVa
           <Input
             value={searchValue || ""}
             onChange={e => onSearchChange(e.target.value)}
-            placeholder="Search..."
+            placeholder="Szukaj..."
             className="h-8 w-48 pl-8 text-xs"
           />
         </div>
@@ -29,7 +29,7 @@ export default function FilterBar({ filters, values, onChange, onReset, searchVa
             <SelectValue placeholder={f.label} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All {f.label}</SelectItem>
+            <SelectItem value="all">Wszystkie</SelectItem>
             {f.options.map(o => (
               <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
             ))}
@@ -38,7 +38,7 @@ export default function FilterBar({ filters, values, onChange, onReset, searchVa
       ))}
       {hasActive && (
         <Button variant="ghost" size="sm" className="h-8 text-xs gap-1" onClick={onReset}>
-          <X className="h-3 w-3" /> Clear
+          <X className="h-3 w-3" /> Wyczyść
         </Button>
       )}
     </div>

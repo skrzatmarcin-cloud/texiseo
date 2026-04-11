@@ -8,20 +8,20 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { to: "/", icon: LayoutDashboard, label: "Dashboard" },
-  { to: "/content-ideas", icon: Lightbulb, label: "Content Ideas" },
-  { to: "/clusters", icon: Network, label: "Clusters" },
-  { to: "/pages", icon: FileText, label: "Pages" },
-  { to: "/brief-builder", icon: ClipboardList, label: "Brief Builder" },
-  { to: "/internal-links", icon: Link2, label: "Internal Links" },
-  { to: "/publishing-queue", icon: CalendarClock, label: "Publishing Queue" },
-  { to: "/faq-schema", icon: HelpCircle, label: "FAQ & Schema" },
-  { to: "/refresh-center", icon: RefreshCw, label: "Refresh Center" },
-  { to: "/seo-qa", icon: ShieldCheck, label: "SEO QA" },
+  { to: "/", icon: LayoutDashboard, label: "Panel główny" },
+  { to: "/content-ideas", icon: Lightbulb, label: "Pomysły" },
+  { to: "/clusters", icon: Network, label: "Klastry" },
+  { to: "/pages", icon: FileText, label: "Strony" },
+  { to: "/brief-builder", icon: ClipboardList, label: "Kreator briefów" },
+  { to: "/internal-links", icon: Link2, label: "Linkowanie" },
+  { to: "/publishing-queue", icon: CalendarClock, label: "Kolejka" },
+  { to: "/faq-schema", icon: HelpCircle, label: "FAQ i Schemat" },
+  { to: "/refresh-center", icon: RefreshCw, label: "Odświeżanie" },
+  { to: "/seo-qa", icon: ShieldCheck, label: "Kontrola SEO" },
   { to: "/wordpress", icon: Globe, label: "WordPress" },
-  { to: "/automations", icon: Zap, label: "Automations" },
-  { to: "/integrations", icon: Plug2, label: "Integrations" },
-  { to: "/settings", icon: Settings, label: "Settings" },
+  { to: "/automations", icon: Zap, label: "Automatyzacje" },
+  { to: "/integrations", icon: Plug2, label: "Integracje" },
+  { to: "/settings", icon: Settings, label: "Ustawienia" },
 ];
 
 export default function Layout() {
@@ -57,7 +57,7 @@ export default function Layout() {
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
-              <h1 className="text-sm font-bold text-sidebar-accent-foreground tracking-tight">TexiSEO</h1>
+              <h1 className="text-sm font-bold text-sidebar-accent-foreground tracking-tight">LinguaSEO OS</h1>
               <p className="text-[10px] text-sidebar-foreground/60 truncate">Linguatoons.com</p>
             </div>
           )}

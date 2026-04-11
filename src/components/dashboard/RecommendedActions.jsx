@@ -5,9 +5,9 @@ export default function RecommendedActions({ recommendations }) {
 
   return (
     <div className="bg-card rounded-xl border border-border p-4">
-      <h3 className="text-sm font-semibold mb-4">Recommended Next Actions</h3>
+      <h3 className="text-sm font-semibold mb-4">Zalecane działania</h3>
       {pending.length === 0 ? (
-        <p className="text-xs text-muted-foreground py-4 text-center">No pending recommendations</p>
+        <p className="text-xs text-muted-foreground py-4 text-center">Brak oczekujących rekomendacji</p>
       ) : (
         <div className="space-y-2">
           {pending.map(r => (
