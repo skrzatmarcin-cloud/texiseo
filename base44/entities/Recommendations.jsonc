@@ -1,0 +1,56 @@
+{
+  "name": "Recommendations",
+  "type": "object",
+  "properties": {
+    "related_page_id": {
+      "type": "string",
+      "title": "Related Page ID"
+    },
+    "recommendation_type": {
+      "type": "string",
+      "title": "Type",
+      "enum": [
+        "content_gap",
+        "optimization",
+        "internal_link",
+        "new_content",
+        "refresh",
+        "conversion"
+      ]
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priority",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "short_text": {
+      "type": "string",
+      "title": "Short Text"
+    },
+    "full_text": {
+      "type": "string",
+      "title": "Full Text"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "in_progress",
+        "completed",
+        "dismissed"
+      ]
+    }
+  },
+  "required": [
+    "recommendation_type",
+    "priority",
+    "short_text",
+    "status"
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "name": "ContentIdeas",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "seo_title": {
+      "type": "string",
+      "title": "SEO Title"
+    },
+    "slug_idea": {
+      "type": "string",
+      "title": "Slug Idea"
+    },
+    "content_type": {
+      "type": "string",
+      "title": "Content Type",
+      "enum": [
+        "blog_post",
+        "service_support",
+        "comparison",
+        "faq_page",
+        "pillar_page",
+        "commercial_investigation",
+        "trust_building",
+        "parent_guide",
+        "conversion_assist"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "title": "Language",
+      "enum": [
+        "en",
+        "pl",
+        "es",
+        "fr"
+      ]
+    },
+    "audience": {
+      "type": "string",
+      "title": "Audience",
+      "enum": [
+        "children",
+        "adults",
+        "parents",
+        "all"
+      ]
+    },
+    "search_intent": {
+      "type": "string",
+      "title": "Search Intent",
+      "enum": [
+        "informational",
+        "commercial",
+        "transactional",
+        "navigational"
+      ]
+    },
+    "funnel_stage": {
+      "type": "string",
+      "title": "Funnel Stage",
+      "enum": [
+        "awareness",
+        "consideration",
+        "decision",
+        "retention"
+      ]
+    },
+    "primary_keyword": {
+      "type": "string",
+      "title": "Primary Keyword"
+    },
+    "secondary_keywords": {
+      "type": "array",
+      "title": "Secondary Keywords",
+      "items": {
+        "type": "string"
+      }
+    },
+    "semantic_keywords": {
+      "type": "array",
+      "title": "Semantic Keywords",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cluster_id": {
+      "type": "string",
+      "title": "Cluster ID"
+    },
+    "priority_score": {
+      "type": "number",
+      "title": "Priority Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "conversion_score": {
+      "type": "number",
+      "title": "Conversion Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "topical_value_score": {
+      "type": "number",
+      "title": "Topical Value Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "difficulty_score": {
+      "type": "number",
+      "title": "Difficulty Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "freshness_score": {
+      "type": "number",
+      "title": "Freshness Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "business_relevance_score": {
+      "type": "number",
+      "title": "Business Relevance Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "idea",
+        "approved",
+        "in_progress",
+        "draft_ready",
+        "published",
+        "archived"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    },
+    "recommended_service_page_id": {
+      "type": "string",
+      "title": "Recommended Service Page ID"
+    }
+  },
+  "required": [
+    "title",
+    "content_type",
+    "language",
+    "status"
+  ]
+}

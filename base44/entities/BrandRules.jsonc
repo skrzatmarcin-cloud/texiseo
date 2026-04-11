@@ -1,0 +1,33 @@
+{
+  "name": "BrandRules",
+  "type": "object",
+  "properties": {
+    "rule_name": {
+      "type": "string",
+      "title": "Rule Name"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "severity": {
+      "type": "string",
+      "title": "Severity",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "active": {
+      "type": "boolean",
+      "title": "Active"
+    }
+  },
+  "required": [
+    "rule_name",
+    "severity",
+    "active"
+  ]
+}

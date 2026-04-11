@@ -1,0 +1,153 @@
+{
+  "name": "Pages",
+  "type": "object",
+  "properties": {
+    "url": {
+      "type": "string",
+      "title": "URL"
+    },
+    "slug": {
+      "type": "string",
+      "title": "Slug"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "page_type": {
+      "type": "string",
+      "title": "Page Type",
+      "enum": [
+        "homepage",
+        "service",
+        "landing",
+        "blog",
+        "support",
+        "faq",
+        "about",
+        "pricing",
+        "signup",
+        "pillar"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "title": "Language",
+      "enum": [
+        "en",
+        "pl",
+        "es",
+        "fr",
+        "multi"
+      ]
+    },
+    "audience": {
+      "type": "string",
+      "title": "Audience",
+      "enum": [
+        "children",
+        "adults",
+        "parents",
+        "all"
+      ]
+    },
+    "primary_keyword": {
+      "type": "string",
+      "title": "Primary Keyword"
+    },
+    "secondary_keywords": {
+      "type": "array",
+      "title": "Secondary Keywords",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cluster_id": {
+      "type": "string",
+      "title": "Cluster ID"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "live",
+        "draft",
+        "needs_update",
+        "deprecated"
+      ]
+    },
+    "cta_type": {
+      "type": "string",
+      "title": "CTA Type"
+    },
+    "trust_score": {
+      "type": "number",
+      "title": "Trust Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "conversion_score": {
+      "type": "number",
+      "title": "Conversion Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "content_depth_score": {
+      "type": "number",
+      "title": "Content Depth Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "internal_links_in_count": {
+      "type": "number",
+      "title": "Internal Links In"
+    },
+    "internal_links_out_count": {
+      "type": "number",
+      "title": "Internal Links Out"
+    },
+    "faq_present": {
+      "type": "boolean",
+      "title": "FAQ Present"
+    },
+    "schema_present": {
+      "type": "boolean",
+      "title": "Schema Present"
+    },
+    "refresh_score": {
+      "type": "number",
+      "title": "Refresh Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "decay_risk": {
+      "type": "string",
+      "title": "Decay Risk",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "orphan_risk": {
+      "type": "string",
+      "title": "Orphan Risk",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "title",
+    "url",
+    "page_type",
+    "language",
+    "status"
+  ]
+}

@@ -5,7 +5,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-// Add page imports here
+import Layout from './components/Layout';
+import Dashboard from './pages/Dashboard';
+import ContentIdeas from './pages/ContentIdeas';
+import Clusters from './pages/Clusters';
+import ClusterDetail from './pages/ClusterDetail';
+import PagesModule from './pages/PagesModule';
+import BriefBuilder from './pages/BriefBuilder';
+import InternalLinks from './pages/InternalLinks';
+import PublishingQueue from './pages/PublishingQueue';
+import SettingsPage from './pages/SettingsPage';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -33,8 +42,18 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      {/* Add your page Route elements here */}
-      <Route path="*" element={<PageNotFound />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/content-ideas" element={<ContentIdeas />} />
+        <Route path="/clusters" element={<Clusters />} />
+        <Route path="/clusters/:id" element={<ClusterDetail />} />
+        <Route path="/pages" element={<PagesModule />} />
+        <Route path="/brief-builder" element={<BriefBuilder />} />
+        <Route path="/internal-links" element={<InternalLinks />} />
+        <Route path="/publishing-queue" element={<PublishingQueue />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
     </Routes>
   );
 };

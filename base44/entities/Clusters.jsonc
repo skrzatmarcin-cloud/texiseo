@@ -1,0 +1,60 @@
+{
+  "name": "Clusters",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Cluster Name"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "language": {
+      "type": "string",
+      "title": "Language",
+      "enum": [
+        "en",
+        "pl",
+        "es",
+        "fr",
+        "multi"
+      ]
+    },
+    "pillar_page_id": {
+      "type": "string",
+      "title": "Pillar Page ID"
+    },
+    "authority_score": {
+      "type": "number",
+      "title": "Authority Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "completeness_score": {
+      "type": "number",
+      "title": "Completeness Score",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "support_content_count": {
+      "type": "number",
+      "title": "Support Content Count"
+    },
+    "missing_topics": {
+      "type": "array",
+      "title": "Missing Topics",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "name",
+    "language"
+  ]
+}
