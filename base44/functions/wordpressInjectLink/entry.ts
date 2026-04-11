@@ -6,7 +6,7 @@ Deno.serve(async (req) => {
     const user = await base44.auth.me();
     if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const { source_slug, source_title, target_url, anchor_text, context_note } = await req.json();
+    const { source_slug, source_title, target_url, anchor_text } = await req.json();
 
     // Get WP settings
     const settings = await base44.asServiceRole.entities.WordPressSettings.list();
@@ -20,64 +20,84 @@ Deno.serve(async (req) => {
     const auth = btoa(`${wp.username}:${wp.app_password}`);
     const headers = { 'Authorization': `Basic ${auth}`, 'Content-Type': 'application/json' };
 
-    // Extract slug from URL (last non-empty segment)
-    const slug = (source_slug || "").replace(/^\//, '').replace(/\/$/, '').split('/').pop();
+    // Extract slug candidates
+    const urlPath = (source_slug || "").replace(/^\//, '').replace(/\/$/, '');
+    const slugLast = urlPath.split('/').pop();
 
-    // Helper: search WP endpoint by slug, then by title
-    const searchWP = async (endpoint) => {
-      let res = await fetch(`${api}/${endpoint}?slug=${encodeURIComponent(slug)}&_fields=id,content,slug,link`, { headers });
-      let items = await res.json();
-      if (items?.length) return items;
+    // Normalize for fuzzy matching
+    const norm = (str) => (str || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const titleNorm = norm(source_title);
 
-      // Fallback: search by title (handles multilingual slugs)
-      if (source_title) {
-        res = await fetch(`${api}/${endpoint}?search=${encodeURIComponent(source_title)}&_fields=id,content,slug,link,title`, { headers });
-        items = await res.json();
-        if (items?.length) return items;
-      }
-      return [];
+    // Fetch all posts/pages from WP
+    const fetchAll = async (endpoint) => {
+      const res = await fetch(`${api}/${endpoint}?per_page=100&_fields=id,content,slug,link,title`, { headers });
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
     };
 
-    let posts = await searchWP('posts');
-    if (!posts.length) posts = await searchWP('pages');
+    const findInList = (items) => {
+      if (!items.length) return null;
+      // 1. Exact slug match
+      const bySlug = items.find(i => i.slug === slugLast || i.slug === urlPath);
+      if (bySlug) return bySlug;
+      // 2. Title exact match
+      if (titleNorm) {
+        const byTitle = items.find(i => norm(i.title?.rendered) === titleNorm);
+        if (byTitle) return byTitle;
+        // 3. Title contains
+        const byTitleContains = items.find(i => norm(i.title?.rendered).includes(titleNorm) || titleNorm.includes(norm(i.title?.rendered)));
+        if (byTitleContains) return byTitleContains;
+        // 4. First 5 chars
+        const prefix = titleNorm.slice(0, 5);
+        const byPrefix = items.find(i => norm(i.title?.rendered).startsWith(prefix));
+        if (byPrefix) return byPrefix;
+      }
+      return null;
+    };
 
-    if (!posts || posts.length === 0) {
+    const [allPosts, allPages] = await Promise.all([fetchAll('posts'), fetchAll('pages')]);
+    const found = findInList(allPosts) || findInList(allPages);
+
+    if (!found) {
       return Response.json({
         success: false,
-        error: `Nie znaleziono strony ze slug "${slug}"${source_title ? ` ani tytułem "${source_title}"` : ''} w WordPress.`,
+        error: `Nie znaleziono strony "${source_title || slugLast}" w WordPress. Sprawdź czy strona istnieje i jest opublikowana.`,
         manual: true
       });
     }
 
-    const post = posts[0];
-    const rawContent = post.content?.rendered || '';
+    const isPage = allPages.some(p => p.id === found.id);
+    const postType = isPage ? 'pages' : 'posts';
+    const rawContent = found.content?.rendered || '';
+    const wpEditUrl = `${base}/wp-admin/post.php?post=${found.id}&action=edit`;
 
-    // Build the link HTML
+    // Build link HTML
     const linkHtml = `<a href="${target_url}">${anchor_text}</a>`;
 
-    // Try to find anchor_text in content (case-insensitive)
-    const regex = new RegExp(`(?<![<"'>])${anchor_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![^<]*>)`, 'i');
-    
+    // Check if already linked
+    const alreadyLinked = rawContent.includes(`href="${target_url}"`) || rawContent.includes(`href='${target_url}'`);
+    if (alreadyLinked) {
+      return Response.json({ success: true, already_existed: true, message: 'Link już istnieje w treści.' });
+    }
+
+    // Find anchor text in content
+    const escapedAnchor = anchor_text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(?<![<"'>])${escapedAnchor}(?![^<]*>)`, 'i');
+
     if (!regex.test(rawContent)) {
       return Response.json({
         success: false,
-        error: `Fraza "${anchor_text}" nie została znaleziona w treści posta "${slug}". Link musisz wstawić ręcznie.`,
+        error: `Fraza "${anchor_text}" nie została znaleziona w treści strony "${found.title?.rendered || found.slug}". Wstaw link ręcznie.`,
         manual: true,
-        wp_edit_url: `${base}/wp-admin/post.php?post=${post.id}&action=edit`
+        wp_edit_url: wpEditUrl
       });
-    }
-
-    // Check if already linked
-    const alreadyLinked = new RegExp(`href=["']${target_url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`).test(rawContent);
-    if (alreadyLinked) {
-      return Response.json({ success: true, already_existed: true, message: 'Link już istnieje w treści.' });
     }
 
     // Replace first occurrence
     const newContent = rawContent.replace(regex, linkHtml);
 
-    // Update post
-    const updateRes = await fetch(`${api}/${searchRes.url.includes('/pages') ? 'pages' : 'posts'}/${post.id}`, {
+    // Update post/page in WP
+    const updateRes = await fetch(`${api}/${postType}/${found.id}`, {
       method: 'PUT',
       headers,
       body: JSON.stringify({ content: newContent })
@@ -85,10 +105,15 @@ Deno.serve(async (req) => {
 
     if (!updateRes.ok) {
       const err = await updateRes.text();
-      return Response.json({ success: false, error: `Błąd aktualizacji WP: ${err}`, manual: true, wp_edit_url: `${base}/wp-admin/post.php?post=${post.id}&action=edit` });
+      return Response.json({ success: false, error: `Błąd aktualizacji WP: ${err}`, manual: true, wp_edit_url: wpEditUrl });
     }
 
-    return Response.json({ success: true, message: `Link "${anchor_text}" → ${target_url} został wstawiony w post "${slug}".`, wp_url: post.link });
+    return Response.json({
+      success: true,
+      message: `Link "${anchor_text}" → ${target_url} wstawiony w "${found.title?.rendered || found.slug}".`,
+      wp_url: found.link
+    });
+
   } catch (error) {
     return Response.json({ success: false, error: error.message }, { status: 500 });
   }
