@@ -25,6 +25,10 @@ import Automations from './pages/Automations';
 import WordPress from './pages/WordPress';
 import Integrations from './pages/Integrations';
 import BacklinkSystem from './pages/BacklinkSystem';
+import ContentEngine from './pages/ContentEngine';
+import SocialMedia from './pages/SocialMedia';
+import Analytics from './pages/Analytics';
+import ExecutionCenter from './pages/ExecutionCenter';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -70,6 +74,10 @@ const AuthenticatedApp = () => {
         <Route path="/automations" element={<Automations />} />
         <Route path="/integrations" element={<Integrations />} />
         <Route path="/backlinks" element={<BacklinkSystem />} />
+        <Route path="/content-engine" element={<ContentEngine />} />
+        <Route path="/social-media" element={<SocialMedia />} />
+        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/execution-center" element={<ExecutionCenter />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>

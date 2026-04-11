@@ -1,0 +1,118 @@
+{
+  "name": "ContentItems",
+  "type": "object",
+  "properties": {
+    "topic": {
+      "type": "string",
+      "title": "Temat"
+    },
+    "target_url": {
+      "type": "string",
+      "title": "URL docelowy"
+    },
+    "language": {
+      "type": "string",
+      "title": "J\u0119zyk",
+      "enum": [
+        "en",
+        "pl",
+        "es",
+        "fr"
+      ]
+    },
+    "audience": {
+      "type": "string",
+      "title": "Odbiorcy",
+      "enum": [
+        "children",
+        "adults",
+        "parents",
+        "all"
+      ]
+    },
+    "primary_keyword": {
+      "type": "string",
+      "title": "G\u0142\u00f3wne s\u0142owo kluczowe"
+    },
+    "blog_article": {
+      "type": "string",
+      "title": "Artyku\u0142 blogowy (WordPress)"
+    },
+    "blogger_post": {
+      "type": "string",
+      "title": "Post Blogger"
+    },
+    "medium_article": {
+      "type": "string",
+      "title": "Artyku\u0142 Medium"
+    },
+    "pinterest_title": {
+      "type": "string",
+      "title": "Pinterest \u2014 tytu\u0142"
+    },
+    "pinterest_description": {
+      "type": "string",
+      "title": "Pinterest \u2014 opis"
+    },
+    "pinterest_image_prompt": {
+      "type": "string",
+      "title": "Pinterest \u2014 prompt obrazu"
+    },
+    "facebook_post": {
+      "type": "string",
+      "title": "Post Facebook"
+    },
+    "instagram_caption": {
+      "type": "string",
+      "title": "Instagram \u2014 opis"
+    },
+    "instagram_hashtags": {
+      "type": "string",
+      "title": "Instagram \u2014 hashtagi"
+    },
+    "tiktok_hook": {
+      "type": "string",
+      "title": "TikTok \u2014 hook"
+    },
+    "tiktok_script": {
+      "type": "string",
+      "title": "TikTok \u2014 skrypt"
+    },
+    "tiktok_caption": {
+      "type": "string",
+      "title": "TikTok \u2014 opis"
+    },
+    "short_snippet": {
+      "type": "string",
+      "title": "Kr\u00f3tki fragment edukacyjny"
+    },
+    "backlink_snippet": {
+      "type": "string",
+      "title": "Fragment do backlinkowania"
+    },
+    "meta_title": {
+      "type": "string",
+      "title": "Meta tytu\u0142"
+    },
+    "meta_description": {
+      "type": "string",
+      "title": "Meta opis"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "draft",
+        "generated",
+        "approved",
+        "publishing",
+        "published",
+        "failed"
+      ]
+    }
+  },
+  "required": [
+    "topic",
+    "status"
+  ]
+}

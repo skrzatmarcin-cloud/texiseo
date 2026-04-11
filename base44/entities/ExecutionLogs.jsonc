@@ -1,0 +1,79 @@
+{
+  "name": "ExecutionLogs",
+  "type": "object",
+  "properties": {
+    "action_type": {
+      "type": "string",
+      "title": "Typ dzia\u0142ania",
+      "enum": [
+        "wordpress_update",
+        "wordpress_create",
+        "rankmath_update",
+        "blogger_publish",
+        "medium_publish",
+        "pinterest_publish",
+        "facebook_publish",
+        "instagram_publish",
+        "backlink_publish",
+        "content_generate",
+        "seo_apply"
+      ]
+    },
+    "entity_type": {
+      "type": "string",
+      "title": "Typ encji"
+    },
+    "entity_id": {
+      "type": "string",
+      "title": "ID encji"
+    },
+    "item_name": {
+      "type": "string",
+      "title": "Nazwa elementu"
+    },
+    "platform": {
+      "type": "string",
+      "title": "Platforma"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "executing",
+        "completed",
+        "failed",
+        "reverted"
+      ]
+    },
+    "before_state": {
+      "type": "string",
+      "title": "Stan przed (JSON)"
+    },
+    "after_state": {
+      "type": "string",
+      "title": "Stan po (JSON)"
+    },
+    "result_url": {
+      "type": "string",
+      "title": "URL wyniku"
+    },
+    "error_message": {
+      "type": "string",
+      "title": "B\u0142\u0105d"
+    },
+    "executed_at": {
+      "type": "string",
+      "title": "Wykonano",
+      "format": "date"
+    },
+    "triggered_by": {
+      "type": "string",
+      "title": "Uruchomione przez"
+    }
+  },
+  "required": [
+    "action_type",
+    "status"
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "name": "PlatformPosts",
+  "type": "object",
+  "properties": {
+    "content_item_id": {
+      "type": "string",
+      "title": "ID ContentItem"
+    },
+    "platform": {
+      "type": "string",
+      "title": "Platforma",
+      "enum": [
+        "wordpress",
+        "blogger",
+        "medium",
+        "pinterest",
+        "facebook",
+        "instagram",
+        "tiktok",
+        "reddit",
+        "quora",
+        "forum"
+      ]
+    },
+    "execution_mode": {
+      "type": "string",
+      "title": "Tryb",
+      "enum": [
+        "auto",
+        "manual"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "approved",
+        "scheduled",
+        "publishing",
+        "published",
+        "failed",
+        "skipped"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "title": "Tytu\u0142 posta"
+    },
+    "content": {
+      "type": "string",
+      "title": "Tre\u015b\u0107"
+    },
+    "external_url": {
+      "type": "string",
+      "title": "URL zewn\u0119trzny"
+    },
+    "platform_post_id": {
+      "type": "string",
+      "title": "ID posta na platformie"
+    },
+    "scheduled_at": {
+      "type": "string",
+      "title": "Zaplanowano na",
+      "format": "date"
+    },
+    "published_at": {
+      "type": "string",
+      "title": "Opublikowano",
+      "format": "date"
+    },
+    "error_message": {
+      "type": "string",
+      "title": "B\u0142\u0105d"
+    },
+    "language": {
+      "type": "string",
+      "title": "J\u0119zyk"
+    }
+  },
+  "required": [
+    "platform",
+    "execution_mode",
+    "status"
+  ]
+}

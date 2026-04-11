@@ -1,0 +1,69 @@
+{
+  "name": "TrafficData",
+  "type": "object",
+  "properties": {
+    "date": {
+      "type": "string",
+      "title": "Data",
+      "format": "date"
+    },
+    "source": {
+      "type": "string",
+      "title": "\u0179r\u00f3d\u0142o",
+      "enum": [
+        "gsc",
+        "ga4",
+        "manual",
+        "estimated"
+      ]
+    },
+    "page_url": {
+      "type": "string",
+      "title": "URL strony"
+    },
+    "clicks": {
+      "type": "number",
+      "title": "Klikni\u0119cia"
+    },
+    "impressions": {
+      "type": "number",
+      "title": "Wy\u015bwietlenia"
+    },
+    "ctr": {
+      "type": "number",
+      "title": "CTR (%)"
+    },
+    "avg_position": {
+      "type": "number",
+      "title": "\u015ar. pozycja"
+    },
+    "sessions": {
+      "type": "number",
+      "title": "Sesje"
+    },
+    "pageviews": {
+      "type": "number",
+      "title": "Ods\u0142ony"
+    },
+    "conversions": {
+      "type": "number",
+      "title": "Konwersje"
+    },
+    "platform": {
+      "type": "string",
+      "title": "Platforma (social)"
+    },
+    "keyword": {
+      "type": "string",
+      "title": "S\u0142owo kluczowe"
+    },
+    "language": {
+      "type": "string",
+      "title": "J\u0119zyk"
+    }
+  },
+  "required": [
+    "date",
+    "source"
+  ]
+}
