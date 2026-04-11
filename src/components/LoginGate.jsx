@@ -40,17 +40,16 @@ export default function LoginGate({ children }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{backgroundImage: "url('https://media.base44.com/images/public/69da036b1797baa333fdb6c1/c7295d27f_ChatGPTImage11kwi202617_29_17.png')", backgroundSize: "cover", backgroundPosition: "center"}}>
+      <div className="absolute inset-0 bg-black/40" />
+      <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
           <img
             src="https://media.base44.com/images/public/69da036b1797baa333fdb6c1/f24cb9015_ChatGPTImage11kwi202616_54_09.png"
             alt="LinguaSEO OS"
-            className="h-28 w-28 object-contain mb-4 drop-shadow-2xl"
+            className="h-56 w-56 object-contain drop-shadow-2xl"
           />
-          <h1 className="text-2xl font-bold text-white tracking-tight">LinguaSEO OS</h1>
-          <p className="text-slate-400 text-sm mt-1">linguatoons.com</p>
         </div>
 
         <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-2xl">
