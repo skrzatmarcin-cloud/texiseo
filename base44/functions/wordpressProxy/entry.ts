@@ -46,12 +46,24 @@ Deno.serve(async (req) => {
 
     try {
       // Check site reachable
-      const siteRes = await fetch(settings.site_url).catch(() => null);
-      checks.site_reachable = siteRes?.ok || false;
+      const siteRes = await fetch(settings.site_url, { signal: AbortSignal.timeout(8000) }).catch(() => null);
+      checks.site_reachable = !!(siteRes && (siteRes.ok || siteRes.status < 500));
+
+      if (!checks.site_reachable) {
+        const allGood = false;
+        const existingSettings = await getSettings(base44);
+        if (existingSettings?.id) {
+          await base44.asServiceRole.entities.WordPressSettings.update(existingSettings.id, {
+            connection_status: 'failed', last_tested_at: new Date().toISOString(),
+          });
+        }
+        await logAction(base44, 'connection_test', 'failed', { item_name: settings.site_url, triggered_by: user.email, error_message: 'Site not reachable', details: JSON.stringify(checks) });
+        return Response.json({ success: false, status: 'failed', checks, error_detail: 'Strona WordPress nie jest osiągalna. Sprawdź URL lub czy serwer działa.' });
+      }
 
       // Check API reachable
       const apiRes = await wpFetch(settings, '/', { method: 'GET' });
-      checks.api_reachable = apiRes.ok;
+      checks.api_reachable = apiRes.ok || apiRes.status === 401; // 401 means API exists but needs auth
 
       // Check auth
       const meRes = await wpFetch(settings, '/users/me');
@@ -59,8 +71,10 @@ Deno.serve(async (req) => {
       checks.can_read = meRes.ok;
 
       // Check write by getting posts with edit context
-      const writeRes = await wpFetch(settings, '/posts?context=edit&per_page=1');
-      checks.can_write = writeRes.ok;
+      if (checks.auth_valid) {
+        const writeRes = await wpFetch(settings, '/posts?context=edit&per_page=1');
+        checks.can_write = writeRes.ok;
+      }
 
       const allGood = Object.values(checks).every(Boolean);
       const status = allGood ? 'connected' : checks.auth_valid ? 'partial' : 'failed';
@@ -83,7 +97,7 @@ Deno.serve(async (req) => {
       return Response.json({ success: true, status, checks });
     } catch (err) {
       await logAction(base44, 'connection_test', 'failed', { item_name: settings.site_url, error_message: err.message, triggered_by: user.email });
-      return Response.json({ success: false, error: err.message, checks });
+      return Response.json({ success: false, status: 'failed', error: err.message, checks, error_detail: `Błąd połączenia: ${err.message}` });
     }
   }
 
