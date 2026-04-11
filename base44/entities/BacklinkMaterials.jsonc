@@ -1,0 +1,68 @@
+{
+  "name": "BacklinkMaterials",
+  "type": "object",
+  "properties": {
+    "opportunity_id": {
+      "type": "string",
+      "title": "ID okazji"
+    },
+    "title_suggestion": {
+      "type": "string",
+      "title": "Sugestia tytu\u0142u"
+    },
+    "short_snippet": {
+      "type": "string",
+      "title": "Kr\u00f3tki fragment (2-3 zdania)"
+    },
+    "medium_article": {
+      "type": "string",
+      "title": "Wersja artyku\u0142u"
+    },
+    "pinterest_description": {
+      "type": "string",
+      "title": "Opis Pinterest"
+    },
+    "educational_description": {
+      "type": "string",
+      "title": "Opis edukacyjny"
+    },
+    "natural_backlink_sentence": {
+      "type": "string",
+      "title": "Naturalne zdanie z linkiem"
+    },
+    "anchor_branded": {
+      "type": "string",
+      "title": "Kotwica brandowa"
+    },
+    "anchor_natural": {
+      "type": "string",
+      "title": "Kotwica naturalna"
+    },
+    "anchor_soft_keyword": {
+      "type": "string",
+      "title": "Kotwica soft keyword"
+    },
+    "cta": {
+      "type": "string",
+      "title": "CTA"
+    },
+    "backlink_url": {
+      "type": "string",
+      "title": "URL z linkiem"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "draft",
+        "ready",
+        "approved",
+        "rejected"
+      ]
+    }
+  },
+  "required": [
+    "opportunity_id",
+    "status"
+  ]
+}

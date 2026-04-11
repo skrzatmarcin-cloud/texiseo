@@ -24,6 +24,7 @@ import SettingsPage from './pages/SettingsPage';
 import Automations from './pages/Automations';
 import WordPress from './pages/WordPress';
 import Integrations from './pages/Integrations';
+import BacklinkSystem from './pages/BacklinkSystem';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -68,6 +69,7 @@ const AuthenticatedApp = () => {
         <Route path="/wordpress" element={<WordPress />} />
         <Route path="/automations" element={<Automations />} />
         <Route path="/integrations" element={<Integrations />} />
+        <Route path="/backlinks" element={<BacklinkSystem />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>

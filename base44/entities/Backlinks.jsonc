@@ -1,0 +1,113 @@
+{
+  "name": "Backlinks",
+  "type": "object",
+  "properties": {
+    "opportunity_id": {
+      "type": "string",
+      "title": "ID okazji"
+    },
+    "linguatoons_url": {
+      "type": "string",
+      "title": "URL Linguatoons"
+    },
+    "external_url": {
+      "type": "string",
+      "title": "URL zewn\u0119trzny (gdzie jest backlink)"
+    },
+    "platform": {
+      "type": "string",
+      "title": "Platforma"
+    },
+    "platform_type": {
+      "type": "string",
+      "title": "Typ platformy",
+      "enum": [
+        "medium",
+        "pinterest",
+        "blogger",
+        "wordpress_external",
+        "reddit",
+        "quora",
+        "forum",
+        "directory",
+        "community"
+      ]
+    },
+    "execution_mode": {
+      "type": "string",
+      "title": "Tryb",
+      "enum": [
+        "auto",
+        "manual"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "approved",
+        "published_auto",
+        "published_manual",
+        "failed",
+        "removed"
+      ]
+    },
+    "anchor_text": {
+      "type": "string",
+      "title": "Tekst kotwicy"
+    },
+    "backlink_type": {
+      "type": "string",
+      "title": "Typ backlinku",
+      "enum": [
+        "dofollow",
+        "nofollow",
+        "ugc",
+        "sponsored"
+      ]
+    },
+    "safety_score": {
+      "type": "number",
+      "title": "Ocena bezpiecze\u0144stwa",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "relevance_score": {
+      "type": "number",
+      "title": "Trafno\u015b\u0107",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "human_value_score": {
+      "type": "number",
+      "title": "Warto\u015b\u0107 dla u\u017cytkownika",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "published_at": {
+      "type": "string",
+      "title": "Opublikowano",
+      "format": "date"
+    },
+    "last_checked_at": {
+      "type": "string",
+      "title": "Ostatnie sprawdzenie",
+      "format": "date"
+    },
+    "language": {
+      "type": "string",
+      "title": "J\u0119zyk"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    }
+  },
+  "required": [
+    "linguatoons_url",
+    "platform_type",
+    "execution_mode",
+    "status"
+  ]
+}

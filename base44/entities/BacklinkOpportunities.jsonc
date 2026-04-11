@@ -1,0 +1,96 @@
+{
+  "name": "BacklinkOpportunities",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Tytu\u0142 okazji"
+    },
+    "platform": {
+      "type": "string",
+      "title": "Platforma"
+    },
+    "platform_type": {
+      "type": "string",
+      "title": "Typ platformy",
+      "enum": [
+        "medium",
+        "pinterest",
+        "blogger",
+        "wordpress_external",
+        "reddit",
+        "quora",
+        "forum",
+        "directory",
+        "community"
+      ]
+    },
+    "execution_mode": {
+      "type": "string",
+      "title": "Tryb wykonania",
+      "enum": [
+        "auto",
+        "manual"
+      ]
+    },
+    "safety_score": {
+      "type": "number",
+      "title": "Ocena bezpiecze\u0144stwa",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "relevance_score": {
+      "type": "number",
+      "title": "Trafno\u015b\u0107",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "topic": {
+      "type": "string",
+      "title": "Temat"
+    },
+    "target_url": {
+      "type": "string",
+      "title": "URL docelowy Linguatoons"
+    },
+    "platform_url": {
+      "type": "string",
+      "title": "URL platformy"
+    },
+    "language": {
+      "type": "string",
+      "title": "J\u0119zyk",
+      "enum": [
+        "en",
+        "pl",
+        "es",
+        "fr"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "idea",
+        "generated",
+        "ready_for_review",
+        "approved",
+        "rejected",
+        "scheduled",
+        "published_auto",
+        "ready_manual",
+        "published_manual"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    }
+  },
+  "required": [
+    "title",
+    "platform_type",
+    "execution_mode",
+    "status"
+  ]
+}

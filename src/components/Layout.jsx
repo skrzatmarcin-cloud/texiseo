@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard, Lightbulb, Network, FileText, ClipboardList,
   Link2, CalendarClock, Settings, Search, ChevronLeft, Menu,
-  HelpCircle, RefreshCw, ShieldCheck, Zap, Plug2, Globe
+  HelpCircle, RefreshCw, ShieldCheck, Zap, Plug2, Globe, ExternalLink
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -19,6 +19,7 @@ const NAV_ITEMS = [
   { to: "/refresh-center", icon: RefreshCw, label: "Odświeżanie" },
   { to: "/seo-qa", icon: ShieldCheck, label: "Kontrola SEO" },
   { to: "/wordpress", icon: Globe, label: "WordPress" },
+  { to: "/backlinks", icon: ExternalLink, label: "System Backlinków" },
   { to: "/automations", icon: Zap, label: "Automatyzacje" },
   { to: "/integrations", icon: Plug2, label: "Integracje" },
   { to: "/settings", icon: Settings, label: "Ustawienia" },
