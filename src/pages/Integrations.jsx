@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import PageHeader from "../components/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -59,8 +59,26 @@ export default function Integrations() {
   const [activeTab, setActiveTab] = useState("wordpress");
   const [wpSettings, setWpSettings] = useState({ site_url: "", api_endpoint: "/wp-json/wp/v2", auth_method: "application_password", username: "", password: "", default_status: "draft", post_type: "post" });
   const [gscSettings, setGscSettings] = useState({ property_url: "", auth_method: "oauth", data_range: "28" });
+  const [settingsId, setSettingsId] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [testing, setTesting] = useState(false);
+
+  useEffect(() => {
+    base44.entities.WordPressSettings.list().then(list => {
+      if (list[0]) {
+        setSettingsId(list[0].id);
+        setWpSettings(p => ({
+          ...p,
+          site_url: list[0].site_url || "",
+          api_endpoint: list[0].api_base || "/wp-json/wp/v2",
+          username: list[0].username || "",
+          password: list[0].app_password || "",
+          default_status: list[0].default_post_status || "draft",
+        }));
+      }
+    });
+  }, []);
   const [testDialog, setTestDialog] = useState(false);
   const [testResult, setTestResult] = useState(null);
   const [testError, setTestError] = useState(null);
@@ -101,8 +119,23 @@ export default function Integrations() {
 
   const handleSave = async () => {
     setSaving(true);
-    await new Promise(r => setTimeout(r, 800));
+    const data = {
+      site_url: wpSettings.site_url,
+      api_base: wpSettings.api_endpoint,
+      username: wpSettings.username,
+      app_password: wpSettings.password,
+      default_post_status: wpSettings.default_status,
+      default_page_status: wpSettings.default_status,
+    };
+    if (settingsId) {
+      await base44.entities.WordPressSettings.update(settingsId, data);
+    } else {
+      const rec = await base44.entities.WordPressSettings.create(data);
+      setSettingsId(rec.id);
+    }
     setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
   };
 
   return (
@@ -193,7 +226,7 @@ export default function Integrations() {
               {testing && <Loader2 className="h-3 w-3 animate-spin" />}
               {testing ? "Testuję połączenie…" : "Test Connection"}
             </Button>
-            <Button size="sm" onClick={handleSave} disabled={saving} className="text-xs">{saving ? "Saving…" : "Save Settings"}</Button>
+            <Button size="sm" onClick={handleSave} disabled={saving} className={`text-xs ${saved ? "bg-emerald-600 hover:bg-emerald-700" : ""}`}>{saving ? "Zapisuję…" : saved ? "✓ Zapisano" : "Save Settings"}</Button>
           </div>
 
           <Dialog open={testDialog} onOpenChange={setTestDialog}>
