@@ -13,6 +13,7 @@ import ClusterDetail from './pages/ClusterDetail';
 import PagesModule from './pages/PagesModule';
 import PageDetail from './pages/PageDetail';
 import BriefBuilder from './pages/BriefBuilder';
+import BriefDetail from './pages/BriefDetail';
 import InternalLinks from './pages/InternalLinks';
 import PublishingQueue from './pages/PublishingQueue';
 import SettingsPage from './pages/SettingsPage';
@@ -51,6 +52,7 @@ const AuthenticatedApp = () => {
         <Route path="/pages" element={<PagesModule />} />
         <Route path="/pages/:id" element={<PageDetail />} />
         <Route path="/brief-builder" element={<BriefBuilder />} />
+        <Route path="/brief-builder/:id" element={<BriefDetail />} />
         <Route path="/internal-links" element={<InternalLinks />} />
         <Route path="/publishing-queue" element={<PublishingQueue />} />
         <Route path="/settings" element={<SettingsPage />} />

@@ -1,0 +1,206 @@
+{
+  "name": "Briefs",
+  "type": "object",
+  "properties": {
+    "content_idea_id": {
+      "type": "string",
+      "title": "Content Idea ID"
+    },
+    "brief_title": {
+      "type": "string",
+      "title": "Brief Title"
+    },
+    "page_type": {
+      "type": "string",
+      "title": "Page Type",
+      "enum": [
+        "informational_blog",
+        "service_support",
+        "pillar_page",
+        "faq_page",
+        "comparison_page",
+        "landing_page",
+        "commercial_investigation"
+      ]
+    },
+    "language": {
+      "type": "string",
+      "title": "Language",
+      "enum": [
+        "en",
+        "pl",
+        "es",
+        "fr"
+      ]
+    },
+    "audience": {
+      "type": "string",
+      "title": "Audience",
+      "enum": [
+        "children",
+        "adults",
+        "parents",
+        "all"
+      ]
+    },
+    "cluster_id": {
+      "type": "string",
+      "title": "Cluster ID"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "draft",
+        "ready",
+        "in_review",
+        "approved",
+        "archived"
+      ]
+    },
+    "target_word_count": {
+      "type": "number",
+      "title": "Target Word Count"
+    },
+    "primary_keyword": {
+      "type": "string",
+      "title": "Primary Keyword"
+    },
+    "secondary_keywords": {
+      "type": "array",
+      "title": "Secondary Keywords",
+      "items": {
+        "type": "string"
+      }
+    },
+    "semantic_keywords": {
+      "type": "array",
+      "title": "Semantic Keywords",
+      "items": {
+        "type": "string"
+      }
+    },
+    "search_intent_summary": {
+      "type": "string",
+      "title": "Search Intent Summary"
+    },
+    "audience_summary": {
+      "type": "string",
+      "title": "Audience Profile"
+    },
+    "business_goal": {
+      "type": "string",
+      "title": "Business Goal"
+    },
+    "cta_goal": {
+      "type": "string",
+      "title": "CTA Goal"
+    },
+    "funnel_stage": {
+      "type": "string",
+      "title": "Funnel Stage",
+      "enum": [
+        "awareness",
+        "consideration",
+        "decision",
+        "retention"
+      ]
+    },
+    "h1": {
+      "type": "string",
+      "title": "Recommended H1"
+    },
+    "h2_structure_json": {
+      "type": "string",
+      "title": "H2 Structure (JSON)"
+    },
+    "faq_json": {
+      "type": "string",
+      "title": "FAQ Section (JSON)"
+    },
+    "schema_type": {
+      "type": "string",
+      "title": "Recommended Schema Type"
+    },
+    "internal_links_json": {
+      "type": "string",
+      "title": "Internal Links (JSON)"
+    },
+    "anchor_suggestions_json": {
+      "type": "string",
+      "title": "Anchor Text Suggestions (JSON)"
+    },
+    "meta_title": {
+      "type": "string",
+      "title": "Meta Title"
+    },
+    "meta_description": {
+      "type": "string",
+      "title": "Meta Description"
+    },
+    "slug": {
+      "type": "string",
+      "title": "Suggested Slug"
+    },
+    "tone_notes": {
+      "type": "string",
+      "title": "Tone & Voice Guidance"
+    },
+    "eeat_notes": {
+      "type": "string",
+      "title": "E-E-A-T Guidance"
+    },
+    "objection_handling": {
+      "type": "string",
+      "title": "Objection Handling Notes"
+    },
+    "trust_blocks": {
+      "type": "string",
+      "title": "Trust-Building Blocks"
+    },
+    "comparison_blocks": {
+      "type": "string",
+      "title": "Comparison Block Suggestions"
+    },
+    "who_for": {
+      "type": "string",
+      "title": "Who This Is For"
+    },
+    "who_not_for": {
+      "type": "string",
+      "title": "Who This Is Not For"
+    },
+    "mistakes_to_avoid": {
+      "type": "string",
+      "title": "Mistakes to Avoid Section"
+    },
+    "mid_cta": {
+      "type": "string",
+      "title": "Mid-Content CTA"
+    },
+    "bottom_cta": {
+      "type": "string",
+      "title": "Bottom CTA"
+    },
+    "editor_notes": {
+      "type": "string",
+      "title": "Notes for Editor"
+    },
+    "qa_notes": {
+      "type": "string",
+      "title": "QA / Final Checklist Notes"
+    },
+    "completeness_score": {
+      "type": "number",
+      "title": "Completeness Score",
+      "minimum": 0,
+      "maximum": 100
+    }
+  },
+  "required": [
+    "brief_title",
+    "page_type",
+    "language",
+    "status"
+  ]
+}
