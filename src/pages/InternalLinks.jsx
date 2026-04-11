@@ -4,7 +4,8 @@ import PageHeader from "../components/PageHeader";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, X, Link2, AlertTriangle, TrendingUp, ExternalLink } from "lucide-react";
+import { Search, X, Link2, AlertTriangle, TrendingUp, ExternalLink, CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import StatusBadge from "../components/StatusBadge";
 import ScoreBadge from "../components/ScoreBadge";
@@ -39,6 +40,7 @@ export default function InternalLinks() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({});
   const [updating, setUpdating] = useState(null);
+  const [injectResult, setInjectResult] = useState(null); // { success, message, error, manual, wp_edit_url, wp_url }
 
   useEffect(() => {
     Promise.all([
@@ -77,6 +79,40 @@ export default function InternalLinks() {
     setUpdating(null);
   };
 
+  const handleMarkDone = async (s, src, tgt) => {
+    setUpdating(s.id);
+    const sourceSlug = src?.slug || src?.url || "";
+    const targetUrl = tgt?.url
+      ? (tgt.url.startsWith("http") ? tgt.url : `https://linguatoons.com${tgt.url}`)
+      : "";
+
+    if (!sourceSlug || !targetUrl) {
+      // No WP data — just mark done locally
+      await updateStatus(s.id, "implemented");
+      setInjectResult({ success: true, message: "Oznaczono jako wykonane (brak danych URL do automatycznej iniekcji).", manual: true });
+      setUpdating(null);
+      return;
+    }
+
+    try {
+      const res = await base44.functions.invoke("wordpressInjectLink", {
+        source_slug: sourceSlug,
+        target_url: targetUrl,
+        anchor_text: s.anchor_text,
+        context_note: s.context_note || "",
+      });
+      const data = res.data || res;
+      if (data.success) {
+        await base44.entities.InternalLinkSuggestions.update(s.id, { status: "implemented" });
+        setSuggestions(prev => prev.map(x => x.id === s.id ? { ...x, status: "implemented" } : x));
+      }
+      setInjectResult(data);
+    } catch (err) {
+      setInjectResult({ success: false, error: err.message, manual: true });
+    }
+    setUpdating(null);
+  };
+
   const hasActive = search || Object.values(filters).some(v => v && v !== "all");
 
   if (loading) return (
@@ -89,8 +125,8 @@ export default function InternalLinks() {
     <div className="p-4 lg:p-6 max-w-[1200px] mx-auto">
       <PageHeader title="Internal Linking Engine" description="Sugestie linkowania wewnętrznego — zmiany musisz wdrożyć ręcznie w WordPress" />
 
-      <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-2.5 mb-4 text-[11px] text-blue-800">
-        <strong>Ważne:</strong> &quot;Mark Done&quot; zmienia tylko status w tym systemie — <strong>nie dodaje automatycznie linków na stronie WordPress</strong>. Po zatwierdzeniu musisz ręcznie wkleić link do treści w edytorze WordPress, a następnie oznaczyć jako wykonane.
+      <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-2.5 mb-4 text-[11px] text-emerald-800">
+        <strong>✓ Auto-inject:</strong> &quot;Mark Done&quot; próbuje automatycznie wstawić link w WordPress. Jeśli frazy nie znajdzie — pokaże instrukcję ręczną. — <strong>nie dodaje automatycznie linków na stronie WordPress</strong>. Po zatwierdzeniu musisz ręcznie wkleić link do treści w edytorze WordPress, a następnie oznaczyć jako wykonane.
       </div>
 
       {/* Stats */}
@@ -228,7 +264,7 @@ export default function InternalLinks() {
                     <td className="px-4 py-2.5">
                       {s.status === "pending" && (
                         <button
-                          onClick={() => updateStatus(s.id, "implemented")}
+                          onClick={() => handleMarkDone(s, src, tgt)}
                           disabled={updating === s.id}
                           className="text-[10px] text-emerald-600 hover:underline whitespace-nowrap disabled:opacity-50"
                         >
@@ -241,6 +277,46 @@ export default function InternalLinks() {
               })}
             </tbody>
           </table>
+      <Dialog open={!!injectResult} onOpenChange={() => setInjectResult(null)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-sm">
+              {injectResult?.success
+                ? <><CheckCircle2 className="h-4 w-4 text-emerald-500" /> Link wstawiony!</>
+                : <><XCircle className="h-4 w-4 text-red-500" /> Nie udało się auto-inject</>
+              }
+            </DialogTitle>
+          </DialogHeader>
+          <div className="text-xs space-y-2">
+            {injectResult?.success && (
+              <p className="text-emerald-700">{injectResult.message}</p>
+            )}
+            {injectResult?.wp_url && (
+              <a href={injectResult.wp_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-primary hover:underline">
+                Zobacz stronę <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
+            {!injectResult?.success && (
+              <>
+                <p className="text-red-700">{injectResult?.error}</p>
+                {injectResult?.manual && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-2 text-amber-800">
+                    <p className="font-semibold mb-1">Wstaw ręcznie:</p>
+                    <p>Anchor: <span className="font-mono bg-white px-1 rounded">{injectResult?.anchor_text}</span></p>
+                    {injectResult?.wp_edit_url && (
+                      <a href={injectResult.wp_edit_url} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-primary hover:underline mt-1">
+                        Otwórz edytor WP <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
           {filtered.length === 0 && (
             <div className="py-12 text-center">
               <Link2 className="h-6 w-6 text-muted-foreground mx-auto mb-2 opacity-40" />
