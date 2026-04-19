@@ -2,7 +2,9 @@ import { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import ScoreBadge from "../ScoreBadge";
 import { Button } from "@/components/ui/button";
-import { Zap, Hand, CheckCircle2, XCircle, RefreshCw, Wand2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Zap, Hand, CheckCircle2, XCircle, Wand2, Bot, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const PLATFORM_LABELS = {
@@ -32,6 +34,22 @@ const STATUS_LABELS = {
 export default function BacklinkOpportunitiesTab({ opportunities, onRefresh }) {
   const [generating, setGenerating] = useState(null);
   const [approving, setApproving] = useState(null);
+  const [scanning, setScanning] = useState(false);
+  const [scanTopic, setScanTopic] = useState("");
+  const [scanLang, setScanLang] = useState("pl");
+  const [scanCount, setScanCount] = useState("5");
+
+  const handleAIScan = async () => {
+    setScanning(true);
+    const res = await base44.functions.invoke("backlinkAgent", {
+      action: "find_opportunities",
+      language: scanLang,
+      count: parseInt(scanCount),
+      topic: scanTopic || undefined,
+    });
+    setScanning(false);
+    onRefresh();
+  };
 
   const handleApprove = async (opp) => {
     setApproving(opp.id);
@@ -92,18 +110,56 @@ Content must be human-like, educational, non-spammy, naturally mentioning Lingua
     onRefresh();
   };
 
-  if (opportunities.length === 0) {
-    return (
-      <div className="bg-card rounded-xl border border-border p-12 text-center">
-        <Zap className="h-8 w-8 text-muted-foreground mx-auto mb-3 opacity-40" />
-        <p className="text-sm font-medium text-muted-foreground">Brak okazji backlinkowych</p>
-        <p className="text-xs text-muted-foreground mt-1">Dodaj nowe okazje używając przycisku powyżej.</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
+      {/* AI Agent Scanner */}
+      <div className="bg-gradient-to-r from-primary/5 to-violet-500/5 border border-primary/20 rounded-xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Bot className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-semibold">Agent AI — Wyszukiwarka okazji backlinków</h3>
+        </div>
+        <div className="flex flex-wrap gap-2 items-end">
+          <div className="flex-1 min-w-[200px]">
+            <label className="text-[10px] text-muted-foreground block mb-1">Temat (opcjonalnie)</label>
+            <Input value={scanTopic} onChange={e => setScanTopic(e.target.value)} placeholder="np. nauka angielskiego dla dzieci" className="h-8 text-xs" />
+          </div>
+          <div>
+            <label className="text-[10px] text-muted-foreground block mb-1">Język</label>
+            <Select value={scanLang} onValueChange={setScanLang}>
+              <SelectTrigger className="h-8 w-20 text-xs"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pl">PL</SelectItem>
+                <SelectItem value="en">EN</SelectItem>
+                <SelectItem value="es">ES</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <label className="text-[10px] text-muted-foreground block mb-1">Ilość</label>
+            <Select value={scanCount} onValueChange={setScanCount}>
+              <SelectTrigger className="h-8 w-16 text-xs"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3">3</SelectItem>
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <Button size="sm" className="h-8 gap-1.5" onClick={handleAIScan} disabled={scanning}>
+            {scanning ? <><Loader2 className="h-3.5 w-3.5 animate-spin" />Szukam…</> : <><Bot className="h-3.5 w-3.5" />Znajdź okazje AI</>}
+          </Button>
+        </div>
+        <p className="text-[10px] text-muted-foreground mt-2">Agent AI wyszuka miejsca w internecie i wygeneruje gotowe teksty SEO z linkiem do linguatoons.com</p>
+      </div>
+
+      {opportunities.length === 0 ? (
+        <div className="bg-card rounded-xl border border-border p-12 text-center">
+          <Bot className="h-8 w-8 text-muted-foreground mx-auto mb-3 opacity-40" />
+          <p className="text-sm font-medium text-muted-foreground">Brak okazji backlinkowych</p>
+          <p className="text-xs text-muted-foreground mt-1">Kliknij "Znajdź okazje AI" żeby agent wyszukał miejsca i wygenerował treści.</p>
+        </div>
+      ) : (
+      <div className="space-y-2">
       {opportunities.map(opp => (
         <div key={opp.id} className="bg-card border border-border rounded-xl px-4 py-3.5 flex flex-wrap items-center gap-4">
           <div className="flex-1 min-w-0">
@@ -145,6 +201,8 @@ Content must be human-like, educational, non-spammy, naturally mentioning Lingua
           </div>
         </div>
       ))}
+      </div>
+      )}
     </div>
   );
 }

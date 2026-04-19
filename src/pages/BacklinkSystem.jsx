@@ -8,7 +8,7 @@ import BacklinkDatabase from "../components/backlinks/BacklinkDatabase";
 import BacklinkPerformance from "../components/backlinks/BacklinkPerformance";
 import NewOpportunityModal from "../components/backlinks/NewOpportunityModal";
 import { Button } from "@/components/ui/button";
-import { Plus, Lightbulb, CheckSquare, Zap, Database, BarChart3, Shield } from "lucide-react";
+import { Plus, Lightbulb, CheckSquare, Zap, Database, BarChart3, Shield, Bot, Loader2, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TABS = [
@@ -43,6 +43,18 @@ export default function BacklinkSystem() {
 
   useEffect(() => { load(); }, []);
 
+  const [dailyScan, setDailyScan] = useState(false);
+  const [scanMsg, setScanMsg] = useState(null);
+
+  const runDailyScan = async () => {
+    setDailyScan(true);
+    setScanMsg(null);
+    const res = await base44.functions.invoke("backlinkAgent", { action: "daily_scan" });
+    setScanMsg(res.data?.message || "Skan zakończony");
+    setDailyScan(false);
+    load();
+  };
+
   const approvalCount = opportunities.filter(o => o.status === "ready_for_review").length;
   const execCount = opportunities.filter(o => o.status === "scheduled" || o.status === "ready_manual").length;
 
@@ -64,10 +76,19 @@ export default function BacklinkSystem() {
           <Shield className="h-3.5 w-3.5" />
           Tryb SEO-SAFE aktywny
         </div>
+        <Button size="sm" variant="outline" className="gap-1.5" onClick={runDailyScan} disabled={dailyScan}>
+          {dailyScan ? <><Loader2 className="h-3.5 w-3.5 animate-spin" />Skanuje…</> : <><Bot className="h-3.5 w-3.5" />Skan AI</>}
+        </Button>
         <Button size="sm" className="gap-1.5" onClick={() => setShowNew(true)}>
           <Plus className="h-3.5 w-3.5" />Nowa okazja
         </Button>
       </PageHeader>
+
+      {scanMsg && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-2 mb-3 text-xs text-emerald-800 flex items-center gap-2">
+          <CheckCircle2 className="h-3.5 w-3.5" />{scanMsg}
+        </div>
+      )}
 
       {/* Safety banner */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-5 flex items-start gap-3">
