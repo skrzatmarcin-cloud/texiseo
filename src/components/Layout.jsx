@@ -8,6 +8,7 @@ import {
   Wand2, Share2, Play, Layers, Package, LogOut
 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate, Outlet, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useHub, HUBS_CONFIG } from "@/lib/HubContext";
@@ -17,7 +18,6 @@ import NativeHeader from "./mobile/NativeHeader";
 import BottomTabs from "./mobile/BottomTabs";
 import PullToRefresh from "./mobile/PullToRefresh";
 import RouteTransition from "./RouteTransition";
-import { useLocation } from "react-router-dom";
 
 function handleLogout() {
   sessionStorage.removeItem("lg_auth");
