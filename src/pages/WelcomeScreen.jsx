@@ -52,8 +52,7 @@ const HUBS = [
     glowColor: "shadow-purple-900/60",
     Icon: Globe,
     iconColor: "text-purple-200",
-    frozen: true,
-    frozenReason: "Dodaj domenę aby aktywować",
+    frozenReason: "Weryfikuj domenę aby aktywować",
     sublinks: [
       { label: "Domena", icon: Globe },
       { label: "SEO Narzędzia", icon: Sparkles },
@@ -78,7 +77,7 @@ function HubIcon({ Icon, iconColor, gradient, frozen }) {
 
 function HubCard({ hub, onSelect, user }) {
   const navigate = useNavigate();
-  const isFrozen = hub.frozen && !user?.website_url;
+  const isFrozen = hub.id === "website" && !user?.website_url;
 
   const handleClick = (e) => {
     e.stopPropagation();
