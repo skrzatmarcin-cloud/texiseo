@@ -1,0 +1,133 @@
+{
+  "name": "EnterpriseWorkspace",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "title": "Nazwa firmy"
+    },
+    "company_slug": {
+      "type": "string",
+      "title": "Slug URL"
+    },
+    "nip": {
+      "type": "string",
+      "title": "NIP"
+    },
+    "industry": {
+      "type": "string",
+      "title": "Bran\u017ca"
+    },
+    "logo_url": {
+      "type": "string",
+      "title": "Logo URL"
+    },
+    "description": {
+      "type": "string",
+      "title": "Opis firmy"
+    },
+    "website": {
+      "type": "string",
+      "title": "Strona WWW"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Telefon"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email kontaktowy"
+    },
+    "address": {
+      "type": "string",
+      "title": "Adres"
+    },
+    "city": {
+      "type": "string",
+      "title": "Miasto"
+    },
+    "postal_code": {
+      "type": "string",
+      "title": "Kod pocztowy"
+    },
+    "workspace_owner_email": {
+      "type": "string",
+      "title": "Email w\u0142a\u015bciciela workspace"
+    },
+    "subscription_plan": {
+      "type": "string",
+      "title": "Plan subskrypcji",
+      "enum": [
+        "starter",
+        "professional",
+        "enterprise"
+      ],
+      "default": "starter"
+    },
+    "subscription_status": {
+      "type": "string",
+      "title": "Status subskrypcji",
+      "enum": [
+        "active",
+        "paused",
+        "cancelled"
+      ],
+      "default": "active"
+    },
+    "billing_status": {
+      "type": "string",
+      "title": "Status p\u0142atno\u015bci",
+      "enum": [
+        "paid",
+        "pending",
+        "overdue",
+        "failed"
+      ],
+      "default": "pending"
+    },
+    "seo_app_access": {
+      "type": "boolean",
+      "title": "Dost\u0119p do SEO App",
+      "default": true
+    },
+    "wordpress_connected": {
+      "type": "boolean",
+      "title": "WordPress pod\u0142\u0105czony",
+      "default": false
+    },
+    "wordpress_url": {
+      "type": "string",
+      "title": "URL WordPress"
+    },
+    "directory_listed": {
+      "type": "boolean",
+      "title": "Na li\u015bcie katalog\u00f3w",
+      "default": true
+    },
+    "directory_featured": {
+      "type": "boolean",
+      "title": "Wyr\u00f3\u017cniona na li\u015bcie",
+      "default": false
+    },
+    "team_members": {
+      "type": "number",
+      "title": "Liczba cz\u0142onk\u00f3w zespo\u0142u",
+      "default": 1
+    },
+    "status": {
+      "type": "string",
+      "title": "Status workspace",
+      "enum": [
+        "active",
+        "suspended",
+        "archived"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "company_name",
+    "workspace_owner_email",
+    "subscription_status"
+  ]
+}

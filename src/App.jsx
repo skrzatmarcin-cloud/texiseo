@@ -45,6 +45,9 @@ import SelfPromotionHub from './pages/SelfPromotionHub';
 import TexiSEOAdmin from './pages/TexiSEOAdmin';
 import AppReportGenerator from './pages/AppReportGenerator';
 import LinguaToonAdmin from './pages/LinguaToonAdmin';
+import EnterpriseWorkspaceDetail from './pages/EnterpriseWorkspaceDetail';
+import TeacherMarketplace from './pages/TeacherMarketplace';
+import PayoutsDashboard from './pages/PayoutsDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -108,6 +111,9 @@ const AuthenticatedApp = () => {
           <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
           <Route path="/app-report" element={<AppReportGenerator />} />
           <Route path="/linguatoons-admin" element={<LinguaToonAdmin />} />
+          <Route path="/enterprise/:workspaceId" element={<EnterpriseWorkspaceDetail />} />
+          <Route path="/marketplace" element={<TeacherMarketplace />} />
+          <Route path="/payouts" element={<PayoutsDashboard />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
@@ -159,6 +165,9 @@ const AuthenticatedApp = () => {
         <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
         <Route path="/app-report" element={<AppReportGenerator />} />
         <Route path="/linguatoons-admin" element={<LinguaToonAdmin />} />
+        <Route path="/enterprise/:workspaceId" element={<EnterpriseWorkspaceDetail />} />
+        <Route path="/marketplace" element={<TeacherMarketplace />} />
+        <Route path="/payouts" element={<PayoutsDashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>

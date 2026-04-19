@@ -7,7 +7,7 @@ import {
   TrendingUp, Network, FileText, Link2, BookOpen, Play,
   ShieldCheck, Globe, Zap, Users, Layers, Sparkles,
   Video, CreditCard, MessageSquare, Calendar, Settings, Plug2,
-  Megaphone, Brain, Crown
+  Megaphone, Brain, Crown, DollarSign
 } from "lucide-react";
 
 const HUBS = [
@@ -72,9 +72,9 @@ const HUBS = [
     iconColor: "text-purple-200",
     sublinks: [
       { label: "Dashboard", to: "/linguatoons-admin", icon: BarChart3 },
-      { label: "Nauczyciele", to: "/linguatoons-admin", icon: Users },
-      { label: "Lekcje", to: "/linguatoons-admin", icon: Calendar },
-      { label: "Płatności", to: "/linguatoons-admin", icon: CreditCard },
+      { label: "Marketplace", to: "/marketplace", icon: BookOpen },
+      { label: "Payouts", to: "/payouts", icon: CreditCard },
+      { label: "Settings", to: "/linguatoons-admin", icon: Settings },
     ],
   },
   {

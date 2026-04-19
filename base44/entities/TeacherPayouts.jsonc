@@ -1,0 +1,94 @@
+{
+  "name": "TeacherPayouts",
+  "type": "object",
+  "properties": {
+    "teacher_id": {
+      "type": "string",
+      "title": "ID nauczyciela"
+    },
+    "teacher_email": {
+      "type": "string",
+      "title": "Email nauczyciela"
+    },
+    "period_start": {
+      "type": "string",
+      "title": "Pocz\u0105tek okresu",
+      "format": "date"
+    },
+    "period_end": {
+      "type": "string",
+      "title": "Koniec okresu",
+      "format": "date"
+    },
+    "lessons_total": {
+      "type": "number",
+      "title": "Lekcji razem"
+    },
+    "courses_sold": {
+      "type": "number",
+      "title": "Sprzedanych kurs\u00f3w"
+    },
+    "gross_amount": {
+      "type": "number",
+      "title": "Kwota brutto (PLN)"
+    },
+    "platform_commission_percent": {
+      "type": "number",
+      "title": "Prowizja platformy %",
+      "default": 20
+    },
+    "platform_commission_amount": {
+      "type": "number",
+      "title": "Kwota prowizji (PLN)"
+    },
+    "net_amount": {
+      "type": "number",
+      "title": "Kwota netto (PLN)"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "approved",
+        "processing",
+        "paid",
+        "rejected"
+      ],
+      "default": "pending"
+    },
+    "payment_method": {
+      "type": "string",
+      "title": "Metoda p\u0142atno\u015bci",
+      "enum": [
+        "bank_transfer",
+        "stripe",
+        "paypal",
+        "pending"
+      ]
+    },
+    "bank_account": {
+      "type": "string",
+      "title": "Rachunek bankowy (encrypted)"
+    },
+    "paid_date": {
+      "type": "string",
+      "title": "Data wyp\u0142aty",
+      "format": "date"
+    },
+    "transaction_id": {
+      "type": "string",
+      "title": "ID transakcji"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    }
+  },
+  "required": [
+    "teacher_id",
+    "period_start",
+    "period_end",
+    "status"
+  ]
+}
