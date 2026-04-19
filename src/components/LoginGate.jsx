@@ -166,8 +166,13 @@ function LoginGateInner({ children }) {
     if (isCorrect) {
       clearFails(ip);
       sessionStorage.setItem("lg_auth", "1");
-      if (isAdmin) sessionStorage.setItem("lg_is_admin", "1");
-      else sessionStorage.removeItem("lg_is_admin");
+      if (isAdmin) {
+        sessionStorage.setItem("lg_is_admin", "1");
+        console.log("✅ ADMIN MODE ENABLED — lg_is_admin = 1");
+      } else {
+        sessionStorage.removeItem("lg_is_admin");
+        console.log("👤 USER MODE");
+      }
 
       base44.entities.LoginAttempts.create({
         ip_address: ip,
