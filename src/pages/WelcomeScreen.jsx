@@ -73,6 +73,7 @@ const HUBS = [
     sublinks: [
       { label: "Admin Panel", to: "/linguatoons-admin", icon: BarChart3 },
       { label: "SEO Tools", to: "/content-ideas", icon: Sparkles },
+      { label: "Analityka", to: "/analytics", icon: BarChart3 },
       { label: "SEO Autopromocja", to: "/self-promotion", icon: Megaphone },
       { label: "TexiSEO Admin", to: "/texiseo-admin", icon: Crown },
     ],
@@ -93,22 +94,7 @@ const HUBS = [
       { label: "Rozliczenia", to: "/teachers", icon: CreditCard },
     ],
   },
-  {
-    id: "analytics",
-    label: "Analityka",
-    sublabel: "Analytics",
-    to: "/analytics",
-    gradient: "from-blue-500 to-cyan-700",
-    glowColor: "shadow-cyan-900/60",
-    Icon: BarChart3,
-    iconColor: "text-cyan-200",
-    sublinks: [
-      { label: "Analytics", to: "/analytics", icon: BarChart3 },
-      { label: "Content En...", to: "/content-engine", icon: Sparkles },
-      { label: "Social Media", to: "/social-media", icon: MessageSquare },
-      { label: "Exec. Center", to: "/execution-center", icon: Play },
-    ],
-  },
+
   {
     id: "business",
     label: "Business Hub",
