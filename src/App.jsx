@@ -174,12 +174,7 @@ const AuthenticatedApp = () => {
         <Route path="/client-seo/:websiteId" element={<ClientSEODashboard />} />
         <Route path="/business" element={<BusinessHub />} />
         <Route path="/self-promotion" element={<SelfPromotionHub />} />
-        <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
-        <Route path="/app-report" element={<AppReportGenerator />} />
-        <Route path="/linguatoons-admin" element={<LinguaToonAdmin />} />
-        <Route path="/enterprise/:workspaceId" element={<EnterpriseWorkspaceDetail />} />
         <Route path="/marketplace" element={<TeacherMarketplace />} />
-        <Route path="/payouts" element={<PayoutsDashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
