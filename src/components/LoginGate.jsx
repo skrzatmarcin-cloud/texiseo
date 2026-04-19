@@ -5,7 +5,6 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "@/lib/LanguageContext";
 import SecurityScanAnimation from "./SecurityScanAnimation";
 
-const CREDENTIALS      = { username: "DemoUser",    password: "Demo2026!" };
 const ADMIN_CREDENTIALS = { username: "Marcin",      password: "Marcinek2026!" };
 const ADMIN_EMAIL       = "skrzatmarcin@gmail.com";
 const MAX_FAILS         = 3;
@@ -155,8 +154,7 @@ function LoginGateInner({ children }) {
     }
 
     const isCorrect =
-      (username === CREDENTIALS.username      && password === CREDENTIALS.password) ||
-      (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password);
+      username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
 
     const isAdmin =
       username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
@@ -235,7 +233,7 @@ function LoginGateInner({ children }) {
     await base44.integrations.Core.SendEmail({
       to: ADMIN_EMAIL,
       subject: "Reset hasła — TexiSEO AI & Enterprise",
-      body: `Cześć Marcin!\n\nOtrzymaliśmy prośbę o reset hasła.\n\nDane logowania:\n• Użytkownik: Marcin\n• Hasło: Marcinek2026!\n\n---\nTexiSEO System`,
+      body: `Cześć!\n\nOtrzymaliśmy prośbę o reset hasła.\n\nLink do resetowania hasła zostanie wysłany na tę skrzynkę pocztową.\n\n---\nTexiSEO System`,
     });
     setEmailLoading(false);
     setResetSent(true);
