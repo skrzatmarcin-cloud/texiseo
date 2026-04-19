@@ -64,17 +64,17 @@ const HUBS = [
   {
     id: "linguatoons",
     label: "🎓 LinguaToons.com",
-    sublabel: "Admin Panel",
+    sublabel: "Website & Admin",
     to: "/linguatoons-admin",
     gradient: "from-purple-600 to-pink-700",
     glowColor: "shadow-purple-900/60",
     Icon: GraduationCap,
     iconColor: "text-purple-200",
     sublinks: [
-      { label: "Dashboard", to: "/linguatoons-admin", icon: BarChart3 },
-      { label: "Marketplace", to: "/marketplace", icon: BookOpen },
-      { label: "Payouts", to: "/payouts", icon: CreditCard },
-      { label: "Settings", to: "/linguatoons-admin", icon: Settings },
+      { label: "Admin Panel", to: "/linguatoons-admin", icon: BarChart3 },
+      { label: "SEO Tools", to: "/content-ideas", icon: Sparkles },
+      { label: "SEO Autopromocja", to: "/self-promotion", icon: Megaphone },
+      { label: "TexiSEO Admin", to: "/texiseo-admin", icon: Crown },
     ],
   },
   {
@@ -125,38 +125,7 @@ const HUBS = [
       { label: "Dostawcy", to: "/business", icon: Users },
     ],
   },
-  {
-    id: "self_promotion",
-    label: "SEO Autopromocja",
-    sublabel: "TexiSEO.ai · LinguaTons",
-    to: "/self-promotion",
-    gradient: "from-violet-700 to-purple-900",
-    glowColor: "shadow-violet-900/60",
-    Icon: Megaphone,
-    iconColor: "text-violet-200",
-    sublinks: [
-      { label: "Generator treści", to: "/self-promotion", icon: Sparkles },
-      { label: "Analiza konkurencji", to: "/self-promotion", icon: TrendingUp },
-      { label: "Mapa słów klucz.", to: "/self-promotion", icon: Search },
-      { label: "Agent SEO AI", to: "/self-promotion", icon: Brain },
-    ],
-  },
-  {
-    id: "texiseo_admin",
-    label: "TexiSEO Admin",
-    sublabel: "Panel Administratora",
-    to: "/texiseo-admin",
-    gradient: "from-slate-900 to-slate-700",
-    glowColor: "shadow-slate-900/80",
-    Icon: Crown,
-    iconColor: "text-yellow-300",
-    sublinks: [
-      { label: "Dashboard", to: "/texiseo-admin", icon: BarChart3 },
-      { label: "Zgłoszenia", to: "/texiseo-admin", icon: MessageSquare },
-      { label: "Użytkownicy", to: "/texiseo-admin", icon: Users },
-      { label: "Płatności", to: "/texiseo-admin", icon: CreditCard },
-    ],
-  },
+
 ];
 
 function HubIcon({ Icon, iconColor, gradient }) {
