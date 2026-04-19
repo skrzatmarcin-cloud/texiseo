@@ -385,30 +385,36 @@ function LoginGateInner({ children }) {
                 </div>
               </>
             ) : mode === "demo-select" ? (
-              /* DEMO SELECTION */
-              <>
-                <h2 className="text-lg font-semibold text-white mb-2">🎬 Wybierz tryb demo</h2>
-                <p className="text-xs text-slate-400 mb-6">Jaki rodzaj konta chcesz zobaczyć w akcji?</p>
-                <div className="space-y-3">
-                  <button
-                    onClick={() => handleDemoSelect("teacher")}
-                    className="w-full p-4 rounded-xl border-2 border-blue-400/30 bg-blue-500/10 hover:bg-blue-500/20 text-left transition-all">
-                    <p className="font-semibold text-blue-200 text-sm">👨‍🏫 Demo Nauczyciel</p>
-                    <p className="text-xs text-blue-300/70 mt-1">Dashboard nauczycielski — kursy, lekcje, zarobki</p>
-                  </button>
-                  <button
-                    onClick={() => handleDemoSelect("student")}
-                    className="w-full p-4 rounded-xl border-2 border-emerald-400/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-left transition-all">
-                    <p className="font-semibold text-emerald-200 text-sm">👨‍🎓 Demo Student</p>
-                    <p className="text-xs text-emerald-300/70 mt-1">Szukaj nauczycieli, zapisz się na kursy, śledź postęp</p>
-                  </button>
-                  <button
-                    onClick={() => handleDemoSelect("business")}
-                    className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
-                    <p className="font-semibold text-purple-200 text-sm">🏢 Demo Enterprise</p>
-                    <p className="text-xs text-purple-300/70 mt-1">Panel zarządzania firmą, magazyn, katalog biznesu</p>
-                  </button>
-                </div>
+               /* DEMO SELECTION */
+               <>
+                 <h2 className="text-lg font-semibold text-white mb-2">🎬 Wybierz tryb demo</h2>
+                 <p className="text-xs text-slate-400 mb-6">Jaki rodzaj konta chcesz zobaczyć w akcji?</p>
+                 <div className="space-y-3">
+                   <button
+                     onClick={() => handleDemoSelect("teacher")}
+                     className="w-full p-4 rounded-xl border-2 border-blue-400/30 bg-blue-500/10 hover:bg-blue-500/20 text-left transition-all">
+                     <p className="font-semibold text-blue-200 text-sm">👨‍🏫 Demo Nauczyciel</p>
+                     <p className="text-xs text-blue-300/70 mt-1">Kursy, lekcje, testy & quizy, zarobki</p>
+                   </button>
+                   <button
+                     onClick={() => handleDemoSelect("student")}
+                     className="w-full p-4 rounded-xl border-2 border-emerald-400/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-left transition-all">
+                     <p className="font-semibold text-emerald-200 text-sm">👨‍🎓 Demo Student</p>
+                     <p className="text-xs text-emerald-300/70 mt-1">Szukaj nauczycieli, zapisz się na kursy, śledź postęp</p>
+                   </button>
+                   <button
+                     onClick={() => handleDemoSelect("business")}
+                     className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
+                     <p className="font-semibold text-purple-200 text-sm">🏢 Demo Business</p>
+                     <p className="text-xs text-purple-300/70 mt-1">CRM, WMS — zarządzanie firmą i magazynem</p>
+                   </button>
+                   <button
+                     onClick={() => handleDemoSelect("enterprise")}
+                     className="w-full p-4 rounded-xl border-2 border-orange-400/30 bg-orange-500/10 hover:bg-orange-500/20 text-left transition-all">
+                     <p className="font-semibold text-orange-200 text-sm">🏛️ Demo Enterprise</p>
+                     <p className="text-xs text-orange-300/70 mt-1">Multi-workspace — CRM, WMS, moduły enterprise</p>
+                   </button>
+                 </div>
                 <div className="mt-4 text-center">
                   <button onClick={() => { setMode("login"); setError(""); }}
                     className="text-xs text-slate-400 hover:text-white transition-colors">
