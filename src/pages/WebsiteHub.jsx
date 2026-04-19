@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   Globe, Settings, Home, BookOpen, BarChart3, Sparkles, 
   Lightbulb, CalendarClock, AlertCircle, CheckCircle2, 
-  Loader2, LogOut
+  Loader2, LogOut, ChevronRight
 } from "lucide-react";
 
 const TABS = [
@@ -145,10 +145,38 @@ function SEOToolsLockedPlaceholder() {
   );
 }
 
+const MENU_ITEMS = [
+  { id: "overview", label: "Moja Domena", icon: Globe, submenu: [] },
+  { 
+    id: "seo", 
+    label: "SEO Narzędzia", 
+    icon: Sparkles,
+    submenu: [
+      { id: "content-ideas", label: "Content Ideas" },
+      { id: "clusters", label: "Klastry" },
+      { id: "pages", label: "Strony" },
+      { id: "brief-builder", label: "Briefs" },
+      { id: "content-engine", label: "Content Engine" },
+      { id: "internal-links", label: "Linki wewnętrzne" },
+      { id: "faq-schema", label: "FAQ Schema" },
+      { id: "refresh-center", label: "Refresh Center" },
+      { id: "seo-qa", label: "SEO QA" },
+      { id: "analytics", label: "Analytics" },
+      { id: "competitors", label: "Konkurenci" },
+      { id: "seo-autopilot", label: "SEO Autopilot" },
+      { id: "backlinks", label: "Backlinki" },
+      { id: "execution-center", label: "Execution" },
+      { id: "publishing-queue", label: "Publishing" },
+      { id: "wordpress", label: "WordPress" },
+    ]
+  },
+];
+
 export default function WebsiteHub() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
+  const [expandedMenu, setExpandedMenu] = useState(null);
   const [loading, setLoading] = useState(true);
   const [verificationInProgress, setVerificationInProgress] = useState(false);
 
@@ -196,24 +224,52 @@ export default function WebsiteHub() {
           </p>
         </div>
 
-        <nav className="flex-1 p-3 space-y-1">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              disabled={!isDomainVerified && tab.id !== "overview"}
-              className={cn(
-                "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed",
-                activeTab === tab.id
-                  ? isAdmin ? "bg-teal-600 text-white" : "bg-purple-600 text-white"
-                  : "text-slate-300 hover:bg-slate-800"
-              )}
-              title={isAdmin && tab.id !== "overview" ? "✓ Admin dostęp" : ""}
-            >
-              <tab.icon className="h-4 w-4" />
-              {tab.label}
-            </button>
-          ))}
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+          {MENU_ITEMS.map(item => {
+            const isExpanded = expandedMenu === item.id;
+            return (
+              <div key={item.id}>
+                <button
+                  onClick={() => {
+                    if (item.submenu.length > 0) {
+                      setExpandedMenu(isExpanded ? null : item.id);
+                    } else {
+                      setActiveTab(item.id);
+                    }
+                  }}
+                  disabled={!isDomainVerified && item.id !== "overview"}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed",
+                    activeTab === item.id
+                      ? isAdmin ? "bg-teal-600 text-white" : "bg-purple-600 text-white"
+                      : "text-slate-300 hover:bg-slate-800"
+                  )}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
+                  {item.submenu.length > 0 && (
+                    <ChevronRight className={cn("h-4 w-4 ml-auto transition-transform", isExpanded && "rotate-90")} />
+                  )}
+                </button>
+                
+                {/* Submenu */}
+                {isExpanded && item.submenu.length > 0 && (
+                  <div className="mt-1 ml-3 pl-3 border-l border-slate-700 space-y-0.5">
+                    {item.submenu.map(sub => (
+                      <a
+                        key={sub.id}
+                        href={`/${sub.id}`}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                      >
+                        <span className="h-1 w-1 rounded-full bg-slate-500" />
+                        {sub.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </nav>
 
         <div className="p-3 space-y-2 border-t border-slate-800">
@@ -241,9 +297,6 @@ export default function WebsiteHub() {
           <h1 className="text-2xl font-bold">
             {activeTab === "overview" && "🌐 Moja Domena"}
             {activeTab === "seo" && "✨ SEO Narzędzia"}
-            {activeTab === "content" && "💡 Pomysły treści"}
-            {activeTab === "publishing" && "📅 Publikacje"}
-            {activeTab === "analytics" && "📊 Analityka"}
           </h1>
           {isDomainVerified && (
             <div className="flex items-center gap-2 text-xs bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 px-3 py-1.5 rounded-full">
