@@ -509,6 +509,29 @@ function TexiSEOAdminInner() {
               </div>
             </div>
 
+            {/* Business AI Agent */}
+            <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-6 text-white">
+              <div className="flex items-start gap-4">
+                <div className="h-14 w-14 bg-white/20 rounded-2xl flex items-center justify-center">
+                  <span className="text-2xl">🤖</span>
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-bold mb-1">Enterprise Business Agent</h3>
+                  <p className="text-emerald-100/90 text-sm mb-3">
+                    AI asystent do zarządzania bazą danych klientów, produktami, rozliczeniami i katalogiem firmy
+                  </p>
+                  <a
+                    href={base44.agents.getWhatsAppConnectURL("enterprise_business_agent")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white font-bold px-4 py-2 rounded-xl transition-all text-sm"
+                  >
+                    <span>💬</span> Otwórz Business Agent na WhatsApp
+                  </a>
+                </div>
+              </div>
+            </div>
+
             {/* All Admin Features for Superadmin */}
             <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-6">
               <div className="flex items-start gap-3">
