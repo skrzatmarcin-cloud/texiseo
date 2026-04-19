@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Building2, Users, Settings, BarChart3, Loader2, Package, Users2 } from "lucide-react";
+import { Building2, Users, Settings, BarChart3, Loader2, Package, Users2, Layers } from "lucide-react";
 
 export default function EnterpriseWorkspaceDetail() {
   const { workspaceId } = useParams();
@@ -91,43 +91,100 @@ export default function EnterpriseWorkspaceDetail() {
         )}
 
         {tab === "modules" && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-bold">Dostępne moduły</h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {/* CRM Module */}
-              <div className="bg-card border border-border rounded-xl p-5 hover:shadow-lg transition-all cursor-pointer">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Users2 className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-sm">CRM</h3>
-                    <p className="text-xs text-muted-foreground">Customer Relationship</p>
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground mb-4">Zarządzaj kontaktami klientów, leady, transakcje i historię komunikacji w jednym miejscu.</p>
-                <div className="flex items-center justify-between pt-3 border-t border-border">
-                  <span className="text-xs font-semibold px-2 py-1 bg-blue-100 text-blue-700 rounded">Zainstalowany</span>
-                  <button className="text-xs text-primary hover:underline">Otwórz →</button>
-                </div>
-              </div>
+          <div className="space-y-6">
+            <h2 className="text-lg font-bold">Dostępne moduły i integracje</h2>
 
-              {/* WMS Module */}
-              <div className="bg-card border border-border rounded-xl p-5 hover:shadow-lg transition-all cursor-pointer">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="h-10 w-10 bg-amber-100 rounded-lg flex items-center justify-center">
-                    <Package className="h-5 w-5 text-amber-600" />
+            {/* CRM */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Users2 className="h-5 w-5 text-blue-600" />
+                <h3 className="font-bold">CRM — Zarządzanie relacjami z klientami</h3>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {[
+                  { name: "Salesforce Sales Cloud", status: "available", desc: "Mocny, skalowalne, automatyzacja sprzedaży" },
+                  { name: "HubSpot CRM", status: "available", desc: "Idealne dla SMB, marketing, leady, szybki start" },
+                  { name: "Microsoft Dynamics 365", status: "available", desc: "Integracja CRM + ERP, ekosystem Microsoft" }
+                ].map(sys => (
+                  <div key={sys.name} className="bg-card border border-border rounded-lg p-4 hover:shadow-md transition-all">
+                    <p className="font-semibold text-sm">{sys.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1 mb-3">{sys.desc}</p>
+                    <button className={`text-xs px-3 py-1 rounded ${sys.status === "available" ? "bg-blue-100 text-blue-700 hover:bg-blue-200" : "bg-gray-100 text-gray-500"}`}>
+                      {sys.status === "available" ? "Połącz" : "Niedostępne"}
+                    </button>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-sm">WMS</h3>
-                    <p className="text-xs text-muted-foreground">Warehouse Management</p>
+                ))}
+              </div>
+            </div>
+
+            {/* WMS */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Package className="h-5 w-5 text-amber-600" />
+                <h3 className="font-bold">WMS — Zarządzanie magazynem</h3>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {[
+                  { name: "Oracle NetSuite WMS", status: "available", desc: "WMS spięty z ERP, dla firm handlowych" },
+                  { name: "SAP Extended Warehouse (EWM)", status: "available", desc: "Mocny dla zaawansowanych operacji i logistyki" },
+                  { name: "Manhattan Active WMS", status: "available", desc: "Enterprise-grade, automatyzacja, zaawansowane hale" }
+                ].map(sys => (
+                  <div key={sys.name} className="bg-card border border-border rounded-lg p-4 hover:shadow-md transition-all">
+                    <p className="font-semibold text-sm">{sys.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1 mb-3">{sys.desc}</p>
+                    <button className={`text-xs px-3 py-1 rounded ${sys.status === "available" ? "bg-amber-100 text-amber-700 hover:bg-amber-200" : "bg-gray-100 text-gray-500"}`}>
+                      {sys.status === "available" ? "Połącz" : "Niedostępne"}
+                    </button>
                   </div>
-                </div>
-                <p className="text-xs text-muted-foreground mb-4">System zarządzania magazynem - inwentarz, lokalizacja produktów, zamówienia i logistyka.</p>
-                <div className="flex items-center justify-between pt-3 border-t border-border">
-                  <span className="text-xs font-semibold px-2 py-1 bg-amber-100 text-amber-700 rounded">Zainstalowany</span>
-                  <button className="text-xs text-primary hover:underline">Otwórz →</button>
-                </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ERP/MRP */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Layers className="h-5 w-5 text-purple-600" />
+                <h3 className="font-bold">ERP / MRP — Planowanie zasobów i produkcji</h3>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {[
+                  { name: "Oracle NetSuite ERP", status: "available", desc: "Cloud ERP dla handlu, usług, produkcji średniej skali" },
+                  { name: "Microsoft Dynamics 365", status: "available", desc: "ERP + CRM, integracja z Office i Power BI" },
+                  { name: "Odoo MRP", status: "available", desc: "Elastyczny, tańszy, modułowy, produkcja i planowanie" },
+                  { name: "SAP ERP / Manufacturing", status: "available", desc: "Dla dużego przemysłu, pełna integracja produkcji" }
+                ].map(sys => (
+                  <div key={sys.name} className="bg-card border border-border rounded-lg p-4 hover:shadow-md transition-all">
+                    <p className="font-semibold text-sm">{sys.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1 mb-3">{sys.desc}</p>
+                    <button className={`text-xs px-3 py-1 rounded ${sys.status === "available" ? "bg-purple-100 text-purple-700 hover:bg-purple-200" : "bg-gray-100 text-gray-500"}`}>
+                      {sys.status === "available" ? "Połącz" : "Niedostępne"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* MES */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="h-5 w-5 text-green-600" />
+                <h3 className="font-bold">MES — Manufacturing Execution System</h3>
+              </div>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {[
+                  { name: "Siemens Opcenter Execution", status: "available", desc: "Silny MES, śledzenie produkcji, jakość, traceability" },
+                  { name: "Tulip MES", status: "available", desc: "Nowoczesny, low-code, szybkie wdrożenia, digitalizacja hali" },
+                  { name: "Plex Smart Manufacturing", status: "available", desc: "Cloud MES, maszyny real-time, supply chain" },
+                  { name: "AVEVA MES", status: "available", desc: "Dla przemysłu, jakość, dane czasu rzeczywistego" }
+                ].map(sys => (
+                  <div key={sys.name} className="bg-card border border-border rounded-lg p-4 hover:shadow-md transition-all">
+                    <p className="font-semibold text-sm">{sys.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1 mb-3">{sys.desc}</p>
+                    <button className={`text-xs px-3 py-1 rounded ${sys.status === "available" ? "bg-green-100 text-green-700 hover:bg-green-200" : "bg-gray-100 text-gray-500"}`}>
+                      {sys.status === "available" ? "Połącz" : "Niedostępne"}
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
