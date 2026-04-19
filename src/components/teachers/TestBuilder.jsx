@@ -3,7 +3,8 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import {
   Plus, Wand2, Upload, Link2, BarChart3, Eye, Copy,
-  Edit, Trash2, AlertCircle, Loader2, CheckCircle2, X, Play
+  Edit, Trash2, AlertCircle, Loader2, CheckCircle2, X, Play,
+  Clock, Users, Mail, Share2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,47 +22,74 @@ export default function TestBuilder() {
     setCurrentTest({
       title: "",
       description: "",
-      type: "quiz", // quiz, game, exam, schema
+      type: "quiz",
+      timeLimit: 30, // minuty
+      topics: [], // zagadnienia
+      questionTypes: ["multiple-choice"], // typy pytań
       questions: [],
-      students: [],
-      shareLink: null
+      assignedStudents: [],
+      shareLink: null,
+      allowAnonymous: true
     });
     setView("create");
   };
 
-  const handleGenerateQuestions = async (count = 10, topic = "current content") => {
+  const handleGenerateQuestions = async (count = 10) => {
+    if (currentTest?.topics?.length === 0) {
+      alert("Wybierz zagadnienia przed generowaniem pytań");
+      return;
+    }
+
     setLoading(true);
     try {
+      const typePrompts = {
+        "multiple-choice": "wielokrotnym wyborem (A, B, C, D)",
+        "matching": "dopasowywanie (połącz kolumny)",
+        "word-drop": "wstawianie wyrazów na czas",
+        "true-false": "prawda/fałsz"
+      };
+
+      const selectedTypes = currentTest?.questionTypes || ["multiple-choice"];
+      const typeDescription = selectedTypes.map(t => typePrompts[t]).join(", ");
+
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `Wygeneruj ${count} pytań testowych z wielokrotnym wyborem dla nauczyciela języków.
-        Temat: ${topic}
-        Format JSON: { "questions": [{ "text": "pytanie?", "options": ["A", "B", "C", "D"], "correct": 0, "explanation": "wyjaśnienie" }]}`,
+        prompt: `Wygeneruj ${count} pytań do testu języka obcego.
+        
+Zagadnienia: ${currentTest?.topics?.join(", ")}
+Typy pytań: ${typeDescription}
+Poziom: uniwersytecki - wąski zakres
+Język odpowiedzi: polski
+
+Dla każdego pytania określ typ. Zwróć JSON:
+{
+  "questions": [
+    {
+      "type": "multiple-choice|matching|word-drop|true-false",
+      "text": "pytanie",
+      "options": ["A", "B", "C", "D"] albo {"lewo": "prawo"} dla matching,
+      "correct": 0 albo {"1": "3"} dla matching,
+      "explanation": "wyjaśnienie"
+    }
+  ]
+}`,
         response_json_schema: {
           type: "object",
           properties: {
             questions: {
               type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  text: { type: "string" },
-                  options: { type: "array", items: { type: "string" } },
-                  correct: { type: "number" },
-                  explanation: { type: "string" }
-                }
-              }
+              items: { type: "object" }
             }
           }
         }
       });
 
-      setGeneratedContent(response);
       setCurrentTest(prev => ({
         ...prev,
         questions: response.questions || []
       }));
     } catch (error) {
-      console.error("Błąd generowania pytań:", error);
+      console.error("Błąd generowania:", error);
+      alert("Błąd podczas generowania pytań");
     }
     setLoading(false);
   };
@@ -99,8 +127,7 @@ export default function TestBuilder() {
 
     setLoading(true);
     try {
-      // Generuj link do udostępniania
-      const shareLink = `texi-seo.app/test/${Math.random().toString(36).substr(2, 9)}`;
+      const shareLink = `linguatoons.com/test/${Math.random().toString(36).substr(2, 9)}`;
       
       const newTest = {
         ...currentTest,
@@ -114,6 +141,7 @@ export default function TestBuilder() {
         quiz_title: currentTest.title,
         description: currentTest.description || "",
         question_count: currentTest.questions.length,
+        time_limit_minutes: currentTest.timeLimit,
         status: "published"
       });
 
@@ -234,25 +262,100 @@ export default function TestBuilder() {
             />
           </div>
 
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground mb-2 block">Typ testu</label>
+              <div className="grid grid-cols-2 gap-2">
+                {["quiz", "exam"].map(type => (
+                  <button
+                    key={type}
+                    onClick={() => setCurrentTest(prev => ({ ...prev, type }))}
+                    className={cn(
+                      "p-3 rounded-lg border-2 text-xs font-medium transition-all text-center",
+                      currentTest?.type === type
+                        ? "border-primary bg-primary/10 text-primary"
+                        : "border-border hover:border-primary/50"
+                    )}
+                  >
+                    {type === "quiz" && "📋 Quiz"}
+                    {type === "exam" && "📊 Egzamin"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground mb-2 flex items-center gap-1">
+                <Clock className="h-3.5 w-3.5" />
+                Czas testu (minuty)
+              </label>
+              <input
+                type="number"
+                min="5"
+                max="180"
+                value={currentTest?.timeLimit || 30}
+                onChange={e => setCurrentTest(prev => ({ ...prev, timeLimit: parseInt(e.target.value) }))}
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+          </div>
+
           <div>
-            <label className="text-xs font-semibold text-muted-foreground mb-2 block">Typ testu</label>
-            <div className="grid grid-cols-4 gap-2">
-              {["quiz", "game", "exam", "schema"].map(type => (
-                <button
-                  key={type}
-                  onClick={() => setCurrentTest(prev => ({ ...prev, type }))}
-                  className={cn(
-                    "p-3 rounded-lg border-2 text-xs font-medium transition-all text-center",
-                    currentTest?.type === type
-                      ? "border-primary bg-primary/10 text-primary"
-                      : "border-border hover:border-primary/50"
-                  )}
-                >
-                  {type === "quiz" && "📋 Quiz"}
-                  {type === "game" && "🎮 Gra"}
-                  {type === "exam" && "📊 Egzamin"}
-                  {type === "schema" && "🎯 Schemat"}
-                </button>
+            <label className="text-xs font-semibold text-muted-foreground mb-2 block">Zagadnienia (wybierz zakresy)</label>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                "Czasy angielskie",
+                "Słownictwo biznesowe",
+                "Gramatyka podstawowa",
+                "Conversational",
+                "Wymowa",
+                "Idiomatic expressions"
+              ].map(topic => (
+                <label key={topic} className="flex items-center gap-2 p-2 bg-secondary/40 rounded-lg cursor-pointer hover:bg-secondary/60">
+                  <input
+                    type="checkbox"
+                    checked={currentTest?.topics?.includes(topic) || false}
+                    onChange={e => {
+                      setCurrentTest(prev => ({
+                        ...prev,
+                        topics: e.target.checked
+                          ? [...(prev?.topics || []), topic]
+                          : (prev?.topics || []).filter(t => t !== topic)
+                      }));
+                    }}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs font-medium">{topic}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold text-muted-foreground mb-2 block">Typy pytań</label>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { id: "multiple-choice", label: "A, B, C, D" },
+                { id: "matching", label: "Dopasuj" },
+                { id: "word-drop", label: "Wyrazy na czas" },
+                { id: "true-false", label: "Prawda/Fałsz" }
+              ].map(qtype => (
+                <label key={qtype.id} className="flex items-center gap-2 p-2 bg-secondary/40 rounded-lg cursor-pointer hover:bg-secondary/60">
+                  <input
+                    type="checkbox"
+                    checked={currentTest?.questionTypes?.includes(qtype.id) || false}
+                    onChange={e => {
+                      setCurrentTest(prev => ({
+                        ...prev,
+                        questionTypes: e.target.checked
+                          ? [...(prev?.questionTypes || []), qtype.id]
+                          : (prev?.questionTypes || []).filter(t => t !== qtype.id)
+                      }));
+                    }}
+                    className="w-4 h-4"
+                  />
+                  <span className="text-xs font-medium">{qtype.label}</span>
+                </label>
               ))}
             </div>
           </div>
@@ -263,18 +366,18 @@ export default function TestBuilder() {
               value={currentTest?.description || ""}
               onChange={e => setCurrentTest(prev => ({ ...prev, description: e.target.value }))}
               placeholder="Opis dla studentów..."
-              rows={3}
+              rows={2}
               className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </div>
 
-        {/* Options */}
+        {/* Generate & Import */}
         <div className="grid sm:grid-cols-2 gap-3">
           <button
             onClick={() => handleGenerateQuestions(10)}
-            disabled={loading}
-            className="flex items-center gap-2 p-4 bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl hover:border-purple-500 transition-all text-left"
+            disabled={loading || !currentTest?.topics?.length}
+            className="flex items-center gap-2 p-4 bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl hover:border-purple-500 transition-all text-left disabled:opacity-50"
           >
             {loading ? (
               <Loader2 className="h-5 w-5 animate-spin text-purple-600" />
@@ -283,7 +386,7 @@ export default function TestBuilder() {
             )}
             <div>
               <p className="font-semibold text-sm">🤖 Generuj pytania AI</p>
-              <p className="text-xs text-muted-foreground">Auto-tworzenie pytań</p>
+              <p className="text-xs text-muted-foreground">Wg. wybranych zagadnień</p>
             </div>
           </button>
 
@@ -295,9 +398,37 @@ export default function TestBuilder() {
             <Upload className="h-5 w-5 text-blue-600" />
             <div>
               <p className="font-semibold text-sm">📚 Import z Leksikos</p>
-              <p className="text-xs text-muted-foreground">Załaduj pytania</p>
+              <p className="text-xs text-muted-foreground">Dodaj pytania</p>
             </div>
           </button>
+        </div>
+
+        {/* Assign Students */}
+        <div className="bg-card border border-border rounded-xl p-5 space-y-3">
+          <label className="text-xs font-semibold text-muted-foreground flex items-center gap-1">
+            <Users className="h-3.5 w-3.5" />
+            Przypisz studentów lub udostępnij link
+          </label>
+          <div className="space-y-2">
+            <textarea
+              placeholder="Wpisz emaile studentów (jeden na linię)"
+              rows={3}
+              onChange={e => {
+                const emails = e.target.value.split("\n").filter(e => e.trim());
+                setCurrentTest(prev => ({ ...prev, assignedStudents: emails }));
+              }}
+              className="w-full px-3 py-2 border border-border rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+            <label className="flex items-center gap-2 text-xs">
+              <input
+                type="checkbox"
+                checked={currentTest?.allowAnonymous || false}
+                onChange={e => setCurrentTest(prev => ({ ...prev, allowAnonymous: e.target.checked }))}
+                className="w-4 h-4"
+              />
+              Zezwól na dostęp anonimowy (via link)
+            </label>
+          </div>
         </div>
 
         {/* Pytania */}
@@ -368,30 +499,41 @@ export default function TestBuilder() {
         </div>
 
         <div className="bg-card border border-border rounded-xl p-5 space-y-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-4 gap-3">
             <div className="p-3 bg-secondary/40 rounded-lg text-center">
               <p className="text-xs text-muted-foreground">Pytań</p>
-              <p className="text-2xl font-bold mt-1">{currentTest.questions?.length || 0}</p>
+              <p className="text-xl font-bold">{currentTest.questions?.length || 0}</p>
+            </div>
+            <div className="p-3 bg-secondary/40 rounded-lg text-center">
+              <p className="text-xs text-muted-foreground">Czas</p>
+              <p className="text-xl font-bold flex items-center justify-center gap-1">
+                <Clock className="h-4 w-4" />
+                {currentTest.timeLimit}m
+              </p>
             </div>
             <div className="p-3 bg-secondary/40 rounded-lg text-center">
               <p className="text-xs text-muted-foreground">Studentów</p>
-              <p className="text-2xl font-bold mt-1">{currentTest.students?.length || 0}</p>
+              <p className="text-xl font-bold">{currentTest.assignedStudents?.length || 0}</p>
             </div>
             <div className="p-3 bg-secondary/40 rounded-lg text-center">
               <p className="text-xs text-muted-foreground">Typ</p>
-              <p className="text-sm font-bold mt-1 capitalize">{currentTest.type}</p>
+              <p className="text-xs font-bold mt-1">{currentTest.type === "quiz" ? "Quiz" : "Egzamin"}</p>
             </div>
           </div>
 
-          {currentTest.shareLink && (
-            <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg space-y-2">
-              <p className="text-xs font-semibold text-emerald-700">🔗 Link do udostępniania</p>
+          {/* Share Link */}
+          {currentTest.shareLink && currentTest.allowAnonymous && (
+            <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg space-y-2">
+              <p className="text-xs font-semibold text-blue-700 flex items-center gap-1">
+                <Link2 className="h-3.5 w-3.5" />
+                Link dostępny dla studentów
+              </p>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
                   value={currentTest.shareLink}
                   readOnly
-                  className="flex-1 px-3 py-2 bg-white/50 border border-emerald-500/20 rounded text-xs"
+                  className="flex-1 px-3 py-2 bg-white/70 border border-blue-500/20 rounded text-xs font-mono"
                 />
                 <Button
                   size="sm"
@@ -402,33 +544,101 @@ export default function TestBuilder() {
                   Kopiuj
                 </Button>
               </div>
-              <p className="text-[10px] text-emerald-600">Studenci mogą dostęp przejść bez logowania</p>
             </div>
           )}
 
+          {/* Assigned Students */}
+          {currentTest.assignedStudents?.length > 0 && (
+            <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg space-y-2">
+              <p className="text-xs font-semibold text-emerald-700 flex items-center gap-1">
+                <Mail className="h-3.5 w-3.5" />
+                Przypisani studenci ({currentTest.assignedStudents.length})
+              </p>
+              <div className="space-y-1">
+                {currentTest.assignedStudents.map((email, i) => (
+                  <p key={i} className="text-xs px-2 py-1 bg-emerald-100 text-emerald-700 rounded">
+                    📧 {email}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Topics */}
+          {currentTest.topics?.length > 0 && (
+            <div className="p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+              <p className="text-xs font-semibold text-purple-700 mb-2">Zagadnienia:</p>
+              <div className="flex flex-wrap gap-1">
+                {currentTest.topics.map((topic, i) => (
+                  <span key={i} className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
+                    {topic}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Questions Preview */}
           <div className="space-y-3">
             <h3 className="font-bold">Pytania ({currentTest.questions?.length || 0})</h3>
-            {currentTest.questions?.map((q, i) => (
-              <div key={i} className="p-4 bg-secondary/30 rounded-lg space-y-2">
-                <p className="font-semibold text-sm">{i + 1}. {q.text}</p>
-                <div className="space-y-1">
-                  {q.options?.map((opt, j) => (
-                    <p
-                      key={j}
-                      className={cn(
-                        "text-xs px-2 py-1 rounded",
-                        j === q.correct ? "bg-emerald-100 text-emerald-700" : "bg-slate-100"
-                      )}
-                    >
-                      {String.fromCharCode(65 + j)}) {opt}
-                    </p>
-                  ))}
-                </div>
-                {q.explanation && (
-                  <p className="text-xs text-muted-foreground italic">💡 {q.explanation}</p>
-                )}
+            {currentTest.questions?.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Brak pytań. Wygeneruj lub importuj pytania.</p>
+            ) : (
+              <div className="space-y-3 max-h-96 overflow-y-auto">
+                {currentTest.questions.map((q, i) => (
+                  <div key={i} className="p-4 bg-secondary/30 rounded-lg space-y-2 border-l-4 border-primary">
+                    <div className="flex items-start justify-between">
+                      <p className="font-semibold text-sm flex-1">{i + 1}. {q.text}</p>
+                      <span className="text-[10px] px-2 py-1 bg-primary/10 text-primary rounded">
+                        {q.type || "multiple-choice"}
+                      </span>
+                    </div>
+
+                    {/* Different question types */}
+                    {(q.type === "multiple-choice" || !q.type) && q.options && (
+                      <div className="space-y-1">
+                        {q.options.map((opt, j) => (
+                          <p
+                            key={j}
+                            className={cn(
+                              "text-xs px-2 py-1 rounded",
+                              j === q.correct ? "bg-emerald-100 text-emerald-700 font-semibold" : "bg-slate-100"
+                            )}
+                          >
+                            {String.fromCharCode(65 + j)}) {opt}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+
+                    {q.type === "matching" && q.options && (
+                      <div className="text-xs space-y-1">
+                        <p className="text-muted-foreground">Dopasuj:</p>
+                        {Object.entries(q.options || {}).map(([left, right], idx) => (
+                          <p key={idx}>
+                            <span className="font-medium">{left}</span> ↔ <span className="text-emerald-600">{right}</span>
+                          </p>
+                        ))}
+                      </div>
+                    )}
+
+                    {q.type === "word-drop" && (
+                      <p className="text-xs text-muted-foreground italic">⏱️ Wstaw wyrazy na czas</p>
+                    )}
+
+                    {q.type === "true-false" && (
+                      <p className="text-xs">
+                        Prawidłowa odpowiedź: <span className="font-bold text-emerald-600">{q.correct ? "PRAWDA" : "FAŁSZ"}</span>
+                      </p>
+                    )}
+
+                    {q.explanation && (
+                      <p className="text-xs text-muted-foreground italic">💡 {q.explanation}</p>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -438,7 +648,7 @@ export default function TestBuilder() {
           </Button>
           <Button className="flex-1 gap-2">
             <Play className="h-4 w-4" />
-            Uruchom test
+            Uruchom test dla studentów
           </Button>
         </div>
       </div>
