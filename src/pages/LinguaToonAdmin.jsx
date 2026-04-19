@@ -56,9 +56,7 @@ function StatCard({ label, value, icon: Icon, color }) {
 export default function LinguaToonAdmin() {
   const [selectedOption, setSelectedOption] = useState("dashboard");
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
   const [stats, setStats] = useState(null);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -450,16 +448,8 @@ export default function LinguaToonAdmin() {
 
   return (
     <div className="flex h-screen bg-background overflow-hidden">
-      {/* Mobile overlay */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMobileMenuOpen(false)} />
-      )}
-
       {/* Sidebar */}
-      <aside className={cn(
-        "fixed lg:relative z-50 h-full w-64 bg-slate-900 text-white flex flex-col transition-all duration-300",
-        mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-      )}>
+      <aside className="w-64 h-full bg-slate-900 text-white flex flex-col flex-shrink-0">
         <div className="p-4 border-b border-slate-800">
           <h1 className="text-lg font-bold flex items-center gap-2">
             📚 LinguaToons
@@ -478,10 +468,7 @@ export default function LinguaToonAdmin() {
                     return (
                       <button
                         key={section.id}
-                        onClick={() => {
-                          setSelectedOption(section.id);
-                          setMobileMenuOpen(false);
-                        }}
+                        onClick={() => setSelectedOption(section.id)}
                         className={cn(
                           "w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-colors text-left",
                           selectedOption === section.id
@@ -512,12 +499,6 @@ export default function LinguaToonAdmin() {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="bg-card border-b border-border px-6 py-3 flex items-center justify-between">
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 hover:bg-secondary rounded-lg"
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
           <h2 className="text-xl font-bold">
             {ADMIN_SECTIONS.flatMap(c => c.items).find(o => o.id === selectedOption)?.label || "Panel"}
           </h2>
