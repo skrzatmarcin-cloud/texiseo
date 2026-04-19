@@ -4,110 +4,70 @@
   "properties": {
     "competitor_id": {
       "type": "string",
-      "title": "ID konkurenta"
+      "title": "Competitor ID"
     },
-    "competitor_url": {
+    "site_name": {
       "type": "string",
-      "title": "URL konkurenta"
+      "title": "Site Name"
     },
     "analysis_date": {
       "type": "string",
-      "title": "Data analizy",
-      "format": "date"
+      "format": "date-time",
+      "title": "Analysis Date"
     },
-    "seo_overview": {
-      "type": "string",
-      "title": "Przegl\u0105d SEO (JSON)"
-    },
-    "top_keywords": {
+    "changes_detected": {
       "type": "array",
-      "title": "Najwa\u017cniejsze s\u0142owa kluczowe",
       "items": {
         "type": "string"
-      }
+      },
+      "title": "Changes Detected"
     },
-    "content_strategy": {
-      "type": "string",
-      "title": "Strategia tre\u015bci"
-    },
-    "content_types": {
+    "content_gaps": {
       "type": "array",
-      "title": "Typy tre\u015bci",
       "items": {
         "type": "string"
-      }
+      },
+      "title": "Content Gaps (vs us)"
     },
-    "backlinks_overview": {
-      "type": "string",
-      "title": "Przegl\u0105d backlink\u00f3w"
-    },
-    "backlink_sources": {
+    "design_insights": {
       "type": "array",
-      "title": "\u0179r\u00f3d\u0142a backlink\u00f3w",
       "items": {
         "type": "string"
-      }
+      },
+      "title": "Design & UX Insights"
     },
-    "freebies_lead_magnets": {
+    "seo_gaps": {
       "type": "array",
-      "title": "Freebies / Lead magnety",
       "items": {
         "type": "string"
-      }
+      },
+      "title": "SEO Gaps"
     },
-    "webinars_events": {
+    "opportunities": {
       "type": "array",
-      "title": "Webinary / Eventy",
       "items": {
         "type": "string"
-      }
-    },
-    "media_presence": {
-      "type": "array",
-      "title": "Obecno\u015b\u0107 w mediach / PR",
-      "items": {
-        "type": "string"
-      }
-    },
-    "social_channels": {
-      "type": "array",
-      "title": "Kana\u0142y social media",
-      "items": {
-        "type": "string"
-      }
-    },
-    "ai_visibility": {
-      "type": "string",
-      "title": "Widoczno\u015b\u0107 w AI (ChatGPT/Gemini)"
-    },
-    "opportunities_for_us": {
-      "type": "array",
-      "title": "Szanse dla Linguatoons",
-      "items": {
-        "type": "string"
-      }
+      },
+      "title": "Opportunities"
     },
     "threats": {
       "type": "array",
-      "title": "Zagro\u017cenia",
       "items": {
         "type": "string"
-      }
+      },
+      "title": "Threats"
     },
     "recommendations": {
       "type": "array",
-      "title": "Rekomendacje dzia\u0142a\u0144",
       "items": {
         "type": "string"
-      }
-    },
-    "raw_report": {
-      "type": "string",
-      "title": "Pe\u0142ny raport (Markdown)"
+      },
+      "title": "Recommended Actions"
     }
   },
   "required": [
     "competitor_id",
+    "site_name",
     "analysis_date"
   ]
 }

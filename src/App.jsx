@@ -53,6 +53,7 @@ import EnterpriseWorkspaceDetail from './pages/EnterpriseWorkspaceDetail';
 import TeacherMarketplace from './pages/TeacherMarketplace';
 import PayoutsDashboard from './pages/PayoutsDashboard';
 import WebsiteHub from './pages/WebsiteHub';
+import SystemIntelligenceDashboard from './pages/SystemIntelligenceDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -123,6 +124,7 @@ const AuthenticatedApp = () => {
           <Route path="/marketplace" element={<TeacherMarketplace />} />
           <Route path="/payouts" element={<PayoutsDashboard />} />
           <Route path="/website" element={<WebsiteHub />} />
+          <Route path="/system-intelligence" element={<SystemIntelligenceDashboard />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
@@ -178,6 +180,7 @@ const AuthenticatedApp = () => {
         <Route path="/self-promotion" element={<SelfPromotionHub />} />
         <Route path="/marketplace" element={<TeacherMarketplace />} />
         <Route path="/website" element={<WebsiteHub />} />
+        <Route path="/system-intelligence" element={<SystemIntelligenceDashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>

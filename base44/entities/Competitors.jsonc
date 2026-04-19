@@ -2,51 +2,79 @@
   "name": "Competitors",
   "type": "object",
   "properties": {
-    "name": {
+    "site_name": {
       "type": "string",
-      "title": "Nazwa konkurenta"
+      "title": "Site Name"
     },
-    "url": {
+    "domain": {
       "type": "string",
-      "title": "URL strony"
+      "title": "Domain"
     },
-    "language": {
+    "category": {
       "type": "string",
-      "title": "J\u0119zyk",
       "enum": [
-        "pl",
-        "en",
-        "es",
-        "fr"
-      ]
+        "global",
+        "regional",
+        "academic",
+        "niche"
+      ],
+      "title": "Category"
     },
-    "niche": {
+    "languages_offered": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Languages Offered"
+    },
+    "pricing_model": {
       "type": "string",
-      "title": "Nisza",
       "enum": [
-        "language_school",
-        "tutoring",
-        "e-learning",
-        "content_site",
-        "other"
-      ]
+        "freemium",
+        "subscription",
+        "pay-per-lesson",
+        "marketplace"
+      ],
+      "title": "Pricing Model"
     },
-    "notes": {
+    "primary_target": {
       "type": "string",
-      "title": "Notatki"
+      "title": "Primary Target Audience"
     },
-    "active": {
-      "type": "boolean",
-      "title": "Aktywny monitoring",
-      "default": true
+    "strengths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Key Strengths"
     },
-    "last_analyzed_at": {
+    "weaknesses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Identified Weaknesses"
+    },
+    "last_analyzed": {
       "type": "string",
-      "title": "Ostatnia analiza"
+      "format": "date-time",
+      "title": "Last Analysis Date"
+    },
+    "analysis_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "archived"
+      ],
+      "title": "Analysis Status",
+      "default": "active"
     }
   },
   "required": [
-    "name",
-    "url"
+    "site_name",
+    "domain",
+    "category",
+    "analysis_status"
   ]
 }
