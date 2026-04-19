@@ -215,6 +215,12 @@ function LoginGateInner({ children }) {
   const handleDemo = () => {
     sessionStorage.removeItem("lg_is_admin");
     sessionStorage.setItem("lg_auth", "1");
+    sessionStorage.setItem("lg_demo_mode", "1");
+    setMode("demo-select");
+  };
+
+  const handleDemoSelect = (type) => {
+    sessionStorage.setItem("lg_demo_type", type);
     setLoggedIn(true);
   };
 
@@ -309,7 +315,7 @@ function LoginGateInner({ children }) {
 
                 <div className="flex items-center gap-3 mb-5">
                   <div className="flex-1 h-px bg-white/10" />
-                  <span className="text-[11px] text-white/30">zaloguj się hasłem</span>
+                  <span className="text-[11px] text-white/30">zaloguj się hasłem lub spróbuj demo</span>
                   <div className="flex-1 h-px bg-white/10" />
                 </div>
 
@@ -358,10 +364,20 @@ function LoginGateInner({ children }) {
                   </button>
                 </form>
 
-                <div className="mt-4 text-center">
-                  <button onClick={() => { setMode("forgot"); setError(""); }}
-                    className="text-xs text-slate-400 hover:text-primary transition-colors underline underline-offset-2">
-                    {t.forgot_password || "Zapomniałeś hasła?"}
+                <div className="mt-4 space-y-3">
+                  <div className="text-center">
+                    <button onClick={() => { setMode("forgot"); setError(""); }}
+                      className="text-xs text-slate-400 hover:text-primary transition-colors underline underline-offset-2">
+                      {t.forgot_password || "Zapomniałeś hasła?"}
+                    </button>
+                  </div>
+                  <div className="text-center text-xs text-slate-400">
+                    lub
+                  </div>
+                  <button
+                    onClick={handleDemo}
+                    className="w-full h-10 bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/30 font-medium rounded-lg text-xs transition-all">
+                    🎬 Spróbuj Demo
                   </button>
                 </div>
 
@@ -373,6 +389,32 @@ function LoginGateInner({ children }) {
                     <span>· Szyfrowane</span>
                   </div>
                 )}
+              </>
+            ) : mode === "demo-select" ? (
+              /* DEMO SELECTION */
+              <>
+                <h2 className="text-lg font-semibold text-white mb-2">🎬 Wybierz tryb demo</h2>
+                <p className="text-xs text-slate-400 mb-6">Jaki rodzaj konta chcesz zobaczyć w akcji?</p>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => handleDemoSelect("teacher")}
+                    className="w-full p-4 rounded-xl border-2 border-blue-400/30 bg-blue-500/10 hover:bg-blue-500/20 text-left transition-all">
+                    <p className="font-semibold text-blue-200 text-sm">👨‍🏫 Demo Nauczyciel</p>
+                    <p className="text-xs text-blue-300/70 mt-1">Zobacz dashboard nauczycielski z fikcyjnymi uczniami i lekcjami</p>
+                  </button>
+                  <button
+                    onClick={() => handleDemoSelect("business")}
+                    className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
+                    <p className="font-semibold text-purple-200 text-sm">🏢 Demo Enterprise</p>
+                    <p className="text-xs text-purple-300/70 mt-1">Zobacz panel zarządzania firmą, magazyn i katalog biznesu</p>
+                  </button>
+                </div>
+                <div className="mt-4 text-center">
+                  <button onClick={() => { setMode("login"); setError(""); }}
+                    className="text-xs text-slate-400 hover:text-white transition-colors">
+                    ← Wróć do logowania
+                  </button>
+                </div>
               </>
             ) : (
               /* FORGOT PASSWORD */

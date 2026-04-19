@@ -44,6 +44,8 @@ import TexiSEOAdmin from './pages/TexiSEOAdmin';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const isDemoMode = sessionStorage.getItem("lg_demo_mode") === "1";
+  const demoType = sessionStorage.getItem("lg_demo_type");
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -62,6 +64,15 @@ const AuthenticatedApp = () => {
       // Redirect to login automatically
       navigateToLogin();
       return null;
+    }
+  }
+
+  // If demo mode, route to appropriate demo hub
+  if (isDemoMode) {
+    if (demoType === "teacher") {
+      return <Routes><Route element={<Layout />}><Route path="/*" element={<TeacherHub />} /></Route></Routes>;
+    } else if (demoType === "business") {
+      return <Routes><Route element={<Layout />}><Route path="/*" element={<BusinessHub />} /></Route></Routes>;
     }
   }
 

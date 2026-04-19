@@ -257,7 +257,7 @@ export default function WelcomeScreen() {
       </div>
 
       {/* Bottom nav strip */}
-      <div className="flex items-center justify-center gap-6 pt-2 border-t border-white/10">
+      <div className="flex items-center justify-center gap-6 pt-2 border-t border-white/10 flex-wrap">
         {[
           { label: "Strona Główna", icon: Globe, to: "/" },
           { label: "Ustawienia", icon: Settings, to: "/settings", hubId: null },
@@ -272,6 +272,18 @@ export default function WelcomeScreen() {
             {item.label}
           </button>
         ))}
+        <div className="h-5 w-px bg-white/10" />
+        <button
+          onClick={() => {
+            sessionStorage.removeItem("lg_auth");
+            sessionStorage.removeItem("lg_demo_mode");
+            sessionStorage.removeItem("lg_demo_type");
+            window.location.reload();
+          }}
+          className="flex items-center gap-1.5 text-xs text-emerald-300/60 hover:text-emerald-200 transition-colors px-3 py-1.5 rounded-lg hover:bg-emerald-500/10 font-medium"
+        >
+          🎬 Spróbuj Demo
+        </button>
       </div>
     </div>
   );
