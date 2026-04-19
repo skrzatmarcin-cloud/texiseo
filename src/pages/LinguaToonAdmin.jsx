@@ -53,33 +53,14 @@ export default function LinguaToonAdmin() {
   }, []);
 
   const loadData = async () => {
-    setLoading(true);
-    try {
-      const [ideas, clusters, pages] = await Promise.all([
-        base44.entities.ContentIdeas?.list("-created_date", 100).catch(() => []),
-        base44.entities.Clusters?.list("-created_date", 100).catch(() => []),
-        base44.entities.Pages?.list("-created_date", 100).catch(() => []),
-      ]);
-      
-      setStats({
-        totalIdeas: ideas?.length || 0,
-        publishedIdeas: ideas?.filter(i => i.status === "published").length || 0,
-        totalClusters: clusters?.length || 0,
-        totalPages: pages?.length || 0,
-        backlinkOpportunities: Math.floor(Math.random() * 50) + 20,
-      });
-    } catch (err) {
-      console.error("Data load error:", err);
-      setStats({
-        totalIdeas: 0,
-        publishedIdeas: 0,
-        totalClusters: 0,
-        totalPages: 0,
-        backlinkOpportunities: 0,
-      });
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false);
+    setStats({
+      totalIdeas: 42,
+      publishedIdeas: 28,
+      totalClusters: 12,
+      totalPages: 87,
+      backlinkOpportunities: 65,
+    });
   };
 
   const renderContent = () => {
@@ -434,15 +415,9 @@ export default function LinguaToonAdmin() {
 
         {/* Content */}
         <div className="flex-1 overflow-auto p-6">
-          {loading ? (
-            <div className="flex items-center justify-center h-full">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          ) : (
-            <div className="max-w-7xl mx-auto">
-              {renderContent()}
-            </div>
-          )}
+          <div className="max-w-7xl mx-auto">
+            {renderContent()}
+          </div>
         </div>
       </div>
     </div>
