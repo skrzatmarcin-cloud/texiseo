@@ -1,229 +1,223 @@
 import { Link } from "react-router-dom";
 import {
-  Search, Shield, GraduationCap, Building2, Briefcase,
-  ArrowRight, Sparkles, TrendingUp, BookOpen, Globe,
-  Zap, BarChart3, Network, FileText, RefreshCw,
-  Link2, ShieldCheck, Users, Layers, Play
+  Shield, Search, Building2, GraduationCap, Briefcase, BarChart3,
+  TrendingUp, Network, FileText, Link2, BookOpen, RefreshCw,
+  Play, ShieldCheck, Globe, Zap, Users, Layers, Sparkles,
+  Video, CreditCard, MessageSquare, Calendar
 } from "lucide-react";
 
 const HUBS = [
   {
-    id: "seo",
-    label: "SEO Hub",
-    sublabel: "Centrum strategii organicznej",
-    description: "Zarządzaj treścią, klastrami, linkami wewnętrznymi, briefami i kolejką publikacji — wszystko w jednym miejscu.",
-    to: "/content-ideas",
-    gradient: "from-violet-600 to-indigo-600",
-    lightBg: "bg-violet-50",
-    iconBg: "bg-violet-600",
-    textAccent: "text-violet-600",
-    borderAccent: "border-violet-200",
-    Icon: Search,
-    badge: "AI-powered",
-    badgeColor: "bg-violet-100 text-violet-700",
-    features: [
-      { icon: Network, label: "Klastry tematyczne", to: "/clusters" },
-      { icon: FileText, label: "Strony & audyt", to: "/pages" },
-      { icon: Link2, label: "Linki wewnętrzne", to: "/internal-links" },
-      { icon: BookOpen, label: "Brief Builder", to: "/brief-builder" },
-      { icon: RefreshCw, label: "Refresh Center", to: "/refresh-center" },
-      { icon: Play, label: "Kolejka publikacji", to: "/publishing-queue" },
-    ],
-  },
-  {
     id: "security",
     label: "Bezpieczeństwo",
-    sublabel: "Monitor & ochrona",
-    description: "Monitoruj WordPress, wykrywaj zagrożenia, zarządzaj alertami bezpieczeństwa i śledź stan backlinków 24/7.",
+    sublabel: "Security Center",
     to: "/security",
-    gradient: "from-red-500 to-rose-600",
-    lightBg: "bg-red-50",
-    iconBg: "bg-red-500",
-    textAccent: "text-red-600",
-    borderAccent: "border-red-200",
+    gradient: "from-blue-700 to-blue-900",
+    glowColor: "shadow-blue-900/60",
     Icon: Shield,
-    badge: "Real-time",
-    badgeColor: "bg-red-100 text-red-700",
-    features: [
-      { icon: ShieldCheck, label: "Security Monitor", to: "/security" },
-      { icon: Globe, label: "WordPress Health", to: "/wordpress" },
-      { icon: TrendingUp, label: "Backlinki", to: "/backlinks" },
-      { icon: Zap, label: "Automations", to: "/automations" },
+    iconColor: "text-blue-300",
+    sublinks: [
+      { label: "Security Monitor", to: "/security", icon: ShieldCheck },
+      { label: "WordPress Health", to: "/wordpress", icon: Globe },
+      { label: "Backlinki", to: "/backlinks", icon: TrendingUp },
+      { label: "Automations", to: "/automations", icon: Zap },
     ],
   },
   {
-    id: "teachers",
-    label: "Teachers Hub",
-    sublabel: "Zarządzanie nauczycielami",
-    description: "Planuj lekcje, zarządzaj nauczycielami, prowadź live przez Google Meet, kursy i rozliczenia w jednym systemie.",
-    to: "/teachers",
-    gradient: "from-emerald-500 to-teal-600",
-    lightBg: "bg-emerald-50",
-    iconBg: "bg-emerald-500",
-    textAccent: "text-emerald-600",
-    borderAccent: "border-emerald-200",
-    Icon: GraduationCap,
-    badge: "Live Meet",
-    badgeColor: "bg-emerald-100 text-emerald-700",
-    features: [
-      { icon: Users, label: "Nauczyciele", to: "/teachers" },
-      { icon: BarChart3, label: "Statystyki", to: "/teachers" },
-      { icon: BookOpen, label: "Kursy", to: "/teachers" },
-      { icon: Zap, label: "Lekcje Live", to: "/teachers" },
+    id: "seo",
+    label: "SEO Narzędzia",
+    sublabel: "SEO Tools",
+    to: "/content-ideas",
+    gradient: "from-indigo-600 to-blue-700",
+    glowColor: "shadow-indigo-900/60",
+    Icon: Search,
+    iconColor: "text-indigo-300",
+    sublinks: [
+      { label: "Pomysły treści", to: "/content-ideas", icon: Sparkles },
+      { label: "Klastry", to: "/clusters", icon: Network },
+      { label: "Strony", to: "/pages", icon: FileText },
+      { label: "Brief Builder", to: "/brief-builder", icon: BookOpen },
+      { label: "Linki wewn.", to: "/internal-links", icon: Link2 },
+      { label: "Publikacje", to: "/publishing-queue", icon: Play },
     ],
   },
   {
     id: "directory",
     label: "Katalog Firm",
     sublabel: "Business Directory",
-    description: "Zarządzaj wpisami szkół językowych i firm edukacyjnych, monitoruj opinie i buduj sieć partnerów.",
     to: "/directory",
-    gradient: "from-amber-500 to-orange-500",
-    lightBg: "bg-amber-50",
-    iconBg: "bg-amber-500",
-    textAccent: "text-amber-600",
-    borderAccent: "border-amber-200",
+    gradient: "from-slate-600 to-slate-800",
+    glowColor: "shadow-slate-900/60",
     Icon: Building2,
-    badge: "Directory",
-    badgeColor: "bg-amber-100 text-amber-700",
-    features: [
-      { icon: Building2, label: "Katalog", to: "/directory" },
-      { icon: Globe, label: "Weryfikacja", to: "/directory" },
-      { icon: TrendingUp, label: "Link Exchange", to: "/backlinks" },
-      { icon: Sparkles, label: "SEO Autopilot", to: "/seo-autopilot" },
+    iconColor: "text-slate-300",
+    sublinks: [
+      { label: "Katalog", to: "/directory", icon: Building2 },
+      { label: "Konkurenci", to: "/competitors", icon: TrendingUp },
+      { label: "Link Exchange", to: "/backlinks", icon: Link2 },
+      { label: "SEO Autopilot", to: "/seo-autopilot", icon: Sparkles },
+    ],
+  },
+  {
+    id: "teachers",
+    label: "Teachers Hub",
+    sublabel: "Centrum Nauczycieli",
+    to: "/teachers",
+    gradient: "from-blue-600 to-indigo-700",
+    glowColor: "shadow-blue-900/60",
+    Icon: GraduationCap,
+    iconColor: "text-blue-200",
+    sublinks: [
+      { label: "Nauczyciele", to: "/teachers", icon: Users },
+      { label: "Planer lekcji", to: "/teachers", icon: Calendar },
+      { label: "Lekcje Live", to: "/teachers", icon: Video },
+      { label: "Rozliczenia", to: "/teachers", icon: CreditCard },
+    ],
+  },
+  {
+    id: "analytics",
+    label: "Analityka",
+    sublabel: "Analytics",
+    to: "/analytics",
+    gradient: "from-blue-500 to-cyan-700",
+    glowColor: "shadow-cyan-900/60",
+    Icon: BarChart3,
+    iconColor: "text-cyan-200",
+    sublinks: [
+      { label: "Analytics", to: "/analytics", icon: BarChart3 },
+      { label: "Content Engine", to: "/content-engine", icon: Sparkles },
+      { label: "Social Media", to: "/social-media", icon: MessageSquare },
+      { label: "Exec. Center", to: "/execution-center", icon: Play },
     ],
   },
   {
     id: "business",
     label: "Business Hub",
-    sublabel: "Operacje & magazyn",
-    description: "Zarządzaj firmami, zapasami magazynowymi, produkcją i dostawcami — pełne centrum operacyjne.",
+    sublabel: "Operacje & Magazyn",
     to: "/business",
-    gradient: "from-blue-500 to-cyan-600",
-    lightBg: "bg-blue-50",
-    iconBg: "bg-blue-500",
-    textAccent: "text-blue-600",
-    borderAccent: "border-blue-200",
+    gradient: "from-blue-800 to-slate-800",
+    glowColor: "shadow-slate-900/60",
     Icon: Briefcase,
-    badge: "ERP",
-    badgeColor: "bg-blue-100 text-blue-700",
-    features: [
-      { icon: Building2, label: "Firmy", to: "/business" },
-      { icon: Layers, label: "Magazyn", to: "/business" },
-      { icon: BarChart3, label: "Produkcja", to: "/business" },
-      { icon: Network, label: "Dostawcy", to: "/business" },
+    iconColor: "text-blue-200",
+    sublinks: [
+      { label: "Firmy", to: "/business", icon: Building2 },
+      { label: "Magazyn", to: "/business", icon: Layers },
+      { label: "Produkcja", to: "/business", icon: Network },
+      { label: "Dostawcy", to: "/business", icon: Users },
     ],
   },
 ];
 
-export default function HomeHub({ stats = {} }) {
+// Big 3D-style icon component
+function HubIcon({ Icon, iconColor, gradient }) {
   return (
-    <div className="space-y-6">
-      {/* Hero greeting */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-black text-foreground tracking-tight">
-            Witaj w LinguaSEO OS 👋
-          </h2>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Wybierz moduł — lub korzystaj z menu bocznego
-          </p>
-        </div>
-        <div className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground bg-secondary px-3 py-1.5 rounded-full">
-          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          linguatoons.com — system aktywny
-        </div>
-      </div>
-
-      {/* Main hub grid: 2 large + 3 medium */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-        {/* SEO Hub — large card */}
-        <HubCard hub={HUBS[0]} large />
-
-        {/* Security — large card */}
-        <HubCard hub={HUBS[1]} large />
-
-        {/* Teachers Hub — medium */}
-        <HubCard hub={HUBS[2]} />
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Directory */}
-        <HubCard hub={HUBS[3]} wide />
-        {/* Business */}
-        <HubCard hub={HUBS[4]} wide />
+    <div className={`relative flex-shrink-0`}>
+      {/* Outer glow ring */}
+      <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${gradient} opacity-30 blur-lg scale-110`} />
+      <div className={`relative h-16 w-16 rounded-2xl bg-gradient-to-br ${gradient} border border-white/10 flex items-center justify-center shadow-xl`}>
+        {/* Inner shine */}
+        <div className="absolute top-1 left-1 right-1 h-1/3 rounded-t-xl bg-white/10" />
+        <Icon className={`h-8 w-8 ${iconColor} relative z-10 drop-shadow-lg`} strokeWidth={1.5} />
       </div>
     </div>
   );
 }
 
-function HubCard({ hub, large = false, wide = false }) {
+function HubCard({ hub }) {
   return (
     <Link to={hub.to} className="group block">
       <div className={`
-        relative overflow-hidden rounded-2xl border ${hub.borderAccent} bg-card
-        hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 cursor-pointer
-        ${large ? "h-full min-h-[260px]" : wide ? "min-h-[160px]" : "min-h-[220px]"}
+        relative overflow-hidden rounded-2xl border border-white/10
+        bg-gradient-to-br from-[#0f1c3a] to-[#0a1628]
+        hover:border-white/20 hover:shadow-2xl hover:-translate-y-1
+        transition-all duration-200 cursor-pointer p-5
+        ${hub.glowColor}
       `}>
-        {/* Gradient top strip */}
-        <div className={`h-1.5 w-full bg-gradient-to-r ${hub.gradient}`} />
+        {/* Top gradient accent */}
+        <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${hub.gradient}`} />
 
-        <div className="p-5">
-          {/* Header */}
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex items-center gap-3">
-              {/* Icon */}
-              <div className={`
-                h-12 w-12 rounded-2xl bg-gradient-to-br ${hub.gradient}
-                flex items-center justify-center shadow-lg flex-shrink-0
-                group-hover:scale-110 transition-transform duration-200
-              `}>
-                <hub.Icon className="h-6 w-6 text-white" strokeWidth={1.8} />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-base text-foreground">{hub.label}</h3>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-semibold ${hub.badgeColor}`}>
-                    {hub.badge}
-                  </span>
-                </div>
-                <p className="text-[11px] text-muted-foreground">{hub.sublabel}</p>
-              </div>
-            </div>
-            <ArrowRight className={`h-4 w-4 ${hub.textAccent} opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-200`} />
-          </div>
+        {/* Subtle background glow */}
+        <div className={`absolute -top-8 -right-8 h-32 w-32 rounded-full bg-gradient-to-br ${hub.gradient} opacity-10 blur-2xl pointer-events-none`} />
 
-          {/* Description */}
-          <p className="text-xs text-muted-foreground leading-relaxed mb-4">
-            {hub.description}
-          </p>
-
-          {/* Feature pills */}
-          <div className="flex flex-wrap gap-1.5">
-            {hub.features.slice(0, large ? 6 : 4).map((feat) => (
-              <Link
-                key={feat.label}
-                to={feat.to}
-                onClick={e => e.stopPropagation()}
-                className={`
-                  flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-medium
-                  ${hub.lightBg} ${hub.textAccent} border ${hub.borderAccent}
-                  hover:opacity-80 transition-opacity
-                `}
-              >
-                <feat.icon className="h-2.5 w-2.5" />
-                {feat.label}
-              </Link>
-            ))}
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-4">
+          <HubIcon Icon={hub.Icon} iconColor={hub.iconColor} gradient={hub.gradient} />
+          <div>
+            <h3 className="text-white font-bold text-lg leading-tight group-hover:text-blue-200 transition-colors">
+              {hub.label}
+            </h3>
+            <p className="text-blue-300/70 text-xs font-medium mt-0.5">{hub.sublabel}</p>
           </div>
         </div>
 
-        {/* Decorative background icon */}
-        <div className="absolute -bottom-4 -right-4 opacity-[0.04] pointer-events-none">
-          <hub.Icon className="h-32 w-32" />
+        {/* Sub-links grid */}
+        <div className="grid grid-cols-2 gap-1.5">
+          {hub.sublinks.map((sub) => (
+            <Link
+              key={sub.label}
+              to={sub.to}
+              onClick={e => e.stopPropagation()}
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/15 transition-all group/sub"
+            >
+              <sub.icon className="h-3 w-3 text-blue-300/70 flex-shrink-0 group-hover/sub:text-blue-200" />
+              <span className="text-[11px] text-blue-100/70 font-medium truncate group-hover/sub:text-white">
+                {sub.label}
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        {/* Bottom decorative bg icon */}
+        <div className="absolute -bottom-5 -right-5 opacity-[0.06] pointer-events-none">
+          <hub.Icon className="h-24 w-24 text-white" />
         </div>
       </div>
     </Link>
+  );
+}
+
+export default function HomeHub() {
+  return (
+    <div
+      className="rounded-2xl p-6 space-y-5"
+      style={{ background: "linear-gradient(135deg, #0a1628 0%, #0d1f3c 50%, #0a1628 100%)" }}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-black text-white tracking-tight">
+            Witaj w LinguaSEO OS!
+          </h2>
+          <p className="text-blue-300/70 text-sm mt-0.5">
+            Wybierz interesującą Cię sekcję:
+          </p>
+        </div>
+        <div className="hidden sm:flex items-center gap-2 text-xs text-blue-300/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
+          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          linguatoons.com — aktywny
+        </div>
+      </div>
+
+      {/* 3×2 grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {HUBS.map(hub => (
+          <HubCard key={hub.id} hub={hub} />
+        ))}
+      </div>
+
+      {/* Bottom nav strip */}
+      <div className="flex items-center justify-center gap-6 pt-2 border-t border-white/10">
+        {[
+          { label: "Strona Główna", icon: Globe, to: "/" },
+          { label: "Ustawienia", icon: Zap, to: "/settings" },
+          { label: "Integracje", icon: Network, to: "/integrations" },
+        ].map(item => (
+          <Link key={item.to} to={item.to}
+            className="flex items-center gap-1.5 text-xs text-blue-300/60 hover:text-blue-200 transition-colors px-3 py-1.5 rounded-lg hover:bg-white/5">
+            <item.icon className="h-3.5 w-3.5" />
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }
