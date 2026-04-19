@@ -154,12 +154,17 @@ export default function WebsiteHub() {
 
   useEffect(() => {
     base44.auth.me().then(u => {
-      // KAŻDY zalogowany użytkownik → Linguatoons.com bez weryfikacji
-      u = {
-        ...u,
-        website_url: "https://linguatoons.com",
-        domain_name: "linguatoons.com"
-      };
+      const isAdmin = sessionStorage.getItem("lg_is_admin") === "1";
+      
+      // Tylko admin → Linguatoons.com bez weryfikacji
+      if (isAdmin) {
+        u = {
+          ...u,
+          website_url: "https://linguatoons.com",
+          domain_name: "linguatoons.com"
+        };
+      }
+      // Zwykli użytkownicy → czekają na weryfikację domeny
       setUser(u);
       setLoading(false);
     }).catch(() => setLoading(false));
