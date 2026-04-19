@@ -30,6 +30,7 @@ import SocialMedia from './pages/SocialMedia';
 import Analytics from './pages/Analytics';
 import ExecutionCenter from './pages/ExecutionCenter';
 import CompetitorIntel from './pages/CompetitorIntel';
+import SEOAutopilot from './pages/SEOAutopilot';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -80,6 +81,7 @@ const AuthenticatedApp = () => {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/execution-center" element={<ExecutionCenter />} />
         <Route path="/competitors" element={<CompetitorIntel />} />
+        <Route path="/seo-autopilot" element={<SEOAutopilot />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
