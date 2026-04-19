@@ -13,6 +13,8 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { useHub, HUBS_CONFIG } from "@/lib/HubContext";
 import { base44 } from "@/api/base44Client";
 import LanguageSwitcher from "./LanguageSwitcher";
+import NativeHeader from "./mobile/NativeHeader";
+import BottomTabs from "./mobile/BottomTabs";
 
 function handleLogout() {
   sessionStorage.removeItem("lg_auth");
@@ -71,12 +73,15 @@ export default function Layout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
+      {/* Mobile Header */}
+      <NativeHeader onMenuOpen={() => setMobileOpen(true)} hubLabel={hubConfig?.label} />
+
       {mobileOpen && (
         <div className="fixed inset-0 z-30 bg-black/50 lg:hidden" onClick={() => setMobileOpen(false)} />
       )}
 
       <aside className={cn(
-        "fixed lg:relative z-40 h-full flex flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300 lg:max-w-none",
+        "fixed lg:relative z-40 h-full flex flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300 lg:max-w-none top-14 lg:top-0",
         collapsed ? "w-[68px]" : "w-[220px]",
         mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>
@@ -258,27 +263,30 @@ export default function Layout() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto flex flex-col min-w-0">
-          {/* Hub back button strip — shown when not on welcome screen and not on "/" */}
-          {activeHub !== "welcome" && location.pathname !== "/" && (
-            <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 border-b border-border/50 bg-sidebar/30 text-[11px] sm:text-xs">
-              <button
-                onClick={handleGoHome}
-                className="flex items-center gap-0.5 sm:gap-1.5 text-sidebar-foreground/60 hover:text-primary transition-colors font-medium whitespace-nowrap"
-              >
-                <Home className="h-3 w-3 flex-shrink-0" />
-                <span className="hidden sm:inline">Wróć do menu głównego</span>
-                <span className="sm:hidden">Wróć</span>
-              </button>
-              <span className="text-border/80 hidden sm:inline">·</span>
-              <span className="text-muted-foreground font-semibold truncate">{hubConfig.label}</span>
-            </div>
-          )}
-          <div className="flex-1 overflow-auto w-full">
-            <Outlet />
-          </div>
+        <main className="flex-1 overflow-auto flex flex-col min-w-0 pb-24 lg:pb-0 mt-14 lg:mt-0">
+           {/* Hub back button strip — shown when not on welcome screen and not on "/" */}
+           {activeHub !== "welcome" && location.pathname !== "/" && (
+             <div className="hidden lg:flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 border-b border-border/50 bg-sidebar/30 text-[11px] sm:text-xs">
+               <button
+                 onClick={handleGoHome}
+                 className="flex items-center gap-0.5 sm:gap-1.5 text-sidebar-foreground/60 hover:text-primary transition-colors font-medium whitespace-nowrap"
+               >
+                 <Home className="h-3 w-3 flex-shrink-0" />
+                 <span className="hidden sm:inline">Wróć do menu głównego</span>
+                 <span className="sm:hidden">Wróć</span>
+               </button>
+               <span className="text-border/80 hidden sm:inline">·</span>
+               <span className="text-muted-foreground font-semibold truncate">{hubConfig.label}</span>
+             </div>
+           )}
+           <div className="flex-1 overflow-auto w-full lg:pb-0">
+             <Outlet />
+           </div>
         </main>
       </div>
+
+      {/* Mobile Bottom Tabs */}
+      <BottomTabs />
     </div>
   );
 }

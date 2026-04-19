@@ -92,5 +92,20 @@
   }
   body {
     @apply bg-background text-foreground font-inter;
+    overscroll-behavior: none;
+    padding-top: max(0, env(safe-area-inset-top));
+    padding-bottom: max(0, env(safe-area-inset-bottom));
+    padding-left: max(0, env(safe-area-inset-left));
+    padding-right: max(0, env(safe-area-inset-right));
+  }
+  button, a, [role="button"] {
+    @apply user-select-none;
+  }
+}
+
+/* Ensure 44px minimum tap targets for mobile */
+@media (max-width: 1024px) {
+  button, a, [role="button"], [role="tab"] {
+    @apply min-h-[44px] min-w-[44px];
   }
 }
