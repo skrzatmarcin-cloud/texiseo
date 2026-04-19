@@ -8,7 +8,6 @@ import {
   Wand2, Share2, Play, Layers, Package, LogOut
 } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate, Outlet, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useHub, HUBS_CONFIG } from "@/lib/HubContext";
