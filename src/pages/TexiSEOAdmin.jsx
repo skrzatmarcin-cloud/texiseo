@@ -1,20 +1,48 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { cn } from "@/lib/utils";
+import RequestsTab from "../components/admin/RequestsTab";
 import {
   Users, CreditCard, MessageSquare, BarChart3, Shield, Bell,
   Check, X, Clock, AlertTriangle, Loader2, Mail, Eye,
   TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw, Lock, GraduationCap,
-  Building2, DollarSign, Lock as LockIcon, Unlock, AlertCircle, Briefcase
+  Building2, DollarSign, Lock as LockIcon, Unlock, AlertCircle, Briefcase,
+  Sparkles, Search, Link2, Globe, Settings, FileText
 } from "lucide-react";
 
-const TABS = [
+const BRANDS = [
+  { id: "texiseo", label: "TexiSEO.ai", icon: Sparkles, color: "from-indigo-600 to-purple-600", desc: "SEO, Backlinki, Content" },
+  { id: "linguatoons", label: "LinguaToons", icon: GraduationCap, color: "from-blue-600 to-cyan-600", desc: "Platform Nauczycieli" },
+  { id: "enterprise", label: "Enterprise", icon: Building2, color: "from-slate-600 to-slate-800", desc: "Zarządzanie Firmami" },
+];
+
+const TEXISEO_TABS = [
   { id: "dashboard", label: "Dashboard", icon: BarChart3 },
+  { id: "seo", label: "SEO Tools", icon: Search },
+  { id: "backlinks", label: "Backlinki", icon: Link2 },
+  { id: "wordpress", label: "WordPress", icon: Globe },
   { id: "requests", label: "Zgłoszenia", icon: MessageSquare },
-  { id: "enterprise", label: "Enterprise", icon: Building2 },
+];
+
+const LINGUATOONS_TABS = [
+  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
+  { id: "teachers", label: "Nauczyciele", icon: Users },
+  { id: "lessons", label: "Lekcje", icon: BookOpen },
+  { id: "payments", label: "Rozliczenia", icon: CreditCard },
+];
+
+const ENTERPRISE_TABS = [
+  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
+  { id: "companies", label: "Firmy", icon: Building2 },
   { id: "users", label: "Użytkownicy", icon: Users },
-  { id: "linguatoons", label: "LinguaToons Admin", icon: GraduationCap },
   { id: "payments", label: "Płatności", icon: CreditCard },
+];
+
+const SECURITY_TABS = [
+  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
+  { id: "logins", label: "Login Attempts", icon: Lock },
+  { id: "alerts", label: "Security Alerts", icon: AlertCircle },
+  { id: "settings", label: "Ustawienia", icon: Settings },
 ];
 
 const REQUEST_TYPE_LABELS = {
@@ -90,9 +118,14 @@ export default function TexiSEOAdmin() {
 }
 
 function TexiSEOAdminInner() {
+  const [brand, setBrand] = useState(() => {
+    const p = new URLSearchParams(window.location.search).get("brand");
+    return ["texiseo","linguatoons","enterprise","security"].includes(p) ? p : "texiseo";
+  });
+  
   const [tab, setTab] = useState(() => {
     const p = new URLSearchParams(window.location.search).get("tab");
-    return ["dashboard","requests","users","payments"].includes(p) ? p : "dashboard";
+    return ["dashboard","seo","backlinks","wordpress","requests","teachers","lessons","payments","companies","users","logins","alerts","settings"].includes(p) ? p : "dashboard";
   });
   const [requests, setRequests] = useState([]);
   const [users, setUsers] = useState([]);
@@ -136,24 +169,57 @@ function TexiSEOAdminInner() {
   const pending = requests.filter(r => r.status === "pending_review").length;
   const resolved = requests.filter(r => r.status === "resolved" || r.status === "implemented").length;
 
+  const currentBrand = BRANDS.find(b => b.id === brand);
+  const getTabs = () => {
+    if (brand === "texiseo") return TEXISEO_TABS;
+    if (brand === "linguatoons") return LINGUATOONS_TABS;
+    if (brand === "enterprise") return ENTERPRISE_TABS;
+    return SECURITY_TABS;
+  };
+  const currentTabs = getTabs();
+
   return (
     <div className="flex flex-col h-full">
+      {/* Brand Selector */}
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 pt-4 pb-3 border-b border-white/10">
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {BRANDS.map(b => {
+            const BrandIcon = b.icon;
+            return (
+              <button
+                key={b.id}
+                onClick={() => { setBrand(b.id); setTab("dashboard"); }}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-xl border-2 transition-all whitespace-nowrap",
+                  brand === b.id
+                    ? `border-white bg-gradient-to-r ${b.color} text-white font-semibold`
+                    : "border-white/10 bg-white/5 text-white/60 hover:text-white/80"
+                )}
+              >
+                <BrandIcon className="h-4 w-4" />
+                {b.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 pt-6 pb-0">
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 pt-4 pb-0">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-bold text-white flex items-center gap-2">
               <Shield className="h-5 w-5 text-blue-400" />
-              Panel Admina — TexiSEO.ai
+              {currentBrand?.label}
             </h1>
-            <p className="text-xs text-white/50 mt-0.5">Zarządzaj platformą, użytkownikami i zgłoszeniami klientów</p>
+            <p className="text-xs text-white/50 mt-0.5">{currentBrand?.desc}</p>
           </div>
           <button onClick={load} className="h-8 w-8 flex items-center justify-center rounded-lg bg-white/10 text-white/60 hover:text-white hover:bg-white/20 transition-colors">
             <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
           </button>
         </div>
         <div className="flex gap-0.5">
-          {TABS.map(t => (
+          {currentTabs.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className={cn("flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium border-b-2 whitespace-nowrap transition-colors",
                 tab === t.id ? "border-blue-400 text-white" : "border-transparent text-white/40 hover:text-white/70"
@@ -175,8 +241,118 @@ function TexiSEOAdminInner() {
           </div>
         )}
 
-        {/* ===== DASHBOARD ===== */}
-        {!loading && tab === "dashboard" && (
+        {/* ===== TEXISEO BRAND ===== */}
+        {brand === "texiseo" && !loading && tab === "dashboard" && (
+          <div className="max-w-5xl mx-auto space-y-5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <StatCard label="SEO Tools" value="—" icon={Search} color="bg-indigo-50 text-indigo-600" sub="pomysły, content" />
+              <StatCard label="Backlinki" value="—" icon={Link2} color="bg-blue-50 text-blue-600" sub="monitoring" />
+              <StatCard label="WordPress" value="—" icon={Globe} color="bg-emerald-50 text-emerald-600" sub="integracja" />
+              <StatCard label="Zgłoszenia" value={newReqs} icon={MessageSquare} color="bg-amber-50 text-amber-600" sub="nowe" />
+            </div>
+            <div className="bg-card border border-border rounded-2xl p-5 text-center text-muted-foreground">
+              <p className="text-sm">TexiSEO.ai Panel — Sekcje będą wkrótce dostępne</p>
+            </div>
+          </div>
+        )}
+
+        {brand === "texiseo" && !loading && tab === "seo" && (
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <Search className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-sm font-semibold text-muted-foreground">SEO Tools</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Generator pomysłów, content ideas, briefs — dostępne wkrótce</p>
+            </div>
+          </div>
+        )}
+
+        {brand === "texiseo" && !loading && tab === "backlinks" && (
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <Link2 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-sm font-semibold text-muted-foreground">Backlink System</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Zarządzanie backlinkkami, monitoring, strategia — dostępne wkrótce</p>
+            </div>
+          </div>
+        )}
+
+        {brand === "texiseo" && !loading && tab === "wordpress" && (
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <Globe className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-sm font-semibold text-muted-foreground">WordPress Integration</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Synchronizacja, publikacja, zarządzanie — dostępne wkrótce</p>
+            </div>
+          </div>
+        )}
+
+        {brand === "texiseo" && !loading && tab === "requests" && (
+          <RequestsTab requests={requests} newReqs={newReqs} pending={pending} leads={leads} selectedReq={selectedReq} setSelectedReq={setSelectedReq} updateRequest={updateRequest} sendAdminEmail={sendAdminEmail} updating={updating} />
+        )}
+
+        {/* ===== LINGUATOONS BRAND ===== */}
+        {brand === "linguatoons" && !loading && tab === "dashboard" && (
+          <div className="max-w-5xl mx-auto space-y-5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <StatCard label="Nauczyciele" value="—" icon={Users} color="bg-blue-50 text-blue-600" sub="aktywni" />
+              <StatCard label="Lekcje" value="—" icon={BookOpen} color="bg-emerald-50 text-emerald-600" sub="zaplanowane" />
+              <StatCard label="Rozliczenia" value="—" icon={CreditCard} color="bg-amber-50 text-amber-600" sub="pending" />
+              <StatCard label="Kursy" value="—" icon={Sparkles} color="bg-purple-50 text-purple-600" sub="dostępne" />
+            </div>
+            <div className="bg-card border border-border rounded-2xl p-5 text-center text-muted-foreground">
+              <p className="text-sm">LinguaToons Platform — Sekcje będą wkrótce dostępne</p>
+            </div>
+          </div>
+        )}
+
+        {brand === "linguatoons" && !loading && (tab === "teachers" || tab === "lessons" || tab === "payments") && (
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <BarChart3 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-sm font-semibold text-muted-foreground">LinguaToons Management</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Zarządzanie nauczycielami, lekcjami i rozliczeniami — dostępne wkrótce</p>
+            </div>
+          </div>
+        )}
+
+        {/* ===== ENTERPRISE BRAND ===== */}
+        {brand === "enterprise" && !loading && tab === "dashboard" && (
+          <div className="max-w-5xl mx-auto space-y-5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <StatCard label="Firmy" value="—" icon={Building2} color="bg-slate-50 text-slate-600" sub="aktywne" />
+              <StatCard label="Użytkownicy" value="—" icon={Users} color="bg-blue-50 text-blue-600" sub="registered" />
+              <StatCard label="Płatności" value="—" icon={CreditCard} color="bg-emerald-50 text-emerald-600" sub="pending" />
+              <StatCard label="Invoices" value="—" icon={FileText} color="bg-amber-50 text-amber-600" sub="issued" />
+            </div>
+            <div className="bg-card border border-border rounded-2xl p-5 text-center text-muted-foreground">
+              <p className="text-sm">Enterprise Panel — Zarządzanie firmami i użytkownikami</p>
+            </div>
+          </div>
+        )}
+
+        {brand === "enterprise" && !loading && (tab === "companies" || tab === "users" || tab === "payments") && (
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <Building2 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-sm font-semibold text-muted-foreground">Enterprise Management</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Zarządzanie firmami, użytkownikami i płatności — dostępne wkrótce</p>
+            </div>
+          </div>
+        )}
+
+        {/* ===== SECURITY BRAND ===== */}
+        {brand === "security" && !loading && tab === "dashboard" && (
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-card border border-border rounded-2xl p-8 text-center">
+              <Shield className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
+              <p className="text-sm font-semibold text-muted-foreground">Security Center</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Monitorowanie bezpieczeństwa, login attempts, security alerts</p>
+            </div>
+          </div>
+        )}
+
+        {/* ===== OLD DASHBOARD (for backward compatibility) ===== */}
+        {!loading && tab === "dashboard" && brand !== "texiseo" && brand !== "linguatoons" && brand !== "enterprise" && (
           <div className="max-w-5xl mx-auto space-y-5">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <StatCard label="Nowe zgłoszenia" value={newReqs} icon={Bell} color="bg-blue-50 text-blue-600" sub="do obsługi" />
