@@ -180,7 +180,8 @@ export default function WebsiteHub() {
     await base44.auth.logout("/");
   };
 
-  const isDomainVerified = !!user?.website_url;
+  const isAdmin = sessionStorage.getItem("lg_is_admin") === "1";
+  const isDomainVerified = isAdmin || !!user?.website_url;
 
   if (loading) {
     return (
@@ -210,9 +211,10 @@ export default function WebsiteHub() {
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed",
                 activeTab === tab.id
-                  ? "bg-purple-600 text-white"
+                  ? isAdmin ? "bg-teal-600 text-white" : "bg-purple-600 text-white"
                   : "text-slate-300 hover:bg-slate-800"
               )}
+              title={isAdmin && tab.id !== "overview" ? "✓ Admin dostęp" : ""}
             >
               <tab.icon className="h-4 w-4" />
               {tab.label}
