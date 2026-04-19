@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   RefreshCw, Download, Upload, BarChart3, Eye, Copy,
   Trash2, AlertCircle, CheckCircle2, Loader2, Link2,
-  Users, BookOpen, Clock, TrendingUp, ArrowRight
+  Users, BookOpen, Clock, TrendingUp, ArrowRight, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
