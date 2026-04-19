@@ -5,10 +5,10 @@ import { base44 } from "@/api/base44Client";
 import {
   GraduationCap, Briefcase, Globe, Settings, Plug2,
   BookOpen, Users, CreditCard, BarChart3, Building2, Layers,
-  Sparkles, Lightbulb, Lock
+  Sparkles, Lightbulb, Lock, TrendingUp, CalendarClock
 } from "lucide-react";
 
-const HUBS = [
+const ALL_HUBS = [
   {
     id: "teachers",
     label: "👨‍🏫 Panel Nauczyciela",
@@ -58,6 +58,92 @@ const HUBS = [
       { label: "SEO Narzędzia", icon: Sparkles },
       { label: "Treść", icon: Lightbulb },
       { label: "Analityka", icon: BarChart3 },
+    ],
+  },
+
+  // ADMIN ONLY HUBS
+  {
+    id: "security",
+    label: "🔒 Bezpieczeństwo",
+    sublabel: "Security • WordPress • Backlinki",
+    to: "/security",
+    gradient: "from-blue-700 to-blue-900",
+    glowColor: "shadow-blue-900/60",
+    Icon: GraduationCap,
+    iconColor: "text-blue-300",
+    adminOnly: true,
+    sublinks: [
+      { label: "Security", icon: Users },
+      { label: "WordPress", icon: Globe },
+      { label: "Backlinki", icon: Sparkles },
+    ],
+  },
+
+  {
+    id: "seo",
+    label: "🎯 SEO Narzędzia",
+    sublabel: "Content • Klastry • Publikacje",
+    to: "/content-ideas",
+    gradient: "from-indigo-600 to-purple-700",
+    glowColor: "shadow-purple-900/60",
+    Icon: Sparkles,
+    iconColor: "text-indigo-200",
+    adminOnly: true,
+    sublinks: [
+      { label: "Content", icon: Lightbulb },
+      { label: "Klastry", icon: Building2 },
+      { label: "Publikacje", icon: CalendarClock },
+    ],
+  },
+
+  {
+    id: "directory",
+    label: "📚 Katalog Firm",
+    sublabel: "Direktoria • Konkurenci • Links",
+    to: "/directory",
+    gradient: "from-slate-600 to-slate-800",
+    glowColor: "shadow-slate-900/60",
+    Icon: Building2,
+    iconColor: "text-slate-300",
+    adminOnly: true,
+    sublinks: [
+      { label: "Katalog", icon: Building2 },
+      { label: "Konkurenci", icon: TrendingUp },
+      { label: "Link Exchange", icon: Sparkles },
+    ],
+  },
+
+  {
+    id: "analytics",
+    label: "📊 Analityka",
+    sublabel: "Analytics • Content Engine",
+    to: "/analytics",
+    gradient: "from-cyan-600 to-blue-700",
+    glowColor: "shadow-cyan-900/60",
+    Icon: BarChart3,
+    iconColor: "text-cyan-200",
+    adminOnly: true,
+    sublinks: [
+      { label: "Analytics", icon: BarChart3 },
+      { label: "Content Engine", icon: Sparkles },
+      { label: "Social Media", icon: Users },
+    ],
+  },
+
+  {
+    id: "self_promotion",
+    label: "✨ SEO Autopromocja",
+    sublabel: "Generator • Konkurenci • AI",
+    to: "/self-promotion",
+    gradient: "from-violet-600 to-purple-700",
+    glowColor: "shadow-purple-900/60",
+    Icon: Sparkles,
+    iconColor: "text-violet-200",
+    adminOnly: true,
+    sublinks: [
+      { label: "Generator", icon: Sparkles },
+      { label: "Konkurenci", icon: TrendingUp },
+      { label: "Keywords", icon: Building2 },
     ],
   },
 ];
@@ -199,7 +285,7 @@ export default function WelcomeScreen() {
 
       {/* Main Hubs Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {HUBS.map(hub => (
+        {ALL_HUBS.filter(hub => !hub.adminOnly || user?.role === "admin").map(hub => (
           <HubCard key={hub.id} hub={hub} onSelect={handleSelect} user={user} />
         ))}
       </div>
