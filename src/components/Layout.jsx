@@ -9,8 +9,13 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
-
+import { LogOut } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
+
+function handleLogout() {
+  sessionStorage.removeItem("lg_auth");
+  window.location.reload();
+}
 
 const NAV_ITEMS = [
   { to: "/", labelKey: "dashboard", icon: LayoutDashboard },
@@ -129,6 +134,13 @@ export default function Layout() {
             <div className="h-7 w-7 rounded-full bg-primary flex items-center justify-center">
               <span className="text-[11px] font-semibold text-primary-foreground">L</span>
             </div>
+            <button
+              onClick={handleLogout}
+              title="Wyloguj się"
+              className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
           </div>
         </header>
 
