@@ -427,11 +427,7 @@ function LoginGateInner({ children }) {
                   </button>
                 </div>
 
-                {/* Admin credentials info */}
-                <div className="mt-4 pt-4 border-t border-white/20 text-center">
-                  <p className="text-[10px] text-white/40 mb-2">Admin credentials:</p>
-                  <p className="text-[10px] text-white/30 font-mono">Marcin / Cinek123</p>
-                </div>
+
               </>
             ) : mode === "demo-select" ? (
                /* DEMO SELECTION */
