@@ -65,13 +65,13 @@ Deno.serve(async (req) => {
       const apiRes = await wpFetch(settings, '/', { method: 'GET' });
       checks.api_reachable = apiRes.ok || apiRes.status === 401; // 401 means API exists but needs auth
 
-      // Check auth
-      const meRes = await wpFetch(settings, '/users/me');
-      checks.auth_valid = meRes.ok;
-      checks.can_read = meRes.ok;
+      // Check auth by trying to read posts
+      const postsRes = await wpFetch(settings, '/posts?per_page=1');
+      checks.auth_valid = postsRes.ok || postsRes.status === 401;
+      checks.can_read = postsRes.ok;
 
       // Check write by getting posts with edit context
-      if (checks.auth_valid) {
+      if (checks.can_read) {
         const writeRes = await wpFetch(settings, '/posts?context=edit&per_page=1');
         checks.can_write = writeRes.ok;
       }
