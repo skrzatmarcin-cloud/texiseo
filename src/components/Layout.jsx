@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
+
 import LanguageSwitcher from "./LanguageSwitcher";
 
 const NAV_ITEMS = [
@@ -43,7 +44,7 @@ export default function Layout() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const { t } = useLanguage();
+  const { t, showLangSwitcher } = useLanguage();
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -123,7 +124,7 @@ export default function Layout() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <LanguageSwitcher compact />
+            {showLangSwitcher && <LanguageSwitcher mini />}
             <span className="text-xs text-muted-foreground font-medium hidden sm:block">linguatoons.com</span>
             <div className="h-7 w-7 rounded-full bg-primary flex items-center justify-center">
               <span className="text-[11px] font-semibold text-primary-foreground">L</span>

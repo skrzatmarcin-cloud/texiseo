@@ -100,6 +100,10 @@ export const TRANSLATIONS = {
     ai_chat: "Asystent AI",
     send: "Wyślij",
     type_message: "Napisz wiadomość…",
+    settings_desc: "Język systemu, reguły marki i konfiguracja",
+    system_language: "Język systemu",
+    show_lang_switcher: "Pokaż ikonkę zmiany języka",
+    show_lang_switcher_desc: "Mała ikonka flagi widoczna w nagłówku systemu",
   },
 
   en: {
@@ -189,6 +193,10 @@ export const TRANSLATIONS = {
     ai_chat: "AI Assistant",
     send: "Send",
     type_message: "Type a message…",
+    settings_desc: "System language, brand rules and configuration",
+    system_language: "System language",
+    show_lang_switcher: "Show language switcher icon",
+    show_lang_switcher_desc: "Small flag icon visible in the system header",
   },
 
   de: {
@@ -278,6 +286,10 @@ export const TRANSLATIONS = {
     ai_chat: "KI-Assistent",
     send: "Senden",
     type_message: "Nachricht schreiben…",
+    settings_desc: "Systemsprache, Markenregeln und Konfiguration",
+    system_language: "Systemsprache",
+    show_lang_switcher: "Sprachumschalter-Symbol anzeigen",
+    show_lang_switcher_desc: "Kleines Flaggen-Symbol im Systemheader",
   },
 
   fr: {
@@ -367,6 +379,10 @@ export const TRANSLATIONS = {
     ai_chat: "Assistant IA",
     send: "Envoyer",
     type_message: "Écrire un message…",
+    settings_desc: "Langue du système, règles de marque et configuration",
+    system_language: "Langue du système",
+    show_lang_switcher: "Afficher l'icône de langue",
+    show_lang_switcher_desc: "Petite icône de drapeau visible dans l'en-tête",
   },
 
   es: {
@@ -456,6 +472,10 @@ export const TRANSLATIONS = {
     ai_chat: "Asistente IA",
     send: "Enviar",
     type_message: "Escribe un mensaje…",
+    settings_desc: "Idioma del sistema, reglas de marca y configuración",
+    system_language: "Idioma del sistema",
+    show_lang_switcher: "Mostrar icono de idioma",
+    show_lang_switcher_desc: "Pequeño icono de bandera visible en el encabezado",
   },
 };
 
