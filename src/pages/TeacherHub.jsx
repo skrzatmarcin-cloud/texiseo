@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Users, Calendar, MessageSquare, BookOpen, CreditCard,
-  Video, BarChart3
+  Video, BarChart3, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import TeacherPlanner from "../components/teachers/TeacherPlanner";
@@ -10,9 +10,11 @@ import TeacherCourseManager from "../components/teachers/TeacherCourseManager";
 import TeacherPayroll from "../components/teachers/TeacherPayroll";
 import TeacherStats from "../components/teachers/TeacherStats";
 import LiveLessonsPanel from "../components/teachers/LiveLessonsPanel";
+import TestBuilder from "../components/teachers/TestBuilder";
 
 const TABS = [
   { id: "courses", label: "Moje kursy", icon: BookOpen, desc: "Kursy i klastry" },
+  { id: "tests", label: "Testy & Quizy", icon: Zap, desc: "Quizy, gry, egzaminy" },
   { id: "planner", label: "Planer lekcji", icon: Calendar, desc: "Harmonogram" },
   { id: "live", label: "Lekcje live", icon: Video, desc: "Google Meet/Zoom" },
   { id: "chat", label: "Wiadomości", icon: MessageSquare, desc: "Czat ze studentami" },
@@ -23,7 +25,7 @@ const TABS = [
 export default function TeacherHub() {
   const [tab, setTab] = useState(() => {
     const p = new URLSearchParams(window.location.search).get("tab");
-    const valid = ["courses","planner","live","chat","payroll","stats"];
+    const valid = ["courses","tests","planner","live","chat","payroll","stats"];
     return valid.includes(p) ? p : "courses";
   });
 
@@ -68,6 +70,7 @@ export default function TeacherHub() {
       {/* Content */}
       <div className="flex-1 overflow-auto bg-background">
         {tab === "courses" && <TeacherCourseManager />}
+        {tab === "tests" && <TestBuilder />}
         {tab === "planner" && <TeacherPlanner />}
         {tab === "live" && <LiveLessonsPanel />}
         {tab === "chat" && <TeacherChat />}
