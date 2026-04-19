@@ -98,7 +98,10 @@ function ReportsPanel() {
 }
 
 export default function BusinessHub() {
-  const [tab, setTab] = useState("companies");
+  const [tab, setTab] = useState(() => {
+    const p = new URLSearchParams(window.location.search).get("tab");
+    return ["companies","inventory","production","suppliers","reports"].includes(p) ? p : "companies";
+  });
   const { t } = useLanguage();
 
   return (

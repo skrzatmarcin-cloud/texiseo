@@ -30,7 +30,11 @@ const TABS = [
 ];
 
 export default function TeacherHub() {
-  const [tab, setTab] = useState("marketplace");
+  const [tab, setTab] = useState(() => {
+    const p = new URLSearchParams(window.location.search).get("tab");
+    const valid = ["marketplace","courses_market","teachers","planner","live","chat","payroll","commissions","stats","admin"];
+    return valid.includes(p) ? p : "marketplace";
+  });
 
   return (
     <div className="flex flex-col h-full">

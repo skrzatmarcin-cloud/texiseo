@@ -38,6 +38,8 @@ const HUB_COLORS = {
   teachers: "text-blue-300",
   analytics: "text-cyan-400",
   business: "text-blue-200",
+  self_promotion: "text-violet-300",
+  texiseo_admin: "text-yellow-300",
 };
 
 export default function Layout() {
@@ -151,8 +153,10 @@ export default function Layout() {
               const IconComp = ICON_MAP[item.icon] || Home;
               const isHome = item.label.startsWith("←");
               const isSettings = item.to === "/settings";
+              // Compare path only (strip ?tab= from both sides for active detection)
+              const itemPath = item.to.split("?")[0];
               const isActive = !isHome && !isSettings && (
-                item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to)
+                itemPath === "/" ? location.pathname === "/" : location.pathname.startsWith(itemPath)
               );
 
               if (isHome) {

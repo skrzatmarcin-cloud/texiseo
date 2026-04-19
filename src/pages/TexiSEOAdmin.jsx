@@ -83,7 +83,10 @@ export default function TexiSEOAdmin() {
 }
 
 function TexiSEOAdminInner() {
-  const [tab, setTab] = useState("dashboard");
+  const [tab, setTab] = useState(() => {
+    const p = new URLSearchParams(window.location.search).get("tab");
+    return ["dashboard","requests","users","payments"].includes(p) ? p : "dashboard";
+  });
   const [requests, setRequests] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);

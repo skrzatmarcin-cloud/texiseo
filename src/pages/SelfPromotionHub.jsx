@@ -79,7 +79,10 @@ function SaveToContentIdeas({ content, title }) {
 }
 
 export default function SelfPromotionHub() {
-  const [activeTab, setActiveTab] = useState("generator");
+  const [activeTab, setActiveTab] = useState(() => {
+    const p = new URLSearchParams(window.location.search).get("tab");
+    return ["generator","competitors","keywords","agent","content"].includes(p) ? (p === "content" ? "generator" : p) : "generator";
+  });
   const [selectedAction, setSelectedAction] = useState(null);
   const [topic, setTopic] = useState("");
   const [generating, setGenerating] = useState(false);
