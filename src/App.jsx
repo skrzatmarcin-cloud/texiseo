@@ -41,6 +41,7 @@ import TeacherHub from './pages/TeacherHub';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TeacherDashboard from './pages/TeacherDashboard';
 import AdminTeacherManagement from './pages/AdminTeacherManagement';
+import ClientSEODashboard from './pages/ClientSEODashboard';
 import CookieBanner from './components/CookieBanner';
 import BusinessHub from './pages/BusinessHub';
 import SelfPromotionHub from './pages/SelfPromotionHub';
@@ -110,6 +111,7 @@ const AuthenticatedApp = () => {
           <Route path="/teachers" element={<TeacherHub />} />
           <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
           <Route path="/admin-teachers" element={<AdminTeacherManagement />} />
+          <Route path="/client-seo/:websiteId" element={<ClientSEODashboard />} />
           <Route path="/business" element={<BusinessHub />} />
           <Route path="/self-promotion" element={<SelfPromotionHub />} />
           <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
@@ -166,6 +168,7 @@ const AuthenticatedApp = () => {
         <Route path="/teachers" element={<TeacherHub />} />
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
         <Route path="/admin-teachers" element={<AdminTeacherManagement />} />
+        <Route path="/client-seo/:websiteId" element={<ClientSEODashboard />} />
         <Route path="/business" element={<BusinessHub />} />
         <Route path="/self-promotion" element={<SelfPromotionHub />} />
         <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />

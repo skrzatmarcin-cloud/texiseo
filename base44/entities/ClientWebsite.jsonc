@@ -1,0 +1,80 @@
+{
+  "name": "ClientWebsite",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "title": "ID klienta"
+    },
+    "client_email": {
+      "type": "string",
+      "title": "Email klienta"
+    },
+    "domain_name": {
+      "type": "string",
+      "title": "Nazwa domeny (np. example.com)"
+    },
+    "website_url": {
+      "type": "string",
+      "title": "Full URL"
+    },
+    "website_type": {
+      "type": "string",
+      "enum": [
+        "business",
+        "elearning",
+        "portfolio",
+        "marketplace",
+        "other"
+      ],
+      "title": "Typ strony"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "pl",
+        "en",
+        "es",
+        "fr"
+      ],
+      "title": "G\u0142\u00f3wny j\u0119zyk",
+      "default": "pl"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "planned"
+      ],
+      "title": "Status",
+      "default": "active"
+    },
+    "seo_enabled": {
+      "type": "boolean",
+      "title": "SEO Admin w\u0142\u0105czony",
+      "default": true
+    },
+    "gsc_connected": {
+      "type": "boolean",
+      "title": "Google Search Console po\u0142\u0105czony",
+      "default": false
+    },
+    "analytics_connected": {
+      "type": "boolean",
+      "title": "Google Analytics po\u0142\u0105czony",
+      "default": false
+    },
+    "created_date": {
+      "type": "string",
+      "title": "Data utworzenia"
+    }
+  },
+  "required": [
+    "client_id",
+    "client_email",
+    "domain_name",
+    "website_url",
+    "status"
+  ]
+}
