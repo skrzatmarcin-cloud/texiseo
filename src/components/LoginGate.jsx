@@ -5,8 +5,8 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "@/lib/LanguageContext";
 import SecurityScanAnimation from "./SecurityScanAnimation";
 
-const CREDENTIALS      = { username: "Marcin",      password: "Marcinek2026!" };
-const ADMIN_CREDENTIALS = { username: "TexiAdmin",   password: "TxSEO@Admin2026!" };
+const CREDENTIALS      = { username: "DemoUser",    password: "Demo2026!" };
+const ADMIN_CREDENTIALS = { username: "Marcin",      password: "Marcinek2026!" };
 const ADMIN_EMAIL       = "skrzatmarcin@gmail.com";
 const MAX_FAILS         = 3;
 const BLOCK_MINUTES     = 30;
