@@ -109,3 +109,8 @@
     @apply min-h-[44px] min-w-[44px];
   }
 }
+
+/* Prevent rubber-banding on scroll containers */
+.overscroll-none {
+  overscroll-behavior: none;
+}

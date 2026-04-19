@@ -7,8 +7,23 @@
     <meta name="apple-mobile-web-app-capable" content="true" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#1e1b4b" />
+    <meta name="color-scheme" content="light dark" />
     <link rel="manifest" href="/manifest.json" />
     <title>TexiSEO AI &amp; Enterprise</title>
+    <script>
+      // Detect dark mode and apply class immediately to prevent flash
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+      // Listen for system dark mode changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (e.matches) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      });
+    </script>
   </head>
   <body style="overscroll-behavior: none;">
     <div id="root"></div>

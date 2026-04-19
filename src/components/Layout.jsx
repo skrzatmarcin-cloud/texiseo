@@ -15,6 +15,9 @@ import { base44 } from "@/api/base44Client";
 import LanguageSwitcher from "./LanguageSwitcher";
 import NativeHeader from "./mobile/NativeHeader";
 import BottomTabs from "./mobile/BottomTabs";
+import PullToRefresh from "./mobile/PullToRefresh";
+import RouteTransition from "./RouteTransition";
+import { useLocation } from "react-router-dom";
 
 function handleLogout() {
   sessionStorage.removeItem("lg_auth");
@@ -263,7 +266,7 @@ export default function Layout() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto flex flex-col min-w-0 pb-24 lg:pb-0 mt-14 lg:mt-0">
+        <main className="flex-1 overflow-auto flex flex-col min-w-0 pb-24 lg:pb-0 mt-14 lg:mt-0 overscroll-none">
            {/* Hub back button strip — shown when not on welcome screen and not on "/" */}
            {activeHub !== "welcome" && location.pathname !== "/" && (
              <div className="hidden lg:flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 border-b border-border/50 bg-sidebar/30 text-[11px] sm:text-xs">
@@ -279,9 +282,13 @@ export default function Layout() {
                <span className="text-muted-foreground font-semibold truncate">{hubConfig.label}</span>
              </div>
            )}
-           <div className="flex-1 overflow-auto w-full lg:pb-0">
-             <Outlet />
-           </div>
+           <PullToRefresh onRefresh={() => window.location.reload()}>
+             <div className="flex-1 overflow-auto w-full lg:pb-0 overscroll-none">
+               <RouteTransition>
+                 <Outlet />
+               </RouteTransition>
+             </div>
+           </PullToRefresh>
         </main>
       </div>
 
