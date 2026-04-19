@@ -5,8 +5,8 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "@/lib/LanguageContext";
 import SecurityScanAnimation from "./SecurityScanAnimation";
 
-const ADMIN_CREDENTIALS = { username: "admin",      password: "demo123456" };
-const ADMIN_EMAIL       = "admin@example.com";
+const ADMIN_CREDENTIALS = { username: "Marcin",      password: "Cinek123" };
+const ADMIN_EMAIL       = "marcin@linguatoons.com";
 const MAX_FAILS         = 3;
 const BLOCK_MINUTES     = 30;
 
@@ -378,10 +378,10 @@ function LoginGateInner({ children }) {
                   </button>
                 </div>
 
-                {/* Demo credentials info */}
+                {/* Admin credentials info */}
                 <div className="mt-4 pt-4 border-t border-white/20 text-center">
-                  <p className="text-[10px] text-white/40 mb-2">Demo credentials:</p>
-                  <p className="text-[10px] text-white/30 font-mono">admin / demo123456</p>
+                  <p className="text-[10px] text-white/40 mb-2">Admin credentials:</p>
+                  <p className="text-[10px] text-white/30 font-mono">Marcin / Cinek123</p>
                 </div>
               </>
             ) : mode === "demo-select" ? (
