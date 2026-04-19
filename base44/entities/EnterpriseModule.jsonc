@@ -1,0 +1,69 @@
+{
+  "name": "EnterpriseModule",
+  "type": "object",
+  "properties": {
+    "workspace_id": {
+      "type": "string",
+      "title": "Workspace ID"
+    },
+    "module_type": {
+      "type": "string",
+      "enum": [
+        "crm",
+        "mes",
+        "wms",
+        "erp",
+        "marketing",
+        "ai_insights"
+      ],
+      "title": "Module Type"
+    },
+    "module_name": {
+      "type": "string",
+      "title": "Module Name"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "trial",
+        "disabled"
+      ],
+      "title": "Status",
+      "default": "inactive"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Enabled Features"
+    },
+    "users_count": {
+      "type": "number",
+      "title": "Number of Users",
+      "default": 0
+    },
+    "last_used": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Last Used Date"
+    },
+    "activated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Activation Date"
+    }
+  },
+  "required": [
+    "workspace_id",
+    "module_type",
+    "module_name",
+    "status"
+  ]
+}
