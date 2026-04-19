@@ -1,0 +1,71 @@
+{
+  "name": "SecurityAlerts",
+  "type": "object",
+  "properties": {
+    "alert_type": {
+      "type": "string",
+      "title": "Typ alertu",
+      "enum": [
+        "brute_force",
+        "sql_injection",
+        "xss_attempt",
+        "suspicious_traffic",
+        "malware_detected",
+        "outdated_plugin",
+        "ssl_issue",
+        "headers_missing",
+        "file_change",
+        "spam_bot",
+        "ddos_pattern",
+        "open_redirect"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "title": "Wa\u017cno\u015b\u0107",
+      "enum": [
+        "critical",
+        "high",
+        "medium",
+        "low",
+        "info"
+      ]
+    },
+    "source_url": {
+      "type": "string",
+      "title": "\u0179r\u00f3d\u0142o / URL"
+    },
+    "description": {
+      "type": "string",
+      "title": "Opis"
+    },
+    "recommendation": {
+      "type": "string",
+      "title": "Rekomendacja"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "open",
+        "in_progress",
+        "resolved",
+        "false_positive"
+      ]
+    },
+    "raw_data": {
+      "type": "string",
+      "title": "Dane surowe (JSON)"
+    },
+    "detected_at": {
+      "type": "string",
+      "title": "Wykryto",
+      "format": "date"
+    }
+  },
+  "required": [
+    "alert_type",
+    "severity",
+    "status"
+  ]
+}

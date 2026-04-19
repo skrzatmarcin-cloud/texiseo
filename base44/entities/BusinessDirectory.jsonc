@@ -1,0 +1,125 @@
+{
+  "name": "BusinessDirectory",
+  "type": "object",
+  "properties": {
+    "business_name": {
+      "type": "string",
+      "title": "Nazwa firmy"
+    },
+    "slug": {
+      "type": "string",
+      "title": "Slug URL"
+    },
+    "description": {
+      "type": "string",
+      "title": "Opis firmy"
+    },
+    "category": {
+      "type": "string",
+      "title": "Kategoria",
+      "enum": [
+        "language_school",
+        "tutoring",
+        "e-learning",
+        "kids_education",
+        "adult_education",
+        "corporate_training",
+        "other"
+      ]
+    },
+    "website_url": {
+      "type": "string",
+      "title": "Strona WWW"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email kontaktowy"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Telefon"
+    },
+    "city": {
+      "type": "string",
+      "title": "Miasto"
+    },
+    "country": {
+      "type": "string",
+      "title": "Kraj",
+      "default": "PL"
+    },
+    "logo_url": {
+      "type": "string",
+      "title": "Logo URL"
+    },
+    "languages_offered": {
+      "type": "array",
+      "title": "J\u0119zyki w ofercie",
+      "items": {
+        "type": "string"
+      }
+    },
+    "age_groups": {
+      "type": "array",
+      "title": "Grupy wiekowe",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rating": {
+      "type": "number",
+      "title": "Ocena",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "review_count": {
+      "type": "number",
+      "title": "Liczba opinii"
+    },
+    "backlink_url": {
+      "type": "string",
+      "title": "URL profilu w katalogu (do linkowania)"
+    },
+    "plan": {
+      "type": "string",
+      "title": "Plan",
+      "enum": [
+        "free",
+        "basic",
+        "premium",
+        "enterprise"
+      ]
+    },
+    "verified": {
+      "type": "boolean",
+      "title": "Zweryfikowana",
+      "default": false
+    },
+    "active": {
+      "type": "boolean",
+      "title": "Aktywna",
+      "default": true
+    },
+    "featured": {
+      "type": "boolean",
+      "title": "Wyr\u00f3\u017cniona",
+      "default": false
+    },
+    "tags": {
+      "type": "array",
+      "title": "Tagi",
+      "items": {
+        "type": "string"
+      }
+    },
+    "seo_description": {
+      "type": "string",
+      "title": "SEO Meta Description"
+    }
+  },
+  "required": [
+    "business_name",
+    "category",
+    "active"
+  ]
+}

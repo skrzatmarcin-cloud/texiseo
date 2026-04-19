@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster"
 import LoginGate from './components/LoginGate';
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useRoutes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -31,6 +31,9 @@ import Analytics from './pages/Analytics';
 import ExecutionCenter from './pages/ExecutionCenter';
 import CompetitorIntel from './pages/CompetitorIntel';
 import SEOAutopilot from './pages/SEOAutopilot';
+import SecurityMonitor from './pages/SecurityMonitor';
+import BusinessDirectory from './pages/BusinessDirectory';
+import DemoLogin from './pages/DemoLogin';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -82,6 +85,8 @@ const AuthenticatedApp = () => {
         <Route path="/execution-center" element={<ExecutionCenter />} />
         <Route path="/competitors" element={<CompetitorIntel />} />
         <Route path="/seo-autopilot" element={<SEOAutopilot />} />
+        <Route path="/security" element={<SecurityMonitor />} />
+        <Route path="/directory" element={<BusinessDirectory />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
@@ -91,15 +96,19 @@ const AuthenticatedApp = () => {
 
 
 function App() {
-
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
-        <LoginGate>
-          <Router>
-            <AuthenticatedApp />
-          </Router>
-        </LoginGate>
+        <Router>
+          <Routes>
+            <Route path="/demo" element={<DemoLogin />} />
+            <Route path="/*" element={
+              <LoginGate>
+                <AuthenticatedApp />
+              </LoginGate>
+            } />
+          </Routes>
+        </Router>
         <Toaster />
       </QueryClientProvider>
     </AuthProvider>

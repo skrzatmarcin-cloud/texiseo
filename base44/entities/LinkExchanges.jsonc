@@ -1,0 +1,60 @@
+{
+  "name": "LinkExchanges",
+  "type": "object",
+  "properties": {
+    "from_business_id": {
+      "type": "string",
+      "title": "Od firmy (ID)"
+    },
+    "to_business_id": {
+      "type": "string",
+      "title": "Do firmy (ID)"
+    },
+    "from_url": {
+      "type": "string",
+      "title": "URL \u017ar\u00f3d\u0142owy"
+    },
+    "to_url": {
+      "type": "string",
+      "title": "URL docelowy"
+    },
+    "anchor_text": {
+      "type": "string",
+      "title": "Tekst kotwicy"
+    },
+    "link_type": {
+      "type": "string",
+      "title": "Typ linku",
+      "enum": [
+        "dofollow",
+        "nofollow"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "active",
+        "pending",
+        "broken",
+        "removed"
+      ]
+    },
+    "published_on": {
+      "type": "array",
+      "title": "Opublikowano na (platformy)",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verified_live": {
+      "type": "boolean",
+      "title": "Zweryfikowany live"
+    }
+  },
+  "required": [
+    "from_business_id",
+    "to_business_id",
+    "status"
+  ]
+}
