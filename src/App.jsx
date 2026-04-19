@@ -105,49 +105,47 @@ const AuthenticatedApp = () => {
     return (
       <Routes>
         <Route element={<Layout />}>
-          <AnimatePresence mode="wait">
-            <Route path="/" element={<Suspense fallback={<PageLoader />}><WelcomeScreen /></Suspense>} />
-            <Route path="/content-ideas" element={<Suspense fallback={<PageLoader />}><ContentIdeas /></Suspense>} />
-            <Route path="/clusters" element={<Suspense fallback={<PageLoader />}><Clusters /></Suspense>} />
-            <Route path="/clusters/:id" element={<Suspense fallback={<PageLoader />}><ClusterDetail /></Suspense>} />
-            <Route path="/pages" element={<Suspense fallback={<PageLoader />}><PagesModule /></Suspense>} />
-            <Route path="/pages/:id" element={<Suspense fallback={<PageLoader />}><PageDetail /></Suspense>} />
-            <Route path="/brief-builder" element={<Suspense fallback={<PageLoader />}><BriefBuilder /></Suspense>} />
-            <Route path="/brief-builder/:id" element={<Suspense fallback={<PageLoader />}><BriefDetail /></Suspense>} />
-            <Route path="/internal-links" element={<Suspense fallback={<PageLoader />}><InternalLinks /></Suspense>} />
-            <Route path="/faq-schema" element={<Suspense fallback={<PageLoader />}><FAQSchema /></Suspense>} />
-            <Route path="/refresh-center" element={<Suspense fallback={<PageLoader />}><RefreshCenter /></Suspense>} />
-            <Route path="/seo-qa" element={<Suspense fallback={<PageLoader />}><SEOQAChecker /></Suspense>} />
-            <Route path="/publishing-queue" element={<Suspense fallback={<PageLoader />}><PublishingQueue /></Suspense>} />
-            <Route path="/wordpress" element={<Suspense fallback={<PageLoader />}><WordPress /></Suspense>} />
-            <Route path="/automations" element={<Suspense fallback={<PageLoader />}><Automations /></Suspense>} />
-            <Route path="/integrations" element={<Suspense fallback={<PageLoader />}><Integrations /></Suspense>} />
-            <Route path="/backlinks" element={<Suspense fallback={<PageLoader />}><BacklinkSystem /></Suspense>} />
-            <Route path="/content-engine" element={<Suspense fallback={<PageLoader />}><ContentEngine /></Suspense>} />
-            <Route path="/social-media" element={<Suspense fallback={<PageLoader />}><SocialMedia /></Suspense>} />
-            <Route path="/analytics" element={<Suspense fallback={<PageLoader />}><Analytics /></Suspense>} />
-            <Route path="/execution-center" element={<Suspense fallback={<PageLoader />}><ExecutionCenter /></Suspense>} />
-            <Route path="/competitors" element={<Suspense fallback={<PageLoader />}><CompetitorIntel /></Suspense>} />
-            <Route path="/seo-autopilot" element={<Suspense fallback={<PageLoader />}><SEOAutopilot /></Suspense>} />
-            <Route path="/security" element={<Suspense fallback={<PageLoader />}><SecurityMonitor /></Suspense>} />
-            <Route path="/directory" element={<Suspense fallback={<PageLoader />}><BusinessDirectory /></Suspense>} />
-            <Route path="/teachers" element={<Suspense fallback={<PageLoader />}><TeacherHub /></Suspense>} />
-            <Route path="/teacher-dashboard" element={<Suspense fallback={<PageLoader />}><TeacherDashboard /></Suspense>} />
-            <Route path="/admin-teachers" element={<Suspense fallback={<PageLoader />}><AdminTeacherManagement /></Suspense>} />
-            <Route path="/client-seo/:websiteId" element={<Suspense fallback={<PageLoader />}><ClientSEODashboard /></Suspense>} />
-            <Route path="/business" element={<Suspense fallback={<PageLoader />}><BusinessHub /></Suspense>} />
-            <Route path="/self-promotion" element={<Suspense fallback={<PageLoader />}><SelfPromotionHub /></Suspense>} />
-            <Route path="/texiseo-admin" element={<Suspense fallback={<PageLoader />}><TexiSEOAdmin /></Suspense>} />
-            <Route path="/app-report" element={<Suspense fallback={<PageLoader />}><AppReportGenerator /></Suspense>} />
-            <Route path="/linguatoons-admin" element={<Suspense fallback={<PageLoader />}><LinguaToonAdmin /></Suspense>} />
-            <Route path="/enterprise/:workspaceId" element={<Suspense fallback={<PageLoader />}><EnterpriseWorkspaceDetail /></Suspense>} />
-            <Route path="/marketplace" element={<Suspense fallback={<PageLoader />}><TeacherMarketplace /></Suspense>} />
-            <Route path="/payouts" element={<Suspense fallback={<PageLoader />}><PayoutsDashboard /></Suspense>} />
-            <Route path="/website" element={<Suspense fallback={<PageLoader />}><WebsiteHub /></Suspense>} />
-            <Route path="/system-intelligence" element={<Suspense fallback={<PageLoader />}><SystemIntelligenceDashboard /></Suspense>} />
-            <Route path="/settings" element={<Suspense fallback={<PageLoader />}><SettingsPage /></Suspense>} />
-            <Route path="*" element={<PageNotFound />} />
-          </AnimatePresence>
+          <Route path="/" element={<Suspense fallback={<PageLoader />}><WelcomeScreen /></Suspense>} />
+          <Route path="/content-ideas" element={<Suspense fallback={<PageLoader />}><ContentIdeas /></Suspense>} />
+          <Route path="/clusters" element={<Suspense fallback={<PageLoader />}><Clusters /></Suspense>} />
+          <Route path="/clusters/:id" element={<Suspense fallback={<PageLoader />}><ClusterDetail /></Suspense>} />
+          <Route path="/pages" element={<Suspense fallback={<PageLoader />}><PagesModule /></Suspense>} />
+          <Route path="/pages/:id" element={<Suspense fallback={<PageLoader />}><PageDetail /></Suspense>} />
+          <Route path="/brief-builder" element={<Suspense fallback={<PageLoader />}><BriefBuilder /></Suspense>} />
+          <Route path="/brief-builder/:id" element={<Suspense fallback={<PageLoader />}><BriefDetail /></Suspense>} />
+          <Route path="/internal-links" element={<Suspense fallback={<PageLoader />}><InternalLinks /></Suspense>} />
+          <Route path="/faq-schema" element={<Suspense fallback={<PageLoader />}><FAQSchema /></Suspense>} />
+          <Route path="/refresh-center" element={<Suspense fallback={<PageLoader />}><RefreshCenter /></Suspense>} />
+          <Route path="/seo-qa" element={<Suspense fallback={<PageLoader />}><SEOQAChecker /></Suspense>} />
+          <Route path="/publishing-queue" element={<Suspense fallback={<PageLoader />}><PublishingQueue /></Suspense>} />
+          <Route path="/wordpress" element={<Suspense fallback={<PageLoader />}><WordPress /></Suspense>} />
+          <Route path="/automations" element={<Suspense fallback={<PageLoader />}><Automations /></Suspense>} />
+          <Route path="/integrations" element={<Suspense fallback={<PageLoader />}><Integrations /></Suspense>} />
+          <Route path="/backlinks" element={<Suspense fallback={<PageLoader />}><BacklinkSystem /></Suspense>} />
+          <Route path="/content-engine" element={<Suspense fallback={<PageLoader />}><ContentEngine /></Suspense>} />
+          <Route path="/social-media" element={<Suspense fallback={<PageLoader />}><SocialMedia /></Suspense>} />
+          <Route path="/analytics" element={<Suspense fallback={<PageLoader />}><Analytics /></Suspense>} />
+          <Route path="/execution-center" element={<Suspense fallback={<PageLoader />}><ExecutionCenter /></Suspense>} />
+          <Route path="/competitors" element={<Suspense fallback={<PageLoader />}><CompetitorIntel /></Suspense>} />
+          <Route path="/seo-autopilot" element={<Suspense fallback={<PageLoader />}><SEOAutopilot /></Suspense>} />
+          <Route path="/security" element={<Suspense fallback={<PageLoader />}><SecurityMonitor /></Suspense>} />
+          <Route path="/directory" element={<Suspense fallback={<PageLoader />}><BusinessDirectory /></Suspense>} />
+          <Route path="/teachers" element={<Suspense fallback={<PageLoader />}><TeacherHub /></Suspense>} />
+          <Route path="/teacher-dashboard" element={<Suspense fallback={<PageLoader />}><TeacherDashboard /></Suspense>} />
+          <Route path="/admin-teachers" element={<Suspense fallback={<PageLoader />}><AdminTeacherManagement /></Suspense>} />
+          <Route path="/client-seo/:websiteId" element={<Suspense fallback={<PageLoader />}><ClientSEODashboard /></Suspense>} />
+          <Route path="/business" element={<Suspense fallback={<PageLoader />}><BusinessHub /></Suspense>} />
+          <Route path="/self-promotion" element={<Suspense fallback={<PageLoader />}><SelfPromotionHub /></Suspense>} />
+          <Route path="/texiseo-admin" element={<Suspense fallback={<PageLoader />}><TexiSEOAdmin /></Suspense>} />
+          <Route path="/app-report" element={<Suspense fallback={<PageLoader />}><AppReportGenerator /></Suspense>} />
+          <Route path="/linguatoons-admin" element={<Suspense fallback={<PageLoader />}><LinguaToonAdmin /></Suspense>} />
+          <Route path="/enterprise/:workspaceId" element={<Suspense fallback={<PageLoader />}><EnterpriseWorkspaceDetail /></Suspense>} />
+          <Route path="/marketplace" element={<Suspense fallback={<PageLoader />}><TeacherMarketplace /></Suspense>} />
+          <Route path="/payouts" element={<Suspense fallback={<PageLoader />}><PayoutsDashboard /></Suspense>} />
+          <Route path="/website" element={<Suspense fallback={<PageLoader />}><WebsiteHub /></Suspense>} />
+          <Route path="/system-intelligence" element={<Suspense fallback={<PageLoader />}><SystemIntelligenceDashboard /></Suspense>} />
+          <Route path="/settings" element={<Suspense fallback={<PageLoader />}><SettingsPage /></Suspense>} />
+          <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
     );
@@ -183,44 +181,42 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <AnimatePresence mode="wait">
-          <Route path="/" element={<Suspense fallback={<PageLoader />}><WelcomeScreen /></Suspense>} />
-          <Route path="/content-ideas" element={<Suspense fallback={<PageLoader />}><ContentIdeas /></Suspense>} />
-          <Route path="/clusters" element={<Suspense fallback={<PageLoader />}><Clusters /></Suspense>} />
-          <Route path="/clusters/:id" element={<Suspense fallback={<PageLoader />}><ClusterDetail /></Suspense>} />
-          <Route path="/pages" element={<Suspense fallback={<PageLoader />}><PagesModule /></Suspense>} />
-          <Route path="/pages/:id" element={<Suspense fallback={<PageLoader />}><PageDetail /></Suspense>} />
-          <Route path="/brief-builder" element={<Suspense fallback={<PageLoader />}><BriefBuilder /></Suspense>} />
-          <Route path="/brief-builder/:id" element={<Suspense fallback={<PageLoader />}><BriefDetail /></Suspense>} />
-          <Route path="/internal-links" element={<Suspense fallback={<PageLoader />}><InternalLinks /></Suspense>} />
-          <Route path="/faq-schema" element={<Suspense fallback={<PageLoader />}><FAQSchema /></Suspense>} />
-          <Route path="/refresh-center" element={<Suspense fallback={<PageLoader />}><RefreshCenter /></Suspense>} />
-          <Route path="/seo-qa" element={<Suspense fallback={<PageLoader />}><SEOQAChecker /></Suspense>} />
-          <Route path="/publishing-queue" element={<Suspense fallback={<PageLoader />}><PublishingQueue /></Suspense>} />
-          <Route path="/wordpress" element={<Suspense fallback={<PageLoader />}><WordPress /></Suspense>} />
-          <Route path="/automations" element={<Suspense fallback={<PageLoader />}><Automations /></Suspense>} />
-          <Route path="/integrations" element={<Suspense fallback={<PageLoader />}><Integrations /></Suspense>} />
-          <Route path="/backlinks" element={<Suspense fallback={<PageLoader />}><BacklinkSystem /></Suspense>} />
-          <Route path="/content-engine" element={<Suspense fallback={<PageLoader />}><ContentEngine /></Suspense>} />
-          <Route path="/social-media" element={<Suspense fallback={<PageLoader />}><SocialMedia /></Suspense>} />
-          <Route path="/analytics" element={<Suspense fallback={<PageLoader />}><Analytics /></Suspense>} />
-          <Route path="/execution-center" element={<Suspense fallback={<PageLoader />}><ExecutionCenter /></Suspense>} />
-          <Route path="/competitors" element={<Suspense fallback={<PageLoader />}><CompetitorIntel /></Suspense>} />
-          <Route path="/seo-autopilot" element={<Suspense fallback={<PageLoader />}><SEOAutopilot /></Suspense>} />
-          <Route path="/security" element={<Suspense fallback={<PageLoader />}><SecurityMonitor /></Suspense>} />
-          <Route path="/directory" element={<Suspense fallback={<PageLoader />}><BusinessDirectory /></Suspense>} />
-          <Route path="/teachers" element={<Suspense fallback={<PageLoader />}><TeacherHub /></Suspense>} />
-          <Route path="/teacher-dashboard" element={<Suspense fallback={<PageLoader />}><TeacherDashboard /></Suspense>} />
-          <Route path="/admin-teachers" element={<Suspense fallback={<PageLoader />}><AdminTeacherManagement /></Suspense>} />
-          <Route path="/client-seo/:websiteId" element={<Suspense fallback={<PageLoader />}><ClientSEODashboard /></Suspense>} />
-          <Route path="/business" element={<Suspense fallback={<PageLoader />}><BusinessHub /></Suspense>} />
-          <Route path="/self-promotion" element={<Suspense fallback={<PageLoader />}><SelfPromotionHub /></Suspense>} />
-          <Route path="/marketplace" element={<Suspense fallback={<PageLoader />}><TeacherMarketplace /></Suspense>} />
-          <Route path="/website" element={<Suspense fallback={<PageLoader />}><WebsiteHub /></Suspense>} />
-          <Route path="/system-intelligence" element={<Suspense fallback={<PageLoader />}><SystemIntelligenceDashboard /></Suspense>} />
-          <Route path="/settings" element={<Suspense fallback={<PageLoader />}><SettingsPage /></Suspense>} />
-          <Route path="*" element={<PageNotFound />} />
-        </AnimatePresence>
+        <Route path="/" element={<Suspense fallback={<PageLoader />}><WelcomeScreen /></Suspense>} />
+        <Route path="/content-ideas" element={<Suspense fallback={<PageLoader />}><ContentIdeas /></Suspense>} />
+        <Route path="/clusters" element={<Suspense fallback={<PageLoader />}><Clusters /></Suspense>} />
+        <Route path="/clusters/:id" element={<Suspense fallback={<PageLoader />}><ClusterDetail /></Suspense>} />
+        <Route path="/pages" element={<Suspense fallback={<PageLoader />}><PagesModule /></Suspense>} />
+        <Route path="/pages/:id" element={<Suspense fallback={<PageLoader />}><PageDetail /></Suspense>} />
+        <Route path="/brief-builder" element={<Suspense fallback={<PageLoader />}><BriefBuilder /></Suspense>} />
+        <Route path="/brief-builder/:id" element={<Suspense fallback={<PageLoader />}><BriefDetail /></Suspense>} />
+        <Route path="/internal-links" element={<Suspense fallback={<PageLoader />}><InternalLinks /></Suspense>} />
+        <Route path="/faq-schema" element={<Suspense fallback={<PageLoader />}><FAQSchema /></Suspense>} />
+        <Route path="/refresh-center" element={<Suspense fallback={<PageLoader />}><RefreshCenter /></Suspense>} />
+        <Route path="/seo-qa" element={<Suspense fallback={<PageLoader />}><SEOQAChecker /></Suspense>} />
+        <Route path="/publishing-queue" element={<Suspense fallback={<PageLoader />}><PublishingQueue /></Suspense>} />
+        <Route path="/wordpress" element={<Suspense fallback={<PageLoader />}><WordPress /></Suspense>} />
+        <Route path="/automations" element={<Suspense fallback={<PageLoader />}><Automations /></Suspense>} />
+        <Route path="/integrations" element={<Suspense fallback={<PageLoader />}><Integrations /></Suspense>} />
+        <Route path="/backlinks" element={<Suspense fallback={<PageLoader />}><BacklinkSystem /></Suspense>} />
+        <Route path="/content-engine" element={<Suspense fallback={<PageLoader />}><ContentEngine /></Suspense>} />
+        <Route path="/social-media" element={<Suspense fallback={<PageLoader />}><SocialMedia /></Suspense>} />
+        <Route path="/analytics" element={<Suspense fallback={<PageLoader />}><Analytics /></Suspense>} />
+        <Route path="/execution-center" element={<Suspense fallback={<PageLoader />}><ExecutionCenter /></Suspense>} />
+        <Route path="/competitors" element={<Suspense fallback={<PageLoader />}><CompetitorIntel /></Suspense>} />
+        <Route path="/seo-autopilot" element={<Suspense fallback={<PageLoader />}><SEOAutopilot /></Suspense>} />
+        <Route path="/security" element={<Suspense fallback={<PageLoader />}><SecurityMonitor /></Suspense>} />
+        <Route path="/directory" element={<Suspense fallback={<PageLoader />}><BusinessDirectory /></Suspense>} />
+        <Route path="/teachers" element={<Suspense fallback={<PageLoader />}><TeacherHub /></Suspense>} />
+        <Route path="/teacher-dashboard" element={<Suspense fallback={<PageLoader />}><TeacherDashboard /></Suspense>} />
+        <Route path="/admin-teachers" element={<Suspense fallback={<PageLoader />}><AdminTeacherManagement /></Suspense>} />
+        <Route path="/client-seo/:websiteId" element={<Suspense fallback={<PageLoader />}><ClientSEODashboard /></Suspense>} />
+        <Route path="/business" element={<Suspense fallback={<PageLoader />}><BusinessHub /></Suspense>} />
+        <Route path="/self-promotion" element={<Suspense fallback={<PageLoader />}><SelfPromotionHub /></Suspense>} />
+        <Route path="/marketplace" element={<Suspense fallback={<PageLoader />}><TeacherMarketplace /></Suspense>} />
+        <Route path="/website" element={<Suspense fallback={<PageLoader />}><WebsiteHub /></Suspense>} />
+        <Route path="/system-intelligence" element={<Suspense fallback={<PageLoader />}><SystemIntelligenceDashboard /></Suspense>} />
+        <Route path="/settings" element={<Suspense fallback={<PageLoader />}><SettingsPage /></Suspense>} />
+        <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
   );
