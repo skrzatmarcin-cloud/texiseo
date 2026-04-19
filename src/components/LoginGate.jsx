@@ -403,16 +403,10 @@ function LoginGateInner({ children }) {
                      <p className="text-xs text-emerald-300/70 mt-1">Szukaj nauczycieli, zapisz się na kursy, śledź postęp</p>
                    </button>
                    <button
-                     onClick={() => handleDemoSelect("business")}
-                     className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
-                     <p className="font-semibold text-purple-200 text-sm">🏢 Demo Business</p>
-                     <p className="text-xs text-purple-300/70 mt-1">CRM, WMS — zarządzanie firmą i magazynem</p>
-                   </button>
-                   <button
                      onClick={() => handleDemoSelect("enterprise")}
-                     className="w-full p-4 rounded-xl border-2 border-orange-400/30 bg-orange-500/10 hover:bg-orange-500/20 text-left transition-all">
-                     <p className="font-semibold text-orange-200 text-sm">🏛️ Demo Enterprise</p>
-                     <p className="text-xs text-orange-300/70 mt-1">Multi-workspace — CRM, WMS, moduły enterprise</p>
+                     className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
+                     <p className="font-semibold text-purple-200 text-sm">🏛️ Demo Enterprise</p>
+                     <p className="text-xs text-purple-300/70 mt-1">CRM, WMS, ERP, MRP, MES — kompleksne systemy zarządzania</p>
                    </button>
                  </div>
                 <div className="mt-4 text-center">
