@@ -1,0 +1,57 @@
+{
+  "name": "LoginAttempts",
+  "type": "object",
+  "properties": {
+    "ip_address": {
+      "type": "string",
+      "title": "Adres IP"
+    },
+    "country": {
+      "type": "string",
+      "title": "Kraj"
+    },
+    "city": {
+      "type": "string",
+      "title": "Miasto"
+    },
+    "browser": {
+      "type": "string",
+      "title": "Przegl\u0105darka"
+    },
+    "os": {
+      "type": "string",
+      "title": "System operacyjny"
+    },
+    "username_tried": {
+      "type": "string",
+      "title": "Podany login"
+    },
+    "success": {
+      "type": "boolean",
+      "title": "Udane logowanie",
+      "default": false
+    },
+    "fail_count": {
+      "type": "number",
+      "title": "Liczba b\u0142\u0119d\u00f3w z tego IP",
+      "default": 0
+    },
+    "blocked_until": {
+      "type": "string",
+      "title": "Zablokowany do"
+    },
+    "is_blocked": {
+      "type": "boolean",
+      "title": "Zablokowany",
+      "default": false
+    },
+    "page_visit": {
+      "type": "boolean",
+      "title": "Wizyta na stronie logowania",
+      "default": false
+    }
+  },
+  "required": [
+    "ip_address"
+  ]
+}

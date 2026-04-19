@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   Users, CreditCard, MessageSquare, BarChart3, Shield, Bell,
   Check, X, Clock, AlertTriangle, Loader2, Mail, Eye,
-  TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw
+  TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw, Lock
 } from "lucide-react";
 
 const TABS = [
@@ -53,7 +53,36 @@ function StatCard({ label, value, icon: Icon, color, sub }) {
   );
 }
 
+function AdminGuard({ children }) {
+  const isAdmin = sessionStorage.getItem("lg_is_admin") === "1";
+  if (!isAdmin) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center px-6">
+        <div className="h-16 w-16 bg-red-50 rounded-2xl flex items-center justify-center">
+          <Lock className="h-8 w-8 text-red-500" />
+        </div>
+        <h2 className="text-lg font-bold">Brak dostępu</h2>
+        <p className="text-sm text-muted-foreground max-w-xs">
+          Ta sekcja jest dostępna wyłącznie dla administratora TexiSEO.ai.<br />
+          Zaloguj się kontem administratora.
+        </p>
+        <button
+          onClick={() => { sessionStorage.removeItem("lg_auth"); window.location.reload(); }}
+          className="mt-2 px-4 py-2 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+        >
+          Zaloguj się jako admin
+        </button>
+      </div>
+    );
+  }
+  return children;
+}
+
 export default function TexiSEOAdmin() {
+  return <AdminGuard><TexiSEOAdminInner /></AdminGuard>;
+}
+
+function TexiSEOAdminInner() {
   const [tab, setTab] = useState("dashboard");
   const [requests, setRequests] = useState([]);
   const [users, setUsers] = useState([]);

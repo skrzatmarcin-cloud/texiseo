@@ -1,49 +1,232 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Eye, EyeOff, Mail, Lock, User, AlertCircle, CheckCircle2, Zap } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, AlertCircle, CheckCircle2, Zap, ShieldOff } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "@/lib/LanguageContext";
+import SecurityScanAnimation from "./SecurityScanAnimation";
 
-const CREDENTIALS = { username: "Marcin", password: "Marcinek2026!" };
-const ADMIN_EMAIL = "skrzatmarcin@gmail.com";
+const CREDENTIALS      = { username: "Marcin",      password: "Marcinek2026!" };
+const ADMIN_CREDENTIALS = { username: "TexiAdmin",   password: "TxSEO@Admin2026!" };
+const ADMIN_EMAIL       = "skrzatmarcin@gmail.com";
+const MAX_FAILS         = 3;
+const BLOCK_MINUTES     = 30;
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+
+function getBrowserInfo() {
+  const ua = navigator.userAgent;
+  let browser = "Unknown";
+  if (ua.includes("Firefox"))       browser = "Firefox";
+  else if (ua.includes("Edg"))      browser = "Edge";
+  else if (ua.includes("Chrome"))   browser = "Chrome";
+  else if (ua.includes("Safari"))   browser = "Safari";
+  else if (ua.includes("Opera"))    browser = "Opera";
+
+  let os = "Unknown";
+  if (ua.includes("Windows"))       os = "Windows";
+  else if (ua.includes("Mac"))      os = "macOS";
+  else if (ua.includes("Linux"))    os = "Linux";
+  else if (ua.includes("Android"))  os = "Android";
+  else if (ua.includes("iPhone") || ua.includes("iPad")) os = "iOS";
+
+  return { browser, os };
+}
+
+async function fetchIPData() {
+  try {
+    const r = await fetch("https://ipapi.co/json/");
+    const d = await r.json();
+    return { ip: d.ip || "unknown", country: d.country_name || "", city: d.city || "" };
+  } catch {
+    return { ip: "unknown", country: "", city: "" };
+  }
+}
+
+function getFailKey(ip) { return `lf_${ip}`; }
+
+function getFailData(ip) {
+  try { return JSON.parse(localStorage.getItem(getFailKey(ip)) || "{}"); }
+  catch { return {}; }
+}
+
+function setFailData(ip, data) {
+  localStorage.setItem(getFailKey(ip), JSON.stringify(data));
+}
+
+function isBlocked(ip) {
+  const d = getFailData(ip);
+  if (!d.blockedUntil) return false;
+  if (Date.now() < d.blockedUntil) return true;
+  // unblock — reset
+  setFailData(ip, {});
+  return false;
+}
+
+function minutesLeft(ip) {
+  const d = getFailData(ip);
+  if (!d.blockedUntil) return 0;
+  return Math.ceil((d.blockedUntil - Date.now()) / 60000);
+}
+
+function recordFail(ip) {
+  const d = getFailData(ip);
+  const count = (d.failCount || 0) + 1;
+  const update = { failCount: count };
+  if (count >= MAX_FAILS) {
+    update.blockedUntil = Date.now() + BLOCK_MINUTES * 60 * 1000;
+  }
+  setFailData(ip, update);
+  return count;
+}
+
+function clearFails(ip) { setFailData(ip, {}); }
+
+// ── Main component ────────────────────────────────────────────────────────────
 
 function LoginGateInner({ children }) {
   const { t } = useLanguage();
+
+  const [phase, setPhase]       = useState("scanning"); // scanning | login
+  const [ipData, setIpData]     = useState(null);
   const [loggedIn, setLoggedIn] = useState(() => sessionStorage.getItem("lg_auth") === "1");
-  const [mode, setMode] = useState("login");
+  const [mode, setMode]         = useState("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [resetSent, setResetSent] = useState(false);
+  const [error, setError]       = useState("");
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [resetSent, setResetSent]       = useState(false);
+  const [blocked, setBlocked]   = useState(false);
+  const [minsLeft, setMinsLeft] = useState(0);
+
+  // Run security scan once on mount
+  useEffect(() => {
+    (async () => {
+      const ip = await fetchIPData();
+      setIpData(ip);
+      const { browser, os } = getBrowserInfo();
+
+      // Check block before showing login
+      if (isBlocked(ip.ip)) {
+        setBlocked(true);
+        setMinsLeft(minutesLeft(ip.ip));
+      }
+
+      // Save page visit to DB (fire-and-forget)
+      base44.entities.LoginAttempts.create({
+        ip_address: ip.ip,
+        country: ip.country,
+        city: ip.city,
+        browser,
+        os,
+        page_visit: true,
+        success: false,
+      }).catch(() => {});
+    })();
+  }, []);
+
+  // Countdown for block timer
+  useEffect(() => {
+    if (!blocked) return;
+    const id = setInterval(() => {
+      if (ipData && !isBlocked(ipData.ip)) {
+        setBlocked(false);
+        clearInterval(id);
+      } else if (ipData) {
+        setMinsLeft(minutesLeft(ipData.ip));
+      }
+    }, 10000);
+    return () => clearInterval(id);
+  }, [blocked, ipData]);
 
   if (loggedIn) return children;
 
-  const handleLogin = (e) => {
+  const handleScanDone = () => setPhase("login");
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username === CREDENTIALS.username && password === CREDENTIALS.password) {
+    const ip = ipData?.ip || "unknown";
+
+    // Check block
+    if (isBlocked(ip)) {
+      setBlocked(true);
+      setMinsLeft(minutesLeft(ip));
+      return;
+    }
+
+    const isCorrect =
+      (username === CREDENTIALS.username      && password === CREDENTIALS.password) ||
+      (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password);
+
+    const isAdmin =
+      username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
+
+    const { browser, os } = getBrowserInfo();
+
+    if (isCorrect) {
+      clearFails(ip);
       sessionStorage.setItem("lg_auth", "1");
+      if (isAdmin) sessionStorage.setItem("lg_is_admin", "1");
+      else sessionStorage.removeItem("lg_is_admin");
+
+      base44.entities.LoginAttempts.create({
+        ip_address: ip,
+        country: ipData?.country || "",
+        city: ipData?.city || "",
+        browser, os,
+        username_tried: username,
+        success: true,
+        fail_count: 0,
+        page_visit: false,
+      }).catch(() => {});
+
       setLoggedIn(true);
     } else {
-      setError(t.invalid_credentials || "Nieprawidłowa nazwa użytkownika lub hasło.");
+      const fails = recordFail(ip);
+      const remaining = MAX_FAILS - fails;
+
+      base44.entities.LoginAttempts.create({
+        ip_address: ip,
+        country: ipData?.country || "",
+        city: ipData?.city || "",
+        browser, os,
+        username_tried: username,
+        success: false,
+        fail_count: fails,
+        is_blocked: fails >= MAX_FAILS,
+        page_visit: false,
+      }).catch(() => {});
+
+      if (fails >= MAX_FAILS) {
+        setBlocked(true);
+        setMinsLeft(BLOCK_MINUTES);
+        // Alert admin
+        base44.integrations.Core.SendEmail({
+          to: ADMIN_EMAIL,
+          subject: `⚠️ [TexiSEO Security] IP ZABLOKOWANY — ${ip}`,
+          body: `Wykryto ${MAX_FAILS} nieudane próby logowania.\n\nIP: ${ip}\nKraj: ${ipData?.country || "brak"}\nMiasto: ${ipData?.city || "brak"}\nPrzeglądarka: ${browser} / ${os}\nLogin próbowany: ${username}\n\nIP zablokowany na ${BLOCK_MINUTES} minut.\n\n---\nTexiSEO Security AI`,
+        }).catch(() => {});
+      } else {
+        setError(`Nieprawidłowe dane logowania. Pozostało prób: ${remaining}`);
+      }
     }
   };
 
   const handleDemo = () => {
+    sessionStorage.removeItem("lg_is_admin");
     sessionStorage.setItem("lg_auth", "1");
     setLoggedIn(true);
   };
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setEmailLoading(true);
     await base44.integrations.Core.SendEmail({
       to: ADMIN_EMAIL,
       subject: "Reset hasła — TexiSEO AI & Enterprise",
-      body: `Cześć Marcin!\n\nOtrzymaliśmy prośbę o reset hasła do systemu TexiSEO AI & Enterprise.\n\nTwoje dane logowania:\n• Użytkownik: Marcin\n• Hasło: Marcinek2026!\n\nJeśli to nie Ty wysłałeś tę prośbę, zignoruj tę wiadomość.\n\nPozdrowienia,\nLinguaSEO OS`,
+      body: `Cześć Marcin!\n\nOtrzymaliśmy prośbę o reset hasła.\n\nDane logowania:\n• Użytkownik: Marcin\n• Hasło: Marcinek2026!\n\n---\nTexiSEO System`,
     });
-    setLoading(false);
+    setEmailLoading(false);
     setResetSent(true);
   };
 
@@ -56,163 +239,187 @@ function LoginGateInner({ children }) {
         backgroundPosition: "center"
       }}
     >
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/50" />
 
-      {/* Language switcher top right */}
       <div className="absolute top-4 right-4 z-20">
         <LanguageSwitcher dark />
       </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
-        <div className="flex flex-col items-center mb-8">
+        <div className="flex flex-col items-center mb-6">
           <img
             src="https://media.base44.com/images/public/69da036b1797baa333fdb6c1/f24cb9015_ChatGPTImage11kwi202616_54_09.png"
-            alt="LinguaSEO OS"
-            className="h-56 w-56 object-contain drop-shadow-2xl"
+            alt="TexiSEO"
+            className="h-48 w-48 object-contain drop-shadow-2xl"
           />
         </div>
 
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-2xl">
-          {mode === "login" ? (
-            <>
-              <h2 className="text-lg font-semibold text-white mb-6">{t.login_title || "Zaloguj się"}</h2>
+        {/* ── SECURITY SCAN PHASE ── */}
+        {phase === "scanning" && (
+          <SecurityScanAnimation ipData={ipData} onDone={handleScanDone} />
+        )}
 
-              {/* Social login buttons */}
-              <div className="space-y-2 mb-4">
-                <button
-                  onClick={handleDemo}
-                  className="w-full py-2.5 rounded-xl border border-white/15 bg-white/10 text-white text-sm font-medium hover:bg-white/15 transition-all flex items-center justify-center gap-3"
-                >
-                  <svg className="h-5 w-5" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                  </svg>
-                  Zaloguj przez Google
-                </button>
-                <button
-                  onClick={handleDemo}
-                  className="w-full py-2.5 rounded-xl border border-[#1877F2]/40 bg-[#1877F2]/20 text-[#74a7f5] text-sm font-medium hover:bg-[#1877F2]/30 transition-all flex items-center justify-center gap-3"
-                >
-                  <svg className="h-5 w-5" fill="#1877F2" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                  Zaloguj przez Facebook
-                </button>
-              </div>
+        {/* ── LOGIN PHASE ── */}
+        {phase === "login" && (
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 shadow-2xl">
 
-              {/* DEMO button */}
-              <button
-                onClick={handleDemo}
-                className="w-full mb-4 py-3 rounded-xl border border-teal-400/40 bg-teal-400/10 text-teal-300 text-sm font-bold hover:bg-teal-400/20 transition-all flex items-center justify-center gap-2"
-              >
-                <Zap className="h-4 w-4" />
-                {t.demo_btn || "Wejdź jako DEMO (bez hasła)"}
-              </button>
-
-              <div className="flex items-center gap-3 mb-5">
-                <div className="flex-1 h-px bg-white/10" />
-                <span className="text-[11px] text-white/30">lub hasłem</span>
-                <div className="flex-1 h-px bg-white/10" />
-              </div>
-
-              <form onSubmit={handleLogin} className="space-y-4">
-                <div>
-                  <label className="text-xs font-medium text-slate-300 block mb-1.5">{t.username || "Nazwa użytkownika"}</label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                    <input
-                      type="text"
-                      value={username}
-                      onChange={e => { setUsername(e.target.value); setError(""); }}
-                      placeholder={t.username}
-                      className="w-full bg-white/10 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                    />
-                  </div>
+            {/* BLOCKED */}
+            {blocked ? (
+              <div className="text-center py-4">
+                <ShieldOff className="h-12 w-12 text-red-400 mx-auto mb-3" />
+                <p className="text-white font-bold text-base mb-2">Dostęp zablokowany</p>
+                <p className="text-red-300/80 text-sm mb-4">
+                  Wykryto {MAX_FAILS} błędnych prób logowania z tego adresu IP.
+                </p>
+                <div className="bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
+                  <p className="text-xs text-red-300">
+                    Blokada wygaśnie za <span className="font-bold text-red-200">{minsLeft} min</span>
+                  </p>
+                  <p className="text-[10px] text-red-400/60 mt-1">
+                    IP: {ipData?.ip} · {ipData?.country}
+                  </p>
                 </div>
-                <div>
-                  <label className="text-xs font-medium text-slate-300 block mb-1.5">{t.password || "Hasło"}</label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-                    <input
-                      type={showPass ? "text" : "password"}
-                      value={password}
-                      onChange={e => { setPassword(e.target.value); setError(""); }}
-                      placeholder="••••••••"
-                      className="w-full bg-white/10 border border-white/10 rounded-lg pl-10 pr-10 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                    />
-                    <button type="button" onClick={() => setShowPass(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors">
-                      {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                {error && (
-                  <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
-                    <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
-                    <p className="text-xs text-red-400">{error}</p>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors mt-2"
-                >
-                  {t.login_btn || "Zaloguj się"}
-                </button>
-              </form>
-
-              <div className="mt-4 text-center">
-                <button
-                  onClick={() => { setMode("forgot"); setError(""); }}
-                  className="text-xs text-slate-400 hover:text-primary transition-colors underline underline-offset-2"
-                >
-                  {t.forgot_password || "Zapomniałeś hasła?"}
-                </button>
+                <p className="text-xs text-white/30 mt-4">
+                  Jeśli to pomyłka, skontaktuj się: {ADMIN_EMAIL}
+                </p>
               </div>
-            </>
-          ) : (
-            <>
-              <h2 className="text-lg font-semibold text-white mb-2">{t.reset_title || "Reset hasła"}</h2>
-              <p className="text-xs text-slate-400 mb-6">{t.reset_subtitle}</p>
+            ) : mode === "login" ? (
+              <>
+                <h2 className="text-lg font-semibold text-white mb-5">{t.login_title || "Zaloguj się"}</h2>
 
-              {resetSent ? (
-                <div className="flex flex-col items-center gap-3 py-4">
-                  <CheckCircle2 className="h-10 w-10 text-emerald-400" />
-                  <p className="text-sm font-medium text-white">{t.email_sent || "E-mail wysłany!"}</p>
-                  <p className="text-xs text-slate-400 text-center">Sprawdź skrzynkę <strong className="text-slate-300">{ADMIN_EMAIL}</strong></p>
-                  <button onClick={() => { setMode("login"); setResetSent(false); }} className="mt-2 text-xs text-primary hover:underline">
-                    {t.back_to_login || "← Wróć do logowania"}
+                {/* Social buttons */}
+                <div className="space-y-2 mb-4">
+                  <button onClick={handleDemo}
+                    className="w-full py-2.5 rounded-xl border border-white/15 bg-white/10 text-white text-sm font-medium hover:bg-white/15 transition-all flex items-center justify-center gap-3">
+                    <svg className="h-5 w-5" viewBox="0 0 24 24">
+                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    Zaloguj przez Google
+                  </button>
+                  <button onClick={handleDemo}
+                    className="w-full py-2.5 rounded-xl border border-[#1877F2]/40 bg-[#1877F2]/20 text-[#74a7f5] text-sm font-medium hover:bg-[#1877F2]/30 transition-all flex items-center justify-center gap-3">
+                    <svg className="h-5 w-5" fill="#1877F2" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    Zaloguj przez Facebook
                   </button>
                 </div>
-              ) : (
-                <form onSubmit={handleForgotPassword} className="space-y-4">
-                  <div className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 flex items-center gap-3">
-                    <Mail className="h-4 w-4 text-slate-400 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs text-slate-400">Reset zostanie wysłany na:</p>
-                      <p className="text-sm font-medium text-white">{ADMIN_EMAIL}</p>
+
+                <button onClick={handleDemo}
+                  className="w-full mb-4 py-3 rounded-xl border border-teal-400/40 bg-teal-400/10 text-teal-300 text-sm font-bold hover:bg-teal-400/20 transition-all flex items-center justify-center gap-2">
+                  <Zap className="h-4 w-4" />
+                  {t.demo_btn || "Wejdź jako DEMO (bez hasła)"}
+                </button>
+
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="flex-1 h-px bg-white/10" />
+                  <span className="text-[11px] text-white/30">lub hasłem</span>
+                  <div className="flex-1 h-px bg-white/10" />
+                </div>
+
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div>
+                    <label className="text-xs font-medium text-slate-300 block mb-1.5">{t.username || "Nazwa użytkownika"}</label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <input
+                        type="text"
+                        value={username}
+                        onChange={e => { setUsername(e.target.value); setError(""); }}
+                        placeholder={t.username || "Login"}
+                        className="w-full bg-white/10 border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                      />
                     </div>
                   </div>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full bg-primary hover:bg-primary/90 disabled:opacity-60 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors"
-                  >
-                    {loading ? (t.sending || "Wysyłanie…") : (t.reset_btn || "Wyślij reset hasła")}
+                  <div>
+                    <label className="text-xs font-medium text-slate-300 block mb-1.5">{t.password || "Hasło"}</label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                      <input
+                        type={showPass ? "text" : "password"}
+                        value={password}
+                        onChange={e => { setPassword(e.target.value); setError(""); }}
+                        placeholder="••••••••"
+                        className="w-full bg-white/10 border border-white/10 rounded-lg pl-10 pr-10 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                      />
+                      <button type="button" onClick={() => setShowPass(v => !v)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors">
+                        {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  {error && (
+                    <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+                      <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
+                      <p className="text-xs text-red-400">{error}</p>
+                    </div>
+                  )}
+
+                  <button type="submit"
+                    className="w-full bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors mt-2">
+                    {t.login_btn || "Zaloguj się"}
                   </button>
-                  <div className="text-center">
-                    <button type="button" onClick={() => setMode("login")} className="text-xs text-slate-400 hover:text-white transition-colors">
-                      {t.back_to_login || "← Wróć do logowania"}
+                </form>
+
+                <div className="mt-4 text-center">
+                  <button onClick={() => { setMode("forgot"); setError(""); }}
+                    className="text-xs text-slate-400 hover:text-primary transition-colors underline underline-offset-2">
+                    {t.forgot_password || "Zapomniałeś hasła?"}
+                  </button>
+                </div>
+
+                {/* IP info strip */}
+                {ipData?.ip && ipData.ip !== "unknown" && (
+                  <div className="mt-4 flex items-center justify-center gap-2 text-[10px] text-white/20">
+                    <span>🔒</span>
+                    <span>IP: {ipData.ip}{ipData.country ? ` · ${ipData.country}` : ""}</span>
+                    <span>· Szyfrowane</span>
+                  </div>
+                )}
+              </>
+            ) : (
+              /* FORGOT PASSWORD */
+              <>
+                <h2 className="text-lg font-semibold text-white mb-2">{t.reset_title || "Reset hasła"}</h2>
+                <p className="text-xs text-slate-400 mb-6">{t.reset_subtitle}</p>
+                {resetSent ? (
+                  <div className="flex flex-col items-center gap-3 py-4">
+                    <CheckCircle2 className="h-10 w-10 text-emerald-400" />
+                    <p className="text-sm font-medium text-white">{t.email_sent || "E-mail wysłany!"}</p>
+                    <p className="text-xs text-slate-400 text-center">Sprawdź skrzynkę <strong className="text-slate-300">{ADMIN_EMAIL}</strong></p>
+                    <button onClick={() => { setMode("login"); setResetSent(false); }} className="mt-2 text-xs text-primary hover:underline">
+                      ← Wróć do logowania
                     </button>
                   </div>
-                </form>
-              )}
-            </>
-          )}
-        </div>
+                ) : (
+                  <form onSubmit={handleForgotPassword} className="space-y-4">
+                    <div className="bg-white/5 border border-white/10 rounded-lg px-4 py-3 flex items-center gap-3">
+                      <Mail className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                      <div>
+                        <p className="text-xs text-slate-400">Reset zostanie wysłany na:</p>
+                        <p className="text-sm font-medium text-white">{ADMIN_EMAIL}</p>
+                      </div>
+                    </div>
+                    <button type="submit" disabled={emailLoading}
+                      className="w-full bg-primary hover:bg-primary/90 disabled:opacity-60 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors">
+                      {emailLoading ? "Wysyłanie…" : "Wyślij reset hasła"}
+                    </button>
+                    <div className="text-center">
+                      <button type="button" onClick={() => setMode("login")} className="text-xs text-slate-400 hover:text-white transition-colors">
+                        ← Wróć do logowania
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
