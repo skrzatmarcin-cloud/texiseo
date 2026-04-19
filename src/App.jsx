@@ -29,6 +29,7 @@ import ContentEngine from './pages/ContentEngine';
 import SocialMedia from './pages/SocialMedia';
 import Analytics from './pages/Analytics';
 import ExecutionCenter from './pages/ExecutionCenter';
+import CompetitorIntel from './pages/CompetitorIntel';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -78,6 +79,7 @@ const AuthenticatedApp = () => {
         <Route path="/social-media" element={<SocialMedia />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/execution-center" element={<ExecutionCenter />} />
+        <Route path="/competitors" element={<CompetitorIntel />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>

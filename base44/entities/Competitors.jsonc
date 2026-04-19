@@ -1,0 +1,52 @@
+{
+  "name": "Competitors",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Nazwa konkurenta"
+    },
+    "url": {
+      "type": "string",
+      "title": "URL strony"
+    },
+    "language": {
+      "type": "string",
+      "title": "J\u0119zyk",
+      "enum": [
+        "pl",
+        "en",
+        "es",
+        "fr"
+      ]
+    },
+    "niche": {
+      "type": "string",
+      "title": "Nisza",
+      "enum": [
+        "language_school",
+        "tutoring",
+        "e-learning",
+        "content_site",
+        "other"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    },
+    "active": {
+      "type": "boolean",
+      "title": "Aktywny monitoring",
+      "default": true
+    },
+    "last_analyzed_at": {
+      "type": "string",
+      "title": "Ostatnia analiza"
+    }
+  },
+  "required": [
+    "name",
+    "url"
+  ]
+}

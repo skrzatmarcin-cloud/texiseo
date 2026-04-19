@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Lightbulb, Network, FileText, ClipboardList,
   Link2, CalendarClock, Settings, Search, ChevronLeft, Menu,
   HelpCircle, RefreshCw, ShieldCheck, Zap, Plug2, Globe, ExternalLink,
-  Wand2, Share2, BarChart3, Play
+  Wand2, Share2, BarChart3, Play, Crosshair
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -25,6 +25,7 @@ const NAV_ITEMS = [
   { to: "/analytics", icon: BarChart3, label: "Analityka" },
   { to: "/execution-center", icon: Play, label: "Centrum Wykonania" },
   { to: "/backlinks", icon: ExternalLink, label: "System Backlinków" },
+  { to: "/competitors", icon: Crosshair, label: "Konkurenci" },
   { to: "/automations", icon: Zap, label: "Automatyzacje" },
   { to: "/integrations", icon: Plug2, label: "Integracje" },
   { to: "/settings", icon: Settings, label: "Ustawienia" },
