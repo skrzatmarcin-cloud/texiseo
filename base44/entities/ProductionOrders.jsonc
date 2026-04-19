@@ -1,0 +1,97 @@
+{
+  "name": "ProductionOrders",
+  "type": "object",
+  "properties": {
+    "order_number": {
+      "type": "string",
+      "title": "Numer zlecenia"
+    },
+    "product_name": {
+      "type": "string",
+      "title": "Nazwa produktu"
+    },
+    "client_id": {
+      "type": "string",
+      "title": "Klient ID"
+    },
+    "client_name": {
+      "type": "string",
+      "title": "Klient"
+    },
+    "quantity_ordered": {
+      "type": "number",
+      "title": "Ilo\u015b\u0107 zam\u00f3wiona"
+    },
+    "quantity_produced": {
+      "type": "number",
+      "title": "Ilo\u015b\u0107 wyprodukowana",
+      "default": 0
+    },
+    "unit": {
+      "type": "string",
+      "title": "Jednostka",
+      "enum": [
+        "szt",
+        "kg",
+        "m",
+        "m2",
+        "op"
+      ]
+    },
+    "start_date": {
+      "type": "string",
+      "title": "Data rozpocz\u0119cia",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "title": "Planowane zako\u0144czenie",
+      "format": "date"
+    },
+    "actual_end_date": {
+      "type": "string",
+      "title": "Rzeczywiste zako\u0144czenie",
+      "format": "date"
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priorytet",
+      "enum": [
+        "krytyczny",
+        "wysoki",
+        "normalny",
+        "niski"
+      ],
+      "default": "normalny"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "planowane",
+        "w_toku",
+        "wstrzymane",
+        "zako\u0144czone",
+        "anulowane"
+      ],
+      "default": "planowane"
+    },
+    "materials_json": {
+      "type": "string",
+      "title": "U\u017cyte materia\u0142y (JSON)"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    },
+    "assigned_to": {
+      "type": "string",
+      "title": "Przypisano do"
+    }
+  },
+  "required": [
+    "product_name",
+    "quantity_ordered",
+    "status"
+  ]
+}

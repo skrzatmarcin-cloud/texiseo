@@ -1,0 +1,77 @@
+{
+  "name": "Suppliers",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Nazwa dostawcy"
+    },
+    "nip": {
+      "type": "string",
+      "title": "NIP"
+    },
+    "contact_person": {
+      "type": "string",
+      "title": "Osoba kontaktowa"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Telefon"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email"
+    },
+    "address": {
+      "type": "string",
+      "title": "Adres"
+    },
+    "postal_code": {
+      "type": "string",
+      "title": "Kod pocztowy"
+    },
+    "city": {
+      "type": "string",
+      "title": "Miasto"
+    },
+    "categories": {
+      "type": "array",
+      "title": "Kategorie dostaw",
+      "items": {
+        "type": "string"
+      }
+    },
+    "payment_terms": {
+      "type": "string",
+      "title": "Warunki p\u0142atno\u015bci"
+    },
+    "lead_time_days": {
+      "type": "number",
+      "title": "Czas realizacji (dni)"
+    },
+    "rating": {
+      "type": "number",
+      "title": "Ocena",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "aktywny",
+        "nieaktywny",
+        "weryfikacja"
+      ],
+      "default": "aktywny"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    }
+  },
+  "required": [
+    "name",
+    "status"
+  ]
+}

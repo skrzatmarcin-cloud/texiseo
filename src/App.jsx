@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Routes, useRoutes } from 'react-router-
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { LanguageProvider } from '@/lib/LanguageContext';
+import AIChat from './components/AIChat';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import ContentIdeas from './pages/ContentIdeas';
@@ -35,6 +37,7 @@ import SecurityMonitor from './pages/SecurityMonitor';
 import BusinessDirectory from './pages/BusinessDirectory';
 import DemoLogin from './pages/DemoLogin';
 import TeacherHub from './pages/TeacherHub';
+import BusinessHub from './pages/BusinessHub';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -89,6 +92,7 @@ const AuthenticatedApp = () => {
         <Route path="/security" element={<SecurityMonitor />} />
         <Route path="/directory" element={<BusinessDirectory />} />
         <Route path="/teachers" element={<TeacherHub />} />
+        <Route path="/business" element={<BusinessHub />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
@@ -99,21 +103,24 @@ const AuthenticatedApp = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <Routes>
-            <Route path="/demo" element={<DemoLogin />} />
-            <Route path="/*" element={
-              <LoginGate>
-                <AuthenticatedApp />
-              </LoginGate>
-            } />
-          </Routes>
-        </Router>
-        <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <Router>
+            <Routes>
+              <Route path="/demo" element={<DemoLogin />} />
+              <Route path="/*" element={
+                <LoginGate>
+                  <AuthenticatedApp />
+                </LoginGate>
+              } />
+            </Routes>
+          </Router>
+          <Toaster />
+          <AIChat />
+        </QueryClientProvider>
+      </AuthProvider>
+    </LanguageProvider>
   )
 }
 

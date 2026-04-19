@@ -1,0 +1,90 @@
+{
+  "name": "BusinessClients",
+  "type": "object",
+  "properties": {
+    "company_name": {
+      "type": "string",
+      "title": "Nazwa firmy"
+    },
+    "nip": {
+      "type": "string",
+      "title": "NIP"
+    },
+    "regon": {
+      "type": "string",
+      "title": "REGON"
+    },
+    "krs": {
+      "type": "string",
+      "title": "KRS"
+    },
+    "address": {
+      "type": "string",
+      "title": "Ulica i numer"
+    },
+    "postal_code": {
+      "type": "string",
+      "title": "Kod pocztowy"
+    },
+    "city": {
+      "type": "string",
+      "title": "Miasto"
+    },
+    "voivodeship": {
+      "type": "string",
+      "title": "Wojew\u00f3dztwo"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Telefon"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email"
+    },
+    "website": {
+      "type": "string",
+      "title": "Strona WWW"
+    },
+    "contact_person": {
+      "type": "string",
+      "title": "Osoba kontaktowa"
+    },
+    "industry": {
+      "type": "string",
+      "title": "Bran\u017ca",
+      "enum": [
+        "produkcja",
+        "handel",
+        "us\u0142ugi",
+        "budowlana",
+        "spo\u017cywcza",
+        "metalurgiczna",
+        "chemiczna",
+        "odzie\u017cowa",
+        "IT",
+        "logistyka",
+        "inne"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "aktywna",
+        "nieaktywna",
+        "potencjalny",
+        "zawieszona"
+      ],
+      "default": "aktywna"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    }
+  },
+  "required": [
+    "company_name",
+    "status"
+  ]
+}

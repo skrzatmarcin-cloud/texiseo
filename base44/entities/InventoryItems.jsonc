@@ -1,0 +1,111 @@
+{
+  "name": "InventoryItems",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Nazwa"
+    },
+    "sku": {
+      "type": "string",
+      "title": "SKU / Kod"
+    },
+    "category": {
+      "type": "string",
+      "title": "Kategoria",
+      "enum": [
+        "surowiec",
+        "p\u00f3\u0142produkt",
+        "produkt_gotowy",
+        "opakowanie",
+        "materia\u0142_pomocniczy",
+        "narz\u0119dzie",
+        "inne"
+      ]
+    },
+    "unit": {
+      "type": "string",
+      "title": "Jednostka",
+      "enum": [
+        "szt",
+        "kg",
+        "g",
+        "l",
+        "ml",
+        "m",
+        "m2",
+        "m3",
+        "t",
+        "op",
+        "karton"
+      ]
+    },
+    "quantity_warehouse": {
+      "type": "number",
+      "title": "Ilo\u015b\u0107 w magazynie",
+      "default": 0
+    },
+    "quantity_production": {
+      "type": "number",
+      "title": "Ilo\u015b\u0107 w produkcji",
+      "default": 0
+    },
+    "quantity_reserved": {
+      "type": "number",
+      "title": "Zarezerwowane",
+      "default": 0
+    },
+    "min_quantity": {
+      "type": "number",
+      "title": "Stan minimalny",
+      "default": 0
+    },
+    "reorder_quantity": {
+      "type": "number",
+      "title": "Ilo\u015b\u0107 zam\u00f3wienia",
+      "default": 0
+    },
+    "unit_price": {
+      "type": "number",
+      "title": "Cena jednostkowa (PLN)"
+    },
+    "supplier_id": {
+      "type": "string",
+      "title": "Dostawca ID"
+    },
+    "supplier_name": {
+      "type": "string",
+      "title": "Dostawca"
+    },
+    "location": {
+      "type": "string",
+      "title": "Lokalizacja w magazynie"
+    },
+    "expiry_date": {
+      "type": "string",
+      "title": "Data wa\u017cno\u015bci",
+      "format": "date"
+    },
+    "description": {
+      "type": "string",
+      "title": "Opis"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "dost\u0119pny",
+        "niski_stan",
+        "brak",
+        "zam\u00f3wiony"
+      ],
+      "default": "dost\u0119pny"
+    }
+  },
+  "required": [
+    "name",
+    "category",
+    "unit",
+    "status"
+  ]
+}
