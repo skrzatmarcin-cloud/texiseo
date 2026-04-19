@@ -247,8 +247,11 @@ export default function WelcomeScreen() {
     setActiveHub(hubId);
   };
 
-  // Filter hubs based on client type
+  // Filter hubs based on client type (admins see everything)
   const getVisibleHubs = () => {
+    const isAdmin = user?.role === "admin";
+    if (isAdmin) return HUBS; // Admin widzi wszystko
+    
     const seoHubs = ["seo"];
     
     if (clientType === "teacher") {
