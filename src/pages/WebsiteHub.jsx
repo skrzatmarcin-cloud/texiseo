@@ -327,15 +327,22 @@ export default function WebsiteHub() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {[
-                      { name: "📝 Content Ideas", link: "/content-ideas", desc: "Pomysły artykułów" },
-                      { name: "🎯 Klastry", link: "/clusters", desc: "Klastry słów kluczowych" },
+                      { name: "💡 Content Ideas", link: "/content-ideas", desc: "Pomysły na artykuły" },
+                      { name: "🎯 Klastry", link: "/clusters", desc: "Klastry tematyczne" },
                       { name: "📄 Strony", link: "/pages", desc: "Zarządzaj stronami" },
-                      { name: "✏️ Briefs", link: "/brief-builder", desc: "Briefs dla pisarzy" },
-                      { name: "🔗 Linki", link: "/internal-links", desc: "Linki wewnętrzne" },
+                      { name: "✏️ Brief Builder", link: "/brief-builder", desc: "Briefs dla pisarzy" },
+                      { name: "🎬 Content Engine", link: "/content-engine", desc: "Generuj multi-platform" },
+                      { name: "🔗 Internal Links", link: "/internal-links", desc: "Linki wewnętrzne" },
                       { name: "🔐 FAQ Schema", link: "/faq-schema", desc: "FAQ struktury" },
-                      { name: "🔄 Refresh", link: "/refresh-center", desc: "Odśwież artykuły" },
-                      { name: "✅ SEO QA", link: "/seo-qa", desc: "QA sprawdzenie" },
+                      { name: "🔄 Refresh Center", link: "/refresh-center", desc: "Odśwież artykuły" },
+                      { name: "⚡ SEO QA", link: "/seo-qa", desc: "QA sprawdzenie" },
                       { name: "📊 Analytics", link: "/analytics", desc: "Google Analytics" },
+                      { name: "🏆 Competitors", link: "/competitors", desc: "Analiza konkurencji" },
+                      { name: "🚀 SEO Autopilot", link: "/seo-autopilot", desc: "Automatyzacja SEO" },
+                      { name: "🔗 Backlinki", link: "/backlinks", desc: "Linkbuilding system" },
+                      { name: "🎮 Execution", link: "/execution-center", desc: "Execution Center" },
+                      { name: "📋 Publishing", link: "/publishing-queue", desc: "Publishing Queue" },
+                      { name: "⚙️ WordPress", link: "/wordpress", desc: "WordPress integracja" },
                     ].map((tool, i) => (
                       <a key={i} href={tool.link} className="p-4 bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl hover:border-purple-500 transition-all text-left">
                         <p className="font-semibold text-sm text-white">{tool.name}</p>
