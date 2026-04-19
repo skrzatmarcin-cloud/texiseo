@@ -1,6 +1,8 @@
 import { Toaster } from "@/components/ui/toaster"
 import LoginGate from './components/LoginGate';
 import { QueryClientProvider } from '@tanstack/react-query'
+import { useState, useEffect } from 'react';
+import { base44 } from '@/api/base44Client';
 import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
@@ -57,9 +59,16 @@ import SystemIntelligenceDashboard from './pages/SystemIntelligenceDashboard';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const [userRole, setUserRole] = useState(null);
   const isDemoMode = sessionStorage.getItem("lg_demo_mode") === "1";
   const demoType = sessionStorage.getItem("lg_demo_type");
   const isAdmin = sessionStorage.getItem("lg_is_admin") === "1";
+
+  useEffect(() => {
+    base44.auth.me().then(user => {
+      setUserRole(user?.role || 'user');
+    }).catch(() => setUserRole('user'));
+  }, []);
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -138,9 +147,24 @@ const AuthenticatedApp = () => {
       return <Routes><Route element={<Layout />}><Route path="/*" element={<TeacherHub />} /></Route></Routes>;
     } else if (demoType === "student") {
       return <Routes><Route element={<Layout />}><Route path="/*" element={<StudentDashboard />} /></Route></Routes>;
-    } else if (demoType === "business") {
+    } else if (demoType === "enterprise") {
       return <Routes><Route element={<Layout />}><Route path="/*" element={<BusinessHub />} /></Route></Routes>;
     }
+  }
+
+  // If user is enterprise, redirect to business hub
+  if (userRole === "enterprise") {
+    return <Routes><Route element={<Layout />}><Route path="/*" element={<BusinessHub />} /></Route></Routes>;
+  }
+
+  // If user is teacher, redirect to teacher hub
+  if (userRole === "teacher") {
+    return <Routes><Route element={<Layout />}><Route path="/*" element={<TeacherHub />} /></Route></Routes>;
+  }
+
+  // If user is student, redirect to student dashboard
+  if (userRole === "student") {
+    return <Routes><Route element={<Layout />}><Route path="/*" element={<StudentDashboard />} /></Route></Routes>;
   }
 
   // Render the main app

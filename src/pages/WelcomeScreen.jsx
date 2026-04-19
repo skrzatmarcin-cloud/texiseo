@@ -240,6 +240,12 @@ export default function WelcomeScreen() {
 
   useEffect(() => {
     base44.auth.me().then(u => {
+      if (!u) {
+        // If no user, auto-logout
+        sessionStorage.removeItem("lg_auth");
+        window.location.reload();
+        return;
+      }
       setUser(u);
       setLoading(false);
     }).catch(() => {
@@ -285,12 +291,32 @@ export default function WelcomeScreen() {
         </div>
       </div>
 
-      {/* Main Hubs Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {ALL_HUBS.filter(hub => !hub.adminOnly || user?.role === "admin").map(hub => (
-          <HubCard key={hub.id} hub={hub} onSelect={handleSelect} user={user} />
-        ))}
-      </div>
+      {/* Role-based hub filtering */}
+      {(() => {
+        let visibleHubs = ALL_HUBS;
+        
+        if (user?.role === "teacher") {
+          // Teachers see only teacher panel
+          visibleHubs = ALL_HUBS.filter(h => h.id === "teachers");
+        } else if (user?.role === "student") {
+          // Students see limited hubs
+          visibleHubs = ALL_HUBS.filter(h => !h.adminOnly && h.id !== "business");
+        } else if (user?.role === "enterprise") {
+          // Enterprise see business hub + limited SEO
+          visibleHubs = ALL_HUBS.filter(h => h.id === "business" || h.id === "website");
+        } else if (user?.role === "admin") {
+          // Admins see all hubs
+          visibleHubs = ALL_HUBS;
+        }
+        
+        return (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {visibleHubs.map(hub => (
+              <HubCard key={hub.id} hub={hub} onSelect={handleSelect} user={user} />
+            ))}
+          </div>
+        );
+      })()}
 
       {/* Admin Button (for admins only) */}
       {user?.role === "admin" && (

@@ -170,12 +170,19 @@ function LoginGateInner({ children }) {
     if (isCorrect) {
       clearFails(ip);
       sessionStorage.setItem("lg_auth", "1");
-      if (isAdmin) {
-        sessionStorage.setItem("lg_is_admin", "1");
-        console.log("✅ ADMIN MODE ENABLED — lg_is_admin = 1");
-      } else {
+      
+      // Fetch user role from Base44
+      try {
+        const userData = await base44.auth.me();
+        if (userData?.role === 'admin') {
+          sessionStorage.setItem("lg_is_admin", "1");
+          console.log("✅ ADMIN MODE ENABLED");
+        } else {
+          sessionStorage.removeItem("lg_is_admin");
+          console.log(`👤 USER MODE - Role: ${userData?.role || 'user'}`);
+        }
+      } catch {
         sessionStorage.removeItem("lg_is_admin");
-        console.log("👤 USER MODE");
       }
 
       base44.entities.LoginAttempts.create({
