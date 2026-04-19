@@ -4,12 +4,14 @@ import { cn } from "@/lib/utils";
 import {
   Users, CreditCard, MessageSquare, BarChart3, Shield, Bell,
   Check, X, Clock, AlertTriangle, Loader2, Mail, Eye,
-  TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw, Lock, GraduationCap
+  TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw, Lock, GraduationCap,
+  Building2, DollarSign, Lock as LockIcon, Unlock, AlertCircle, Briefcase
 } from "lucide-react";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: BarChart3 },
   { id: "requests", label: "Zgłoszenia", icon: MessageSquare },
+  { id: "enterprise", label: "Enterprise", icon: Building2 },
   { id: "users", label: "Użytkownicy", icon: Users },
   { id: "linguatoons", label: "LinguaToons Admin", icon: GraduationCap },
   { id: "payments", label: "Płatności", icon: CreditCard },
@@ -406,6 +408,130 @@ function TexiSEOAdminInner() {
                 {users.length === 0 && (
                   <p className="text-center py-8 text-sm text-muted-foreground">Brak użytkowników</p>
                 )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ===== ENTERPRISE ===== */}
+        {!loading && tab === "enterprise" && (
+          <div className="max-w-6xl mx-auto space-y-5">
+            <div className="bg-gradient-to-r from-slate-700 to-slate-900 rounded-2xl p-6 text-white">
+              <div className="flex items-center gap-4">
+                <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center">
+                  <Building2 className="h-8 w-8" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold">Enterprise Panel</h2>
+                  <p className="text-slate-300/80 text-sm mt-0.5">Zarządzanie użytkownikami, dostępem, blokowaniem i płatności</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Users Management */}
+            <div className="bg-card border border-border rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold">Zarządzanie Użytkownikami</h3>
+                <Users className="h-5 w-5 text-primary" />
+              </div>
+              <div className="space-y-3">
+                {users.slice(0, 5).map(user => (
+                  <div key={user.id} className="flex items-center justify-between bg-secondary/40 rounded-xl p-4">
+                    <div className="flex-1">
+                      <p className="font-semibold text-sm">{user.full_name || user.email}</p>
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className={cn("text-[10px] px-2 py-1 rounded-full font-medium",
+                        user.role === "admin" ? "bg-violet-100 text-violet-700" : "bg-secondary text-muted-foreground"
+                      )}>
+                        {user.role || "user"}
+                      </span>
+                      <button onClick={() => alert(`Blokuj: ${user.email}`)} className="h-8 w-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-xs font-bold">
+                        <LockIcon className="h-3.5 w-3.5" />
+                      </button>
+                      <button onClick={() => alert(`Unlock: ${user.email}`)} className="h-8 w-8 flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors text-xs font-bold">
+                        <Unlock className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Access Control */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="bg-card border border-border rounded-2xl p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Lock className="h-5 w-5 text-red-500" />
+                  <h3 className="font-bold text-sm">Zablokowanych</h3>
+                </div>
+                <p className="text-3xl font-black text-red-600">0</p>
+                <p className="text-xs text-muted-foreground mt-1">Użytkowników bez dostępu</p>
+              </div>
+              <div className="bg-card border border-border rounded-2xl p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <Unlock className="h-5 w-5 text-emerald-500" />
+                  <h3 className="font-bold text-sm">Aktywnych</h3>
+                </div>
+                <p className="text-3xl font-black text-emerald-600">{users.length}</p>
+                <p className="text-xs text-muted-foreground mt-1">Użytkowników z dostępem</p>
+              </div>
+            </div>
+
+            {/* Payments */}
+            <div className="bg-card border border-border rounded-2xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold">Status Płatności</h3>
+                <CreditCard className="h-5 w-5 text-primary" />
+              </div>
+              <div className="space-y-3">
+                {[
+                  { user: "user1@example.com", amount: "99 PLN", status: "oczekuje", date: "2026-04-18" },
+                  { user: "user2@example.com", amount: "199 PLN", status: "opłacone", date: "2026-04-17" },
+                  { user: "user3@example.com", amount: "49 PLN", status: "oczekuje", date: "2026-04-16" },
+                ].map((p, i) => (
+                  <div key={i} className="flex items-center justify-between bg-secondary/40 rounded-xl p-3">
+                    <div className="flex-1">
+                      <p className="text-xs font-medium">{p.user}</p>
+                      <p className="text-[10px] text-muted-foreground">{p.date}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-sm">{p.amount}</span>
+                      <span className={cn("text-[9px] px-2 py-0.5 rounded-full font-bold",
+                        p.status === "opłacone" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
+                      )}>
+                        {p.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* All Admin Features for Superadmin */}
+            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-6">
+              <div className="flex items-start gap-3">
+                <Shield className="h-6 w-6 text-purple-600 mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <h3 className="font-bold text-purple-900 mb-2">🔐 Superadmin Pełny Dostęp</h3>
+                  <p className="text-sm text-purple-800 mb-3">Konto Marcin ma dostęp do wszystkich opcji administracyjnych:</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {[
+                      "🔗 Backlinki", "🛡️ Security", "📊 Analytics", "🎯 SEO Tools",
+                      "📱 Social Media", "🔄 Automations", "🎬 Content Engine", "🏆 Competitors",
+                      "🚀 SEO Autopilot", "💼 WordPress", "📧 Email", "⚙️ Settings"
+                    ].map((f, i) => (
+                      <button
+                        key={i}
+                        onClick={() => alert(`Otwieram: ${f}`)}
+                        className="text-xs bg-white/60 hover:bg-white border border-purple-200 rounded-lg px-2 py-1.5 transition-all text-purple-900 font-medium"
+                      >
+                        {f}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
