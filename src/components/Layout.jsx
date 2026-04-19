@@ -1,55 +1,60 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard, Lightbulb, Network, FileText, ClipboardList,
-  Link2, CalendarClock, Settings, Search, ChevronLeft, Menu,
-  HelpCircle, RefreshCw, ShieldCheck, Zap, Plug2, Globe, ExternalLink,
-  Wand2, Share2, BarChart3, Play, Crosshair, Sparkles, Shield, Building2,
-  GraduationCap, Briefcase
+  LayoutDashboard, Settings, ChevronLeft, Menu, Search,
+  Home, ShieldCheck, Globe, ExternalLink, Zap, Plug2,
+  Lightbulb, Network, FileText, ClipboardList, Link2, CalendarClock,
+  HelpCircle, RefreshCw, Building2, TrendingUp, Sparkles,
+  Users, Calendar, Video, CreditCard, MessageSquare, BookOpen, BarChart3,
+  Wand2, Share2, Play, Layers, Factory, LogOut
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
-import { LogOut } from "lucide-react";
+import { useHub, HUBS_CONFIG } from "@/lib/HubContext";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 function handleLogout() {
   sessionStorage.removeItem("lg_auth");
+  sessionStorage.removeItem("active_hub");
   window.location.reload();
 }
 
-const NAV_ITEMS = [
-  { to: "/", labelKey: "dashboard", icon: LayoutDashboard },
-  { to: "/content-ideas", labelKey: "content_ideas", icon: Lightbulb },
-  { to: "/clusters", labelKey: "clusters", icon: Network },
-  { to: "/pages", labelKey: "pages", icon: FileText },
-  { to: "/brief-builder", labelKey: "brief_builder", icon: ClipboardList },
-  { to: "/internal-links", labelKey: "internal_links", icon: Link2 },
-  { to: "/publishing-queue", labelKey: "publishing_queue", icon: CalendarClock },
-  { to: "/faq-schema", labelKey: "faq_schema", icon: HelpCircle },
-  { to: "/refresh-center", labelKey: "refresh_center", icon: RefreshCw },
-  { to: "/seo-qa", labelKey: "seo_qa", icon: ShieldCheck },
-  { to: "/wordpress", labelKey: "wordpress", icon: Globe },
-  { to: "/content-engine", labelKey: "content_engine", icon: Wand2 },
-  { to: "/social-media", labelKey: "social_media", icon: Share2 },
-  { to: "/analytics", labelKey: "analytics", icon: BarChart3 },
-  { to: "/execution-center", labelKey: "execution_center", icon: Play },
-  { to: "/backlinks", labelKey: "backlinks", icon: ExternalLink },
-  { to: "/competitors", labelKey: "competitors", icon: Crosshair },
-  { to: "/seo-autopilot", labelKey: "seo_autopilot", icon: Sparkles },
-  { to: "/security", labelKey: "security", icon: Shield },
-  { to: "/directory", labelKey: "directory", icon: Building2 },
-  { to: "/teachers", labelKey: "teacher_hub", icon: GraduationCap },
-  { to: "/business", labelKey: "business_hub", icon: Briefcase },
-  { to: "/automations", labelKey: "automations", icon: Zap },
-  { to: "/integrations", labelKey: "integrations", icon: Plug2 },
-  { to: "/settings", labelKey: "settings", icon: Settings },
-];
+// Map icon string names to components
+const ICON_MAP = {
+  Home, ShieldCheck, Globe, ExternalLink, Zap, Plug2, Settings,
+  Lightbulb, Network, FileText, ClipboardList, Link2, CalendarClock,
+  HelpCircle, RefreshCw, Building2, TrendingUp, Sparkles, LayoutDashboard,
+  Users, Calendar, Video, CreditCard, MessageSquare, BookOpen, BarChart3,
+  Wand2, Share2, Play, Layers, Factory, Search,
+  Crosshair: TrendingUp, // alias
+};
+
+const HUB_COLORS = {
+  welcome: "text-primary",
+  security: "text-blue-400",
+  seo: "text-indigo-400",
+  directory: "text-slate-300",
+  teachers: "text-blue-300",
+  analytics: "text-cyan-400",
+  business: "text-blue-200",
+};
 
 export default function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { t, showLangSwitcher } = useLanguage();
+  const { activeHub, setActiveHub } = useHub();
+
+  const hubConfig = HUBS_CONFIG[activeHub] || HUBS_CONFIG["welcome"];
+  const navItems = hubConfig.navItems;
+  const accentColor = HUB_COLORS[activeHub] || "text-primary";
+
+  const handleGoHome = () => {
+    setActiveHub("welcome");
+    navigate("/");
+  };
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -59,50 +64,139 @@ export default function Layout() {
 
       <aside className={cn(
         "fixed lg:relative z-50 h-full flex flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300",
-        collapsed ? "w-[68px]" : "w-[240px]",
+        collapsed ? "w-[68px]" : "w-[220px]",
         mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>
-        <div className={cn("flex items-center h-16 px-4 border-b border-sidebar-border", collapsed ? "justify-center" : "gap-3")}>
+        {/* Logo */}
+        <div
+          className={cn("flex items-center h-16 px-4 border-b border-sidebar-border cursor-pointer hover:opacity-80 transition-opacity", collapsed ? "justify-center" : "gap-3")}
+          onClick={handleGoHome}
+          title="TexiSEO AI & Enterprise — Strona główna"
+        >
           <div className={cn("flex items-center justify-center flex-shrink-0", collapsed ? "h-9 w-9" : "h-10 w-10")}>
             <img
               src="https://media.base44.com/images/public/69da036b1797baa333fdb6c1/f24cb9015_ChatGPTImage11kwi202616_54_09.png"
-              alt="LinguaSEO OS"
+              alt="TexiSEO AI & Enterprise"
               className="h-full w-full object-contain"
             />
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
-              <h1 className="text-sm font-bold text-sidebar-accent-foreground tracking-tight">LinguaSEO OS</h1>
-              <p className="text-[10px] text-sidebar-foreground/60 truncate">linguatoons.com</p>
+              <h1 className="text-[11px] font-bold text-sidebar-accent-foreground tracking-tight leading-tight">TexiSEO AI</h1>
+              <p className="text-[9px] text-sidebar-foreground/60 truncate">& Enterprise</p>
             </div>
           )}
         </div>
 
-        <nav className="flex-1 py-3 px-2 space-y-0.5 overflow-y-auto">
-          {NAV_ITEMS.map((item) => {
-            const isActive = item.to === "/"
-              ? location.pathname === "/"
-              : location.pathname.startsWith(item.to);
-            const label = t[item.labelKey] || item.labelKey;
-            return (
+        {/* Hub label */}
+        {!collapsed && activeHub !== "welcome" && (
+          <div className="px-4 pt-3 pb-1">
+            <p className={cn("text-[10px] font-bold uppercase tracking-widest", accentColor)}>
+              {hubConfig.label}
+            </p>
+          </div>
+        )}
+
+        {/* Nav */}
+        <nav className="flex-1 py-2 px-2 space-y-0.5 overflow-y-auto">
+          {activeHub === "welcome" ? (
+            // Welcome state — show just home + settings
+            <>
               <Link
-                key={item.to}
-                to={item.to}
+                to="/"
                 onClick={() => setMobileOpen(false)}
-                title={collapsed ? label : undefined}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors",
                   collapsed && "justify-center px-2",
-                  isActive
+                  location.pathname === "/"
                     ? "bg-sidebar-accent text-sidebar-primary"
                     : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
                 )}
               >
-                <item.icon className="h-[18px] w-[18px] flex-shrink-0" />
-                {!collapsed && <span>{label}</span>}
+                <Home className="h-[18px] w-[18px] flex-shrink-0" />
+                {!collapsed && <span>Strona Główna</span>}
               </Link>
-            );
-          })}
+              <Link
+                to="/settings"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors",
+                  collapsed && "justify-center px-2",
+                  location.pathname === "/settings"
+                    ? "bg-sidebar-accent text-sidebar-primary"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <Settings className="h-[18px] w-[18px] flex-shrink-0" />
+                {!collapsed && <span>Ustawienia</span>}
+              </Link>
+              <Link
+                to="/integrations"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors",
+                  collapsed && "justify-center px-2",
+                  location.pathname === "/integrations"
+                    ? "bg-sidebar-accent text-sidebar-primary"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+                )}
+              >
+                <Plug2 className="h-[18px] w-[18px] flex-shrink-0" />
+                {!collapsed && <span>Integracje</span>}
+              </Link>
+            </>
+          ) : (
+            navItems.map((item, idx) => {
+              const IconComp = ICON_MAP[item.icon] || Home;
+              const isHome = item.label.startsWith("←");
+              const isSettings = item.to === "/settings";
+              const isActive = !isHome && !isSettings && (
+                item.to === "/" ? location.pathname === "/" : location.pathname.startsWith(item.to)
+              );
+
+              if (isHome) {
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => { handleGoHome(); setMobileOpen(false); }}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[12px] font-medium transition-colors mb-2",
+                      collapsed && "justify-center px-2",
+                      "text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent/30"
+                    )}
+                  >
+                    <IconComp className="h-4 w-4 flex-shrink-0" />
+                    {!collapsed && <span>{item.label}</span>}
+                  </button>
+                );
+              }
+
+              // Separator before settings
+              const prevItem = navItems[idx - 1];
+              const showSep = isSettings && prevItem && !prevItem.label.startsWith("←") && prevItem.to !== "/settings";
+
+              return (
+                <div key={idx}>
+                  {showSep && <div className="my-2 border-t border-sidebar-border/50" />}
+                  <Link
+                    to={item.to}
+                    onClick={() => setMobileOpen(false)}
+                    title={collapsed ? item.label : undefined}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors",
+                      collapsed && "justify-center px-2",
+                      isActive
+                        ? "bg-sidebar-accent text-sidebar-primary"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground"
+                    )}
+                  >
+                    <IconComp className="h-[18px] w-[18px] flex-shrink-0" />
+                    {!collapsed && <span>{item.label}</span>}
+                  </Link>
+                </div>
+              );
+            })
+          )}
         </nav>
 
         <button
@@ -130,9 +224,14 @@ export default function Layout() {
           </div>
           <div className="flex items-center gap-2">
             {showLangSwitcher && <LanguageSwitcher mini />}
+            {activeHub !== "welcome" && (
+              <span className={cn("text-xs font-semibold hidden sm:block px-2 py-0.5 rounded-md bg-sidebar-accent", accentColor)}>
+                {hubConfig.label}
+              </span>
+            )}
             <span className="text-xs text-muted-foreground font-medium hidden sm:block">linguatoons.com</span>
             <div className="h-7 w-7 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-[11px] font-semibold text-primary-foreground">L</span>
+              <span className="text-[11px] font-semibold text-primary-foreground">T</span>
             </div>
             <button
               onClick={handleLogout}

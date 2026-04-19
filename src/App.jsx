@@ -7,8 +7,10 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { LanguageProvider } from '@/lib/LanguageContext';
+import { HubProvider } from '@/lib/HubContext';
 import AIChat from './components/AIChat';
 import Layout from './components/Layout';
+import WelcomeScreen from './pages/WelcomeScreen';
 import Dashboard from './pages/Dashboard';
 import ContentIdeas from './pages/ContentIdeas';
 import Clusters from './pages/Clusters';
@@ -66,7 +68,7 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<WelcomeScreen />} />
         <Route path="/content-ideas" element={<ContentIdeas />} />
         <Route path="/clusters" element={<Clusters />} />
         <Route path="/clusters/:id" element={<ClusterDetail />} />
@@ -104,6 +106,7 @@ const AuthenticatedApp = () => {
 function App() {
   return (
     <LanguageProvider>
+      <HubProvider>
       <AuthProvider>
         <QueryClientProvider client={queryClientInstance}>
           <Router>
@@ -120,6 +123,7 @@ function App() {
           <AIChat />
         </QueryClientProvider>
       </AuthProvider>
+      </HubProvider>
     </LanguageProvider>
   )
 }

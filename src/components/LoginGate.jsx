@@ -40,8 +40,8 @@ function LoginGateInner({ children }) {
     setLoading(true);
     await base44.integrations.Core.SendEmail({
       to: ADMIN_EMAIL,
-      subject: "Reset hasła — LinguaSEO OS",
-      body: `Cześć Marcin!\n\nOtrzymaliśmy prośbę o reset hasła do systemu LinguaSEO OS.\n\nTwoje dane logowania:\n• Użytkownik: Marcin\n• Hasło: Marcinek2026!\n\nJeśli to nie Ty wysłałeś tę prośbę, zignoruj tę wiadomość.\n\nPozdrowienia,\nLinguaSEO OS`,
+      subject: "Reset hasła — TexiSEO AI & Enterprise",
+      body: `Cześć Marcin!\n\nOtrzymaliśmy prośbę o reset hasła do systemu TexiSEO AI & Enterprise.\n\nTwoje dane logowania:\n• Użytkownik: Marcin\n• Hasło: Marcinek2026!\n\nJeśli to nie Ty wysłałeś tę prośbę, zignoruj tę wiadomość.\n\nPozdrowienia,\nLinguaSEO OS`,
     });
     setLoading(false);
     setResetSent(true);
