@@ -8,22 +8,86 @@ export const HUBS_CONFIG = {
     label: "TexiSEO AI & Enterprise",
     navItems: [],
   },
-  
-  // ===== NAUCZYCIEL — TYLKO SWÓ BIZNES =====
-  teachers: {
-    id: "teachers",
-    label: "Panel Nauczyciela",
+
+  // ===== SECURITY =====
+  security: {
+    id: "security",
+    label: "Bezpieczeństwo",
     navItems: [
       { to: "/", label: "← Strona Główna", icon: "Home" },
-      { to: "/teacher-dashboard?tab=courses", label: "Moje Kursy", icon: "BookOpen" },
-      { to: "/teacher-dashboard?tab=overview", label: "Przegląd", icon: "BarChart3" },
-      { to: "/teacher-dashboard?tab=earnings", label: "Zarobki", icon: "CreditCard" },
-      { to: "/teacher-dashboard?tab=students", label: "Moi Uczniowie", icon: "Users" },
+      { to: "/security", label: "Security Monitor", icon: "ShieldCheck" },
+      { to: "/wordpress", label: "WordPress Health", icon: "Globe" },
+      { to: "/backlinks", label: "Backlinki", icon: "ExternalLink" },
+      { to: "/automations", label: "Automations", icon: "Zap" },
       { to: "/settings", label: "Ustawienia", icon: "Settings" },
     ],
   },
 
-  // ===== BIZNES — FIRMA, MAGAZYN, PRODUKCJA =====
+  // ===== SEO TOOLS =====
+  seo: {
+    id: "seo",
+    label: "SEO Narzędzia",
+    navItems: [
+      { to: "/", label: "← Strona Główna", icon: "Home" },
+      { to: "/content-ideas", label: "Pomysły treści", icon: "Lightbulb" },
+      { to: "/clusters", label: "Klastry", icon: "Network" },
+      { to: "/pages", label: "Strony", icon: "FileText" },
+      { to: "/brief-builder", label: "Brief Builder", icon: "ClipboardList" },
+      { to: "/internal-links", label: "Linki wewnętrzne", icon: "Link2" },
+      { to: "/publishing-queue", label: "Publikacje", icon: "CalendarClock" },
+      { to: "/faq-schema", label: "FAQ Schema", icon: "HelpCircle" },
+      { to: "/refresh-center", label: "Refresh Center", icon: "RefreshCw" },
+      { to: "/seo-qa", label: "SEO QA", icon: "ShieldCheck" },
+      { to: "/settings", label: "Ustawienia", icon: "Settings" },
+    ],
+  },
+
+  // ===== DIRECTORY =====
+  directory: {
+    id: "directory",
+    label: "Katalog Firm",
+    navItems: [
+      { to: "/", label: "← Strona Główna", icon: "Home" },
+      { to: "/directory", label: "Katalog Firm", icon: "Building2" },
+      { to: "/competitors", label: "Konkurenci", icon: "TrendingUp" },
+      { to: "/backlinks", label: "Link Exchange", icon: "Link2" },
+      { to: "/seo-autopilot", label: "SEO Autopilot", icon: "Sparkles" },
+      { to: "/settings", label: "Ustawienia", icon: "Settings" },
+    ],
+  },
+
+  // ===== TEACHERS =====
+  teachers: {
+    id: "teachers",
+    label: "Teachers Hub",
+    navItems: [
+      { to: "/", label: "← Strona Główna", icon: "Home" },
+      { to: "/teachers?tab=marketplace", label: "Marketplace", icon: "Users" },
+      { to: "/teachers?tab=planner", label: "Planer lekcji", icon: "Calendar" },
+      { to: "/teachers?tab=live", label: "Lekcje Live", icon: "Video" },
+      { to: "/teachers?tab=chat", label: "Wiadomości", icon: "MessageSquare" },
+      { to: "/teachers?tab=courses_market", label: "Kursy", icon: "BookOpen" },
+      { to: "/teachers?tab=payroll", label: "Rozliczenia", icon: "CreditCard" },
+      { to: "/teachers?tab=stats", label: "Statystyki", icon: "BarChart3" },
+      { to: "/settings", label: "Ustawienia", icon: "Settings" },
+    ],
+  },
+
+  // ===== ANALYTICS =====
+  analytics: {
+    id: "analytics",
+    label: "Analityka",
+    navItems: [
+      { to: "/", label: "← Strona Główna", icon: "Home" },
+      { to: "/analytics", label: "Analytics", icon: "BarChart3" },
+      { to: "/content-engine", label: "Content Engine", icon: "Wand2" },
+      { to: "/social-media", label: "Social Media", icon: "Share2" },
+      { to: "/execution-center", label: "Exec. Center", icon: "Play" },
+      { to: "/settings", label: "Ustawienia", icon: "Settings" },
+    ],
+  },
+
+  // ===== BUSINESS =====
   business: {
     id: "business",
     label: "Business Hub",
@@ -33,11 +97,26 @@ export const HUBS_CONFIG = {
       { to: "/business?tab=inventory", label: "Magazyn", icon: "Layers" },
       { to: "/business?tab=production", label: "Produkcja", icon: "Factory" },
       { to: "/business?tab=suppliers", label: "Dostawcy", icon: "Users" },
+      { to: "/integrations", label: "Integracje", icon: "Plug2" },
       { to: "/settings", label: "Ustawienia", icon: "Settings" },
     ],
   },
 
-  // ===== WEBSITE & SEO — TYLKO JEŚLI DODAL DOMENĘ =====
+  // ===== SELF-PROMOTION =====
+  self_promotion: {
+    id: "self_promotion",
+    label: "SEO Autopromocja",
+    navItems: [
+      { to: "/", label: "← Strona Główna", icon: "Home" },
+      { to: "/self-promotion?tab=generator", label: "Generator treści", icon: "Sparkles" },
+      { to: "/self-promotion?tab=competitors", label: "Analiza konkurencji", icon: "TrendingUp" },
+      { to: "/self-promotion?tab=keywords", label: "Mapa słów kluczowych", icon: "Search" },
+      { to: "/self-promotion?tab=agent", label: "Agent SEO AI", icon: "Wand2" },
+      { to: "/settings", label: "Ustawienia", icon: "Settings" },
+    ],
+  },
+
+  // ===== WEBSITE HUB =====
   website: {
     id: "website",
     label: "Website & SEO",
@@ -45,15 +124,14 @@ export const HUBS_CONFIG = {
       { to: "/", label: "← Strona Główna", icon: "Home" },
       { to: "/website?tab=overview", label: "Moja Domena", icon: "Globe" },
       { to: "/website?tab=seo", label: "SEO Narzędzia", icon: "Sparkles" },
-      { to: "/website?tab=content", label: "Pomysły treści", icon: "Lightbulb" },
+      { to: "/website?tab=content", label: "Treść", icon: "Lightbulb" },
       { to: "/website?tab=publishing", label: "Publikacje", icon: "CalendarClock" },
       { to: "/website?tab=analytics", label: "Analityka", icon: "BarChart3" },
-      { to: "/wordpress", label: "WordPress", icon: "Globe" },
       { to: "/settings", label: "Ustawienia", icon: "Settings" },
     ],
   },
 
-  // ===== ADMIN — SUPERADMIN TYLKO =====
+  // ===== ADMIN SUPERADMIN =====
   texiseo_admin: {
     id: "texiseo_admin",
     label: "🔐 TexiSEO SUPERADMIN",
@@ -84,11 +162,12 @@ export function HubProvider({ children }) {
   }, []);
 
   const setHub = (hubId) => {
-    // ADMIN może wejść w każdy hub
-    // TEACHER może wejść TYLKO w teachers + website (jeśli domena)
-    // USER może wejść w wszystkie (w przyszłości)
+    // ADMIN — pełny dostęp do WSZYSTKICH hubów
+    // TEACHER — tylko teachers + website
+    // USER — business + website
     
     if (userRole === "admin") {
+      // Admin widzi ALL
       sessionStorage.setItem("active_hub", hubId);
       setActiveHubState(hubId);
     } else if (userRole === "teacher" && ["teachers", "website"].includes(hubId)) {
