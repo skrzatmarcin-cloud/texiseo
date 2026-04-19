@@ -35,15 +35,21 @@ function TagList({ items, color = "bg-secondary text-secondary-foreground" }) {
 
 function AnalysisCard({ analysis, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
-  const [tab, setTab] = useState("overview");
+  const [tab, setTab] = useState("gaps");
+
+  // Parse comparison data stored in notes JSON
+  const compData = (() => {
+    try { return JSON.parse(analysis.notes || '{}'); } catch { return {}; }
+  })();
 
   const tabs = [
-    { id: "overview", label: "Przegląd" },
-    { id: "content", label: "Treści" },
+    { id: "gaps", label: "🔴 Luki vs Linguatoons" },
+    { id: "overview", label: "Przegląd SEO" },
+    { id: "content", label: "Treści & Narzędzia" },
     { id: "backlinks", label: "Backlinki" },
     { id: "freebies", label: "Freebies / Events" },
     { id: "opportunities", label: "Szanse & Zagrożenia" },
-    { id: "recommendations", label: "Rekomendacje" },
+    { id: "recommendations", label: "Plan działania" },
     { id: "report", label: "Pełny raport" },
   ];
 
@@ -84,6 +90,61 @@ function AnalysisCard({ analysis, defaultOpen = false }) {
           </div>
 
           <div className="p-5">
+            {tab === "gaps" && (
+              <div className="space-y-5">
+                <div className="bg-red-50 border border-red-100 rounded-xl p-4">
+                  <p className="text-xs font-bold text-red-800 mb-3 uppercase tracking-wide">❌ Luki treści — czego brakuje Linguatoons</p>
+                  <div className="space-y-1.5">
+                    {(compData.content_gaps || []).length === 0
+                      ? <p className="text-xs text-muted-foreground italic">Brak danych — uruchom ponowną analizę</p>
+                      : (compData.content_gaps || []).map((g, i) => (
+                        <div key={i} className="flex items-start gap-2 bg-white border border-red-100 rounded-lg px-3 py-2">
+                          <span className="text-red-500 flex-shrink-0">❌</span>
+                          <p className="text-xs text-red-900">{g}</p>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+                <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                  <p className="text-xs font-bold text-amber-800 mb-3 uppercase tracking-wide">⚠️ Luki funkcjonalne (narzędzia, freebies, funkcje)</p>
+                  <div className="space-y-1.5">
+                    {(compData.functional_gaps || []).length === 0
+                      ? <p className="text-xs text-muted-foreground italic">Brak danych — uruchom ponowną analizę</p>
+                      : (compData.functional_gaps || []).map((g, i) => (
+                        <div key={i} className="flex items-start gap-2 bg-white border border-amber-100 rounded-lg px-3 py-2">
+                          <span className="text-amber-500 flex-shrink-0">⚠️</span>
+                          <p className="text-xs text-amber-900">{g}</p>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="bg-orange-50 border border-orange-100 rounded-xl p-4">
+                    <p className="text-xs font-bold text-orange-800 mb-3 uppercase tracking-wide">🔧 Luki SEO techniczne</p>
+                    <div className="space-y-1">
+                      {(compData.seo_technical_gaps || []).map((g, i) => (
+                        <p key={i} className="text-xs text-orange-900">• {g}</p>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="bg-purple-50 border border-purple-100 rounded-xl p-4">
+                    <p className="text-xs font-bold text-purple-800 mb-3 uppercase tracking-wide">🤖 Luki w widoczności AI</p>
+                    <div className="space-y-1">
+                      {(compData.ai_visibility_gaps || []).map((g, i) => (
+                        <p key={i} className="text-xs text-purple-900">• {g}</p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {(compData.tools_technologies || []).length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">🛠️ Narzędzia wykryte u konkurenta</p>
+                    <TagList items={compData.tools_technologies} color="bg-slate-100 text-slate-700" />
+                  </div>
+                )}
+              </div>
+            )}
+
             {tab === "overview" && (
               <div className="space-y-4">
                 <div>
@@ -114,6 +175,10 @@ function AnalysisCard({ analysis, defaultOpen = false }) {
                 <div>
                   <p className="text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">Typy treści</p>
                   <TagList items={analysis.content_types} color="bg-emerald-50 text-emerald-700" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">🛠️ Wykryte narzędzia i technologie</p>
+                  <TagList items={compData.tools_technologies || []} color="bg-slate-100 text-slate-700" />
                 </div>
                 <div>
                   <p className="text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">Obecność w mediach / PR</p>
