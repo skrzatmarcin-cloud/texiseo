@@ -12,7 +12,6 @@ import {
 
 const BRANDS = [
   { id: "texiseo", label: "TexiSEO.ai", icon: Sparkles, color: "from-indigo-600 to-purple-600", desc: "SEO, Backlinki, Content" },
-  { id: "linguatoons", label: "LinguaToons", icon: GraduationCap, color: "from-blue-600 to-cyan-600", desc: "Platform Nauczycieli" },
   { id: "enterprise", label: "Enterprise", icon: Building2, color: "from-slate-600 to-slate-800", desc: "Zarządzanie Firmami" },
 ];
 
@@ -22,13 +21,6 @@ const TEXISEO_TABS = [
   { id: "backlinks", label: "Backlinki", icon: Link2 },
   { id: "wordpress", label: "WordPress", icon: Globe },
   { id: "requests", label: "Zgłoszenia", icon: MessageSquare },
-];
-
-const LINGUATOONS_TABS = [
-  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
-  { id: "teachers", label: "Nauczyciele", icon: Users },
-  { id: "lessons", label: "Lekcje", icon: BookOpen },
-  { id: "payments", label: "Rozliczenia", icon: CreditCard },
 ];
 
 const ENTERPRISE_TABS = [
@@ -120,12 +112,12 @@ export default function TexiSEOAdmin() {
 function TexiSEOAdminInner() {
   const [brand, setBrand] = useState(() => {
     const p = new URLSearchParams(window.location.search).get("brand");
-    return ["texiseo","linguatoons","enterprise","security"].includes(p) ? p : "texiseo";
+    return ["texiseo","enterprise","security"].includes(p) ? p : "texiseo";
   });
   
   const [tab, setTab] = useState(() => {
     const p = new URLSearchParams(window.location.search).get("tab");
-    return ["dashboard","seo","backlinks","wordpress","requests","teachers","lessons","payments","companies","users","logins","alerts","settings"].includes(p) ? p : "dashboard";
+    return ["dashboard","seo","backlinks","wordpress","requests","companies","users","logins","alerts","settings"].includes(p) ? p : "dashboard";
   });
   const [requests, setRequests] = useState([]);
   const [users, setUsers] = useState([]);
@@ -172,7 +164,6 @@ function TexiSEOAdminInner() {
   const currentBrand = BRANDS.find(b => b.id === brand);
   const getTabs = () => {
     if (brand === "texiseo") return TEXISEO_TABS;
-    if (brand === "linguatoons") return LINGUATOONS_TABS;
     if (brand === "enterprise") return ENTERPRISE_TABS;
     return SECURITY_TABS;
   };
@@ -288,31 +279,6 @@ function TexiSEOAdminInner() {
 
         {brand === "texiseo" && !loading && tab === "requests" && (
           <RequestsTab requests={requests} newReqs={newReqs} pending={pending} leads={leads} selectedReq={selectedReq} setSelectedReq={setSelectedReq} updateRequest={updateRequest} sendAdminEmail={sendAdminEmail} updating={updating} />
-        )}
-
-        {/* ===== LINGUATOONS BRAND ===== */}
-        {brand === "linguatoons" && !loading && tab === "dashboard" && (
-          <div className="max-w-5xl mx-auto space-y-5">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <StatCard label="Nauczyciele" value="—" icon={Users} color="bg-blue-50 text-blue-600" sub="aktywni" />
-              <StatCard label="Lekcje" value="—" icon={BookOpen} color="bg-emerald-50 text-emerald-600" sub="zaplanowane" />
-              <StatCard label="Rozliczenia" value="—" icon={CreditCard} color="bg-amber-50 text-amber-600" sub="pending" />
-              <StatCard label="Kursy" value="—" icon={Sparkles} color="bg-purple-50 text-purple-600" sub="dostępne" />
-            </div>
-            <div className="bg-card border border-border rounded-2xl p-5 text-center text-muted-foreground">
-              <p className="text-sm">LinguaToons Platform — Sekcje będą wkrótce dostępne</p>
-            </div>
-          </div>
-        )}
-
-        {brand === "linguatoons" && !loading && (tab === "teachers" || tab === "lessons" || tab === "payments") && (
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <BarChart3 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-sm font-semibold text-muted-foreground">LinguaToons Management</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Zarządzanie nauczycielami, lekcjami i rozliczeniami — dostępne wkrótce</p>
-            </div>
-          </div>
         )}
 
         {/* ===== ENTERPRISE BRAND ===== */}
@@ -734,80 +700,6 @@ function TexiSEOAdminInner() {
                       </button>
                     ))}
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ===== LINGUATOONS ADMIN ===== */}
-        {!loading && tab === "linguatoons" && (
-          <div className="max-w-6xl mx-auto space-y-5">
-            <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white">
-              <div className="flex items-center gap-4">
-                <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center">
-                  <GraduationCap className="h-8 w-8" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold">LinguaToons Admin Panel</h2>
-                  <p className="text-blue-100/80 text-sm mt-0.5">Pełne zarządzanie platformą nauczycieli, kursów i lekcji</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { label: "Nauczyciele", icon: Users, color: "bg-blue-50 text-blue-600", to: "/teachers" },
-                { label: "Lekcje", icon: BookOpen, color: "bg-emerald-50 text-emerald-600", to: "/teachers" },
-                { label: "Kursy", icon: Zap, color: "bg-violet-50 text-violet-600", to: "/teachers" },
-                { label: "Rozliczenia", icon: CreditCard, color: "bg-amber-50 text-amber-600", to: "/teachers" },
-                { label: "Prowizje", icon: TrendingUp, color: "bg-rose-50 text-rose-600", to: "/teachers" },
-                { label: "Statystyki", icon: BarChart3, color: "bg-cyan-50 text-cyan-600", to: "/teachers" },
-              ].map(item => (
-                <button
-                  key={item.label}
-                  onClick={() => window.location.href = item.to}
-                  className={`p-5 rounded-2xl border-2 border-border hover:border-primary transition-all text-left ${item.color}`}
-                >
-                  <div className={`h-10 w-10 rounded-xl flex items-center justify-center mb-3 ${item.color}`}>
-                    <item.icon className="h-5 w-5" />
-                  </div>
-                  <p className="font-bold text-sm">{item.label}</p>
-                  <p className="text-xs opacity-60 mt-0.5">Zarządzaj i edytuj</p>
-                </button>
-              ))}
-            </div>
-
-            <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
-              <p className="text-sm font-bold">Szybkie Statystyki</p>
-              <div className="grid sm:grid-cols-3 gap-4">
-                <div className="bg-secondary/40 rounded-xl p-3 text-center">
-                  <p className="text-xs text-muted-foreground mb-1">Aktywni Nauczyciele</p>
-                  <p className="text-2xl font-black text-primary">—</p>
-                  <p className="text-[10px] text-muted-foreground/60 mt-1">Załaduj panel Teachers</p>
-                </div>
-                <div className="bg-secondary/40 rounded-xl p-3 text-center">
-                  <p className="text-xs text-muted-foreground mb-1">Zaplanowane Lekcje</p>
-                  <p className="text-2xl font-black text-emerald-600">—</p>
-                  <p className="text-[10px] text-muted-foreground/60 mt-1">Załaduj panel Lekcje</p>
-                </div>
-                <div className="bg-secondary/40 rounded-xl p-3 text-center">
-                  <p className="text-xs text-muted-foreground mb-1">Kursy Dostępne</p>
-                  <p className="text-2xl font-black text-violet-600">—</p>
-                  <p className="text-[10px] text-muted-foreground/60 mt-1">Załaduj panel Kursy</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5">
-              <div className="flex items-start gap-3">
-                <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-bold text-blue-900">Admin Rights</p>
-                  <p className="text-xs text-blue-700 mt-1">
-                    Masz pełny dostęp do edycji wszystkich nauczycieli, lekcji, kursów, rozliczeń i prowizji. 
-                    Wszelkie zmiany są zapisywane natychmiast w bazie danych.
-                  </p>
                 </div>
               </div>
             </div>
