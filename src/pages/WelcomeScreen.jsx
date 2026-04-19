@@ -79,6 +79,23 @@ const HUBS = [
 
 
   {
+    id: "teachers",
+    label: "Teachers Hub",
+    sublabel: "Centrum Nauczycieli",
+    to: "/teachers",
+    gradient: "from-blue-600 to-indigo-700",
+    glowColor: "shadow-blue-900/60",
+    Icon: GraduationCap,
+    iconColor: "text-blue-200",
+    sublinks: [
+      { label: "Nauczyciele", to: "/teachers", icon: Users },
+      { label: "Planer lekcji", to: "/teachers", icon: Calendar },
+      { label: "Lekcje Live", to: "/teachers", icon: Video },
+      { label: "Rozliczenia", to: "/teachers", icon: CreditCard },
+    ],
+  },
+
+  {
     id: "business",
     label: "Business Hub",
     sublabel: "Operacje & Magazyn",

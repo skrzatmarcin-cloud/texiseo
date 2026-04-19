@@ -109,7 +109,9 @@ const AuthenticatedApp = () => {
           <Route path="/seo-autopilot" element={<SEOAutopilot />} />
           <Route path="/security" element={<SecurityMonitor />} />
           <Route path="/directory" element={<BusinessDirectory />} />
+          <Route path="/teachers" element={<TeacherHub />} />
           <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+          <Route path="/admin-teachers" element={<AdminTeacherManagement />} />
           <Route path="/client-seo/:websiteId" element={<ClientSEODashboard />} />
           <Route path="/business" element={<BusinessHub />} />
           <Route path="/self-promotion" element={<SelfPromotionHub />} />
@@ -166,7 +168,9 @@ const AuthenticatedApp = () => {
         <Route path="/seo-autopilot" element={<SEOAutopilot />} />
         <Route path="/security" element={<SecurityMonitor />} />
         <Route path="/directory" element={<BusinessDirectory />} />
+        <Route path="/teachers" element={<TeacherHub />} />
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+        <Route path="/admin-teachers" element={<AdminTeacherManagement />} />
         <Route path="/client-seo/:websiteId" element={<ClientSEODashboard />} />
         <Route path="/business" element={<BusinessHub />} />
         <Route path="/self-promotion" element={<SelfPromotionHub />} />
