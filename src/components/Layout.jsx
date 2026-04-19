@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Lightbulb, Network, FileText, ClipboardList,
   Link2, CalendarClock, Settings, Search, ChevronLeft, Menu,
   HelpCircle, RefreshCw, ShieldCheck, Zap, Plug2, Globe, ExternalLink,
-  Wand2, Share2, BarChart3, Play, Crosshair, Sparkles, Shield, Building2
+  Wand2, Share2, BarChart3, Play, Crosshair, Sparkles, Shield, Building2, GraduationCap
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -29,6 +29,7 @@ const NAV_ITEMS = [
   { to: "/seo-autopilot", icon: Sparkles, label: "SEO Autopilot" },
   { to: "/security", icon: Shield, label: "Bezpieczeństwo" },
   { to: "/directory", icon: Building2, label: "Katalog Firm" },
+  { to: "/teachers", icon: GraduationCap, label: "Teacher Hub" },
   { to: "/automations", icon: Zap, label: "Automatyzacje" },
   { to: "/integrations", icon: Plug2, label: "Integracje" },
   { to: "/settings", icon: Settings, label: "Ustawienia" },

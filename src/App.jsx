@@ -34,6 +34,7 @@ import SEOAutopilot from './pages/SEOAutopilot';
 import SecurityMonitor from './pages/SecurityMonitor';
 import BusinessDirectory from './pages/BusinessDirectory';
 import DemoLogin from './pages/DemoLogin';
+import TeacherHub from './pages/TeacherHub';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -87,6 +88,7 @@ const AuthenticatedApp = () => {
         <Route path="/seo-autopilot" element={<SEOAutopilot />} />
         <Route path="/security" element={<SecurityMonitor />} />
         <Route path="/directory" element={<BusinessDirectory />} />
+        <Route path="/teachers" element={<TeacherHub />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>

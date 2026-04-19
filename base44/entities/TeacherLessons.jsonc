@@ -1,0 +1,127 @@
+{
+  "name": "TeacherLessons",
+  "type": "object",
+  "properties": {
+    "teacher_id": {
+      "type": "string",
+      "title": "ID nauczyciela"
+    },
+    "student_name": {
+      "type": "string",
+      "title": "Imi\u0119 ucznia"
+    },
+    "student_email": {
+      "type": "string",
+      "title": "Email ucznia"
+    },
+    "lesson_date": {
+      "type": "string",
+      "title": "Data lekcji",
+      "format": "date"
+    },
+    "lesson_time": {
+      "type": "string",
+      "title": "Godzina"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "title": "Czas trwania (min)",
+      "default": 50
+    },
+    "language": {
+      "type": "string",
+      "title": "J\u0119zyk",
+      "enum": [
+        "angielski",
+        "hiszpa\u0144ski",
+        "francuski",
+        "inny"
+      ]
+    },
+    "level": {
+      "type": "string",
+      "title": "Poziom",
+      "enum": [
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "C1",
+        "C2"
+      ]
+    },
+    "lesson_type": {
+      "type": "string",
+      "title": "Typ",
+      "enum": [
+        "individual",
+        "group",
+        "trial"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "scheduled",
+        "completed",
+        "cancelled",
+        "no_show",
+        "rescheduled"
+      ],
+      "default": "scheduled"
+    },
+    "meeting_link": {
+      "type": "string",
+      "title": "Link do spotkania"
+    },
+    "meeting_id": {
+      "type": "string",
+      "title": "ID spotkania (Zoom/Meet)"
+    },
+    "lesson_notes": {
+      "type": "string",
+      "title": "Notatki z lekcji"
+    },
+    "homework": {
+      "type": "string",
+      "title": "Zadanie domowe"
+    },
+    "topic_covered": {
+      "type": "string",
+      "title": "Om\u00f3wiony temat"
+    },
+    "rate_at_time": {
+      "type": "number",
+      "title": "Stawka w chwili lekcji"
+    },
+    "amount_due": {
+      "type": "number",
+      "title": "Do zap\u0142aty"
+    },
+    "paid": {
+      "type": "boolean",
+      "title": "Op\u0142acona",
+      "default": false
+    },
+    "invoice_id": {
+      "type": "string",
+      "title": "ID faktury"
+    },
+    "course_id": {
+      "type": "string",
+      "title": "ID kursu (WP)"
+    },
+    "invitation_sent": {
+      "type": "boolean",
+      "title": "Zaproszenie wys\u0142ane",
+      "default": false
+    }
+  },
+  "required": [
+    "teacher_id",
+    "lesson_date",
+    "lesson_time",
+    "status"
+  ]
+}

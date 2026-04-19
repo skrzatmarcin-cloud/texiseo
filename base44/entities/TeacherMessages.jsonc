@@ -1,0 +1,61 @@
+{
+  "name": "TeacherMessages",
+  "type": "object",
+  "properties": {
+    "teacher_id": {
+      "type": "string",
+      "title": "ID nauczyciela"
+    },
+    "sender_name": {
+      "type": "string",
+      "title": "Nadawca"
+    },
+    "sender_email": {
+      "type": "string",
+      "title": "Email nadawcy"
+    },
+    "direction": {
+      "type": "string",
+      "title": "Kierunek",
+      "enum": [
+        "to_teacher",
+        "from_teacher"
+      ],
+      "default": "to_teacher"
+    },
+    "subject": {
+      "type": "string",
+      "title": "Temat"
+    },
+    "message": {
+      "type": "string",
+      "title": "Tre\u015b\u0107"
+    },
+    "read": {
+      "type": "boolean",
+      "title": "Przeczytana",
+      "default": false
+    },
+    "replied": {
+      "type": "boolean",
+      "title": "Odpowiedziano",
+      "default": false
+    },
+    "lesson_id": {
+      "type": "string",
+      "title": "Powi\u0105zana lekcja"
+    },
+    "attachments": {
+      "type": "array",
+      "title": "Za\u0142\u0105czniki (URL)",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "teacher_id",
+    "message",
+    "direction"
+  ]
+}

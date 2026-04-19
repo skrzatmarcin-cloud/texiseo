@@ -1,0 +1,102 @@
+{
+  "name": "TeacherCourses",
+  "type": "object",
+  "properties": {
+    "teacher_id": {
+      "type": "string",
+      "title": "ID nauczyciela"
+    },
+    "course_title": {
+      "type": "string",
+      "title": "Tytu\u0142 kursu"
+    },
+    "language": {
+      "type": "string",
+      "title": "J\u0119zyk",
+      "enum": [
+        "angielski",
+        "hiszpa\u0144ski",
+        "francuski",
+        "inny"
+      ]
+    },
+    "level": {
+      "type": "string",
+      "title": "Poziom",
+      "enum": [
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "C1",
+        "C2",
+        "mixed"
+      ]
+    },
+    "age_group": {
+      "type": "string",
+      "title": "Grupa wiekowa",
+      "enum": [
+        "4-7",
+        "8-12",
+        "13-17",
+        "doro\u015bli",
+        "mix"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "title": "Opis"
+    },
+    "lessons_count": {
+      "type": "number",
+      "title": "Liczba lekcji"
+    },
+    "duration_weeks": {
+      "type": "number",
+      "title": "Czas trwania (tygodnie)"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "draft",
+        "active",
+        "archived",
+        "pending_review"
+      ],
+      "default": "draft"
+    },
+    "wordpress_course_id": {
+      "type": "number",
+      "title": "ID kursu WordPress (MasterStudy)"
+    },
+    "materials_json": {
+      "type": "string",
+      "title": "Materia\u0142y (JSON)"
+    },
+    "curriculum_json": {
+      "type": "string",
+      "title": "Program kursu (JSON)"
+    },
+    "thumbnail_url": {
+      "type": "string",
+      "title": "Miniatura"
+    },
+    "price": {
+      "type": "number",
+      "title": "Cena PLN"
+    },
+    "enrolled_count": {
+      "type": "number",
+      "title": "Liczba zapisanych",
+      "default": 0
+    }
+  },
+  "required": [
+    "teacher_id",
+    "course_title",
+    "language",
+    "status"
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "name": "Teachers",
+  "type": "object",
+  "properties": {
+    "first_name": {
+      "type": "string",
+      "title": "Imi\u0119"
+    },
+    "last_name": {
+      "type": "string",
+      "title": "Nazwisko"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Telefon"
+    },
+    "photo_url": {
+      "type": "string",
+      "title": "Zdj\u0119cie"
+    },
+    "bio": {
+      "type": "string",
+      "title": "Bio / opis"
+    },
+    "languages": {
+      "type": "array",
+      "title": "Nauczane j\u0119zyki",
+      "items": {
+        "type": "string"
+      }
+    },
+    "specializations": {
+      "type": "array",
+      "title": "Specjalizacje",
+      "items": {
+        "type": "string"
+      }
+    },
+    "age_groups": {
+      "type": "array",
+      "title": "Grupy wiekowe",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hourly_rate": {
+      "type": "number",
+      "title": "Stawka (PLN/h)"
+    },
+    "currency": {
+      "type": "string",
+      "title": "Waluta",
+      "default": "PLN"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "active",
+        "inactive",
+        "on_leave",
+        "trial"
+      ],
+      "default": "active"
+    },
+    "contract_type": {
+      "type": "string",
+      "title": "Typ umowy",
+      "enum": [
+        "b2b",
+        "umowa_zlecenie",
+        "umowa_o_prace",
+        "freelance"
+      ]
+    },
+    "availability_json": {
+      "type": "string",
+      "title": "Dost\u0119pno\u015b\u0107 (JSON)"
+    },
+    "zoom_link": {
+      "type": "string",
+      "title": "Link Zoom / Meet"
+    },
+    "google_meet_link": {
+      "type": "string",
+      "title": "Link Google Meet"
+    },
+    "total_lessons": {
+      "type": "number",
+      "title": "\u0141\u0105czna liczba lekcji",
+      "default": 0
+    },
+    "total_earnings": {
+      "type": "number",
+      "title": "\u0141\u0105czne zarobki",
+      "default": 0
+    },
+    "rating": {
+      "type": "number",
+      "title": "Ocena",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki wewn\u0119trzne"
+    },
+    "wordpress_user_id": {
+      "type": "number",
+      "title": "ID u\u017cytkownika WordPress"
+    }
+  },
+  "required": [
+    "first_name",
+    "last_name",
+    "email",
+    "status"
+  ]
+}

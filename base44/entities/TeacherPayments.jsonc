@@ -1,0 +1,85 @@
+{
+  "name": "TeacherPayments",
+  "type": "object",
+  "properties": {
+    "teacher_id": {
+      "type": "string",
+      "title": "ID nauczyciela"
+    },
+    "period_start": {
+      "type": "string",
+      "title": "Okres od",
+      "format": "date"
+    },
+    "period_end": {
+      "type": "string",
+      "title": "Okres do",
+      "format": "date"
+    },
+    "lessons_count": {
+      "type": "number",
+      "title": "Liczba lekcji"
+    },
+    "total_hours": {
+      "type": "number",
+      "title": "\u0141\u0105czna liczba godzin"
+    },
+    "gross_amount": {
+      "type": "number",
+      "title": "Kwota brutto"
+    },
+    "deductions": {
+      "type": "number",
+      "title": "Potr\u0105cenia",
+      "default": 0
+    },
+    "net_amount": {
+      "type": "number",
+      "title": "Kwota netto"
+    },
+    "currency": {
+      "type": "string",
+      "title": "Waluta",
+      "default": "PLN"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "approved",
+        "paid",
+        "disputed"
+      ],
+      "default": "pending"
+    },
+    "payment_method": {
+      "type": "string",
+      "title": "Metoda p\u0142atno\u015bci",
+      "enum": [
+        "przelew",
+        "gotowka",
+        "inne"
+      ]
+    },
+    "paid_at": {
+      "type": "string",
+      "title": "Data wyp\u0142aty",
+      "format": "date"
+    },
+    "invoice_number": {
+      "type": "string",
+      "title": "Numer faktury"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notatki"
+    }
+  },
+  "required": [
+    "teacher_id",
+    "period_start",
+    "period_end",
+    "status"
+  ]
+}
