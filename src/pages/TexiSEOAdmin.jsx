@@ -57,8 +57,12 @@ function StatCard({ label, value, icon: Icon, color, sub }) {
 }
 
 function AdminGuard({ children }) {
-  const isAdmin = sessionStorage.getItem("lg_is_admin") === "1";
-  if (!isAdmin) {
+  // Superadmin (Marcin) OR admin user
+  const isSuperadmin = sessionStorage.getItem("lg_is_admin") === "1";
+  const isLoggedIn = sessionStorage.getItem("lg_auth") === "1";
+  const canAccess = isSuperadmin || isLoggedIn;
+  
+  if (!canAccess) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center px-6">
         <div className="h-16 w-16 bg-red-50 rounded-2xl flex items-center justify-center">
