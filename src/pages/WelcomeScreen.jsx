@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useHub } from "@/lib/HubContext";
 import { base44 } from "@/api/base44Client";
@@ -230,11 +230,15 @@ export default function WelcomeScreen() {
   const { setActiveHub, activeHub } = useHub();
   const navigate = useNavigate();
   const [userCompany, setUserCompany] = useState("TexiSEO");
+  const [clientType, setClientType] = useState("enterprise");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    base44.auth.me().then(user => {
-      if (user?.company_name) setUserCompany(user.company_name);
-      else if (user?.full_name) setUserCompany(user.full_name);
+    base44.auth.me().then(u => {
+      setUser(u);
+      setClientType(u?.client_type || "enterprise");
+      if (u?.company_name) setUserCompany(u.company_name);
+      else if (u?.full_name) setUserCompany(u.full_name);
       else setUserCompany("TexiSEO");
     }).catch(() => setUserCompany("TexiSEO"));
   }, []);
@@ -242,6 +246,24 @@ export default function WelcomeScreen() {
   const handleSelect = (hubId) => {
     setActiveHub(hubId);
   };
+
+  // Filter hubs based on client type
+  const getVisibleHubs = () => {
+    const seoHubs = ["seo"];
+    
+    if (clientType === "teacher") {
+      return HUBS.filter(h => ["teachers", ...seoHubs].includes(h.id));
+    }
+    
+    if (clientType === "enterprise") {
+      return HUBS.filter(h => ["business", ...seoHubs].includes(h.id));
+    }
+    
+    return HUBS;
+  };
+
+  const visibleHubs = getVisibleHubs();
+  const title = clientType === "teacher" ? "Panel Nauczycieli" : "Panel Enterprise";
 
   return (
     <div
@@ -252,21 +274,21 @@ export default function WelcomeScreen() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-black text-white tracking-tight">
-            Witaj w {userCompany}! 🚀
+            {title} — {userCompany}! 🚀
           </h2>
           <p className="text-blue-300/70 text-sm mt-0.5">
-            Wybierz interesującą Cię sekcję:
+            {clientType === "teacher" ? "Zarządzaj lekcjami i pozycjonowaniem" : "Zarządzaj firmami i SEO"}
           </p>
         </div>
         <div className="hidden sm:flex items-center gap-2 text-xs text-blue-300/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
           <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          {userCompany} — aktywny
+          {userCompany} — {clientType === "teacher" ? "Nauczyciel" : "Enterprise"}
         </div>
       </div>
 
-      {/* 3×2 grid */}
+      {/* Grid with visible hubs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {HUBS.map(hub => (
+        {visibleHubs.map(hub => (
           <HubCard key={hub.id} hub={hub} onSelect={handleSelect} />
         ))}
       </div>
