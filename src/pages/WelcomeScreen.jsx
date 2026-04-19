@@ -62,6 +62,22 @@ const HUBS = [
     ],
   },
   {
+    id: "linguatoons",
+    label: "🎓 LinguaToons.com",
+    sublabel: "Admin Panel",
+    to: "/linguatoons-admin",
+    gradient: "from-purple-600 to-pink-700",
+    glowColor: "shadow-purple-900/60",
+    Icon: GraduationCap,
+    iconColor: "text-purple-200",
+    sublinks: [
+      { label: "Dashboard", to: "/linguatoons-admin", icon: BarChart3 },
+      { label: "Nauczyciele", to: "/linguatoons-admin", icon: Users },
+      { label: "Lekcje", to: "/linguatoons-admin", icon: Calendar },
+      { label: "Płatności", to: "/linguatoons-admin", icon: CreditCard },
+    ],
+  },
+  {
     id: "teachers",
     label: "Teachers Hub",
     sublabel: "Centrum Nauczycieli",

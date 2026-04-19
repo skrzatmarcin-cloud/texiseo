@@ -44,6 +44,7 @@ import BusinessHub from './pages/BusinessHub';
 import SelfPromotionHub from './pages/SelfPromotionHub';
 import TexiSEOAdmin from './pages/TexiSEOAdmin';
 import AppReportGenerator from './pages/AppReportGenerator';
+import LinguaToonAdmin from './pages/LinguaToonAdmin';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -106,6 +107,7 @@ const AuthenticatedApp = () => {
           <Route path="/self-promotion" element={<SelfPromotionHub />} />
           <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
           <Route path="/app-report" element={<AppReportGenerator />} />
+          <Route path="/linguatoons-admin" element={<LinguaToonAdmin />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
@@ -156,6 +158,7 @@ const AuthenticatedApp = () => {
         <Route path="/self-promotion" element={<SelfPromotionHub />} />
         <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
         <Route path="/app-report" element={<AppReportGenerator />} />
+        <Route path="/linguatoons-admin" element={<LinguaToonAdmin />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
