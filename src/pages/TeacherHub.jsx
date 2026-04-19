@@ -11,10 +11,12 @@ import TeacherChat from "../components/teachers/TeacherChat";
 import TeacherCourseManager from "../components/teachers/TeacherCourseManager";
 import TeacherPayroll from "../components/teachers/TeacherPayroll";
 import TeacherStats from "../components/teachers/TeacherStats";
+import LiveLessonsPanel from "../components/teachers/LiveLessonsPanel";
 
 const TABS = [
   { id: "teachers", label: "Nauczyciele", icon: Users, desc: "Baza i profile" },
   { id: "planner", label: "Planer lekcji", icon: Calendar, desc: "Harmonogram" },
+  { id: "live", label: "Lekcje Live", icon: Video, desc: "Google Meet" },
   { id: "chat", label: "Wiadomości", icon: MessageSquare, desc: "Czat z nauczycielami" },
   { id: "courses", label: "Kursy", icon: BookOpen, desc: "MasterStudy + AI" },
   { id: "payroll", label: "Rozliczenia", icon: CreditCard, desc: "Wypłaty" },
@@ -66,6 +68,7 @@ export default function TeacherHub() {
       <div className="flex-1 overflow-auto bg-background">
         {tab === "teachers" && <TeacherList />}
         {tab === "planner" && <TeacherPlanner />}
+        {tab === "live" && <LiveLessonsPanel />}
         {tab === "chat" && <TeacherChat />}
         {tab === "courses" && <TeacherCourseManager />}
         {tab === "payroll" && <TeacherPayroll />}
