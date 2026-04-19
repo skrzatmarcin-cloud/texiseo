@@ -1,16 +1,8 @@
 import { useEffect, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { Link } from "react-router-dom";
-import { Lightbulb, Network, FileText, TrendingUp, AlertTriangle, Zap, ArrowRight } from "lucide-react";
-import PageHeader from "../components/PageHeader";
-import StatusBadge from "../components/StatusBadge";
-import ScoreBar from "../components/ScoreBar";
+import { Lightbulb, Network, FileText, Zap } from "lucide-react";
 import DashboardStatCard from "../components/dashboard/DashboardStatCard";
-import TopOpportunities from "../components/dashboard/TopOpportunities";
-import ClusterSnapshot from "../components/dashboard/ClusterSnapshot";
-import WeakPages from "../components/dashboard/WeakPages";
-import RecommendedActions from "../components/dashboard/RecommendedActions";
-import ContentByStatus from "../components/dashboard/ContentByStatus";
+import HomeHub from "../components/dashboard/HomeHub";
 
 export default function Dashboard() {
   const [ideas, setIdeas] = useState([]);
@@ -46,14 +38,10 @@ export default function Dashboard() {
     : 0;
 
   return (
-    <div className="p-4 lg:p-6 max-w-[1400px] mx-auto">
-      <PageHeader
-        title="Panel główny"
-        description="Centrum dowodzenia SEO dla Linguatoons.com"
-      />
+    <div className="p-4 lg:p-6 max-w-[1400px] mx-auto space-y-6">
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+      {/* Quick stat strip */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <DashboardStatCard
           icon={Lightbulb}
           label="Pomysły na treści"
@@ -87,14 +75,8 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Main grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TopOpportunities ideas={ideas} />
-        <ClusterSnapshot clusters={clusters} />
-        <WeakPages pages={pages} />
-        <RecommendedActions recommendations={recommendations} />
-        <ContentByStatus ideas={ideas} />
-      </div>
+      {/* Main hub navigation */}
+      <HomeHub />
     </div>
   );
 }
