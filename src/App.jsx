@@ -43,6 +43,7 @@ import CookieBanner from './components/CookieBanner';
 import BusinessHub from './pages/BusinessHub';
 import SelfPromotionHub from './pages/SelfPromotionHub';
 import TexiSEOAdmin from './pages/TexiSEOAdmin';
+import AppReportGenerator from './pages/AppReportGenerator';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -104,6 +105,7 @@ const AuthenticatedApp = () => {
           <Route path="/business" element={<BusinessHub />} />
           <Route path="/self-promotion" element={<SelfPromotionHub />} />
           <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
+          <Route path="/app-report" element={<AppReportGenerator />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
@@ -153,6 +155,7 @@ const AuthenticatedApp = () => {
         <Route path="/business" element={<BusinessHub />} />
         <Route path="/self-promotion" element={<SelfPromotionHub />} />
         <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
+        <Route path="/app-report" element={<AppReportGenerator />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
