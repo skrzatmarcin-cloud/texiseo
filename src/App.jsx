@@ -38,6 +38,8 @@ import SecurityMonitor from './pages/SecurityMonitor';
 import BusinessDirectory from './pages/BusinessDirectory';
 import DemoLogin from './pages/DemoLogin';
 import TeacherHub from './pages/TeacherHub';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import CookieBanner from './components/CookieBanner';
 import BusinessHub from './pages/BusinessHub';
 import SelfPromotionHub from './pages/SelfPromotionHub';
 import TexiSEOAdmin from './pages/TexiSEOAdmin';
@@ -168,6 +170,7 @@ function App() {
             <Router>
               <Routes>
                 <Route path="/demo" element={<DemoLogin />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/*" element={
                   <LoginGate>
                     <AuthenticatedApp />
@@ -177,7 +180,8 @@ function App() {
             </Router>
             <Toaster />
             <PublicSupportChat />
-          </QueryClientProvider>
+            <CookieBanner />
+            </QueryClientProvider>
         </HubProvider>
       </AuthProvider>
     </LanguageProvider>
