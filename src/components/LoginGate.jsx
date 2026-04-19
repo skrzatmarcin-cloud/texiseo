@@ -80,6 +80,39 @@ function recordFail(ip) {
 
 function clearFails(ip) { setFailData(ip, {}); }
 
+// ── Module Details Component ─────────────────────────────────────────────────
+
+function ModuleDetails({ module }) {
+  const MODULE_COLORS = {
+    sales: "from-blue-600 to-indigo-700",
+    production: "from-amber-600 to-orange-700",
+    inventory: "from-green-600 to-emerald-700",
+    finance: "from-purple-600 to-pink-700",
+    marketing: "from-cyan-600 to-blue-700",
+    ai_insights: "from-violet-600 to-purple-700"
+  };
+  const MODULE_LABELS = {
+    sales: "💼 Sales (CRM)",
+    production: "🏭 Production (MES)",
+    inventory: "📦 Inventory (WMS)",
+    finance: "💰 Finance (ERP)",
+    marketing: "📱 Marketing (SEO+Social)",
+    ai_insights: "🧠 AI Insights"
+  };
+
+  return (
+    <div className={`bg-gradient-to-br ${MODULE_COLORS[module]} rounded-xl p-4 text-white space-y-3`}>
+      <h3 className="font-bold text-sm">{MODULE_LABELS[module]}</h3>
+      <div className="space-y-2 text-xs">
+        <div className="bg-white/10 rounded p-2"><span className="text-slate-300">Status:</span> <span className="font-semibold">Active</span></div>
+        <div className="bg-white/10 rounded p-2"><span className="text-slate-300">Users:</span> <span className="font-semibold">0</span></div>
+        <div className="bg-white/10 rounded p-2"><span className="text-slate-300">Features:</span> <span className="font-semibold">Multiple</span></div>
+      </div>
+      <p className="text-[10px] text-white/60 italic">Demo mode — dane przykładowe</p>
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 function LoginGateInner({ children }) {
@@ -97,6 +130,7 @@ function LoginGateInner({ children }) {
   const [resetSent, setResetSent]       = useState(false);
   const [blocked, setBlocked]   = useState(false);
   const [minsLeft, setMinsLeft] = useState(0);
+  const [selectedModule, setSelectedModule] = useState(null);
   // Register mode
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
@@ -471,32 +505,39 @@ function LoginGateInner({ children }) {
                 ) : mode === "demo-enterprise" ? (
                 /* ENTERPRISE MODULES SELECTION */
                 <>
-                  <h2 className="text-lg font-semibold text-white mb-2">🏛️ Enterprise Moduły</h2>
-                  <p className="text-xs text-slate-400 mb-4">Wybierz moduł do demonstracji</p>
-                  <div className="space-y-2.5">
+                  <h2 className="text-lg font-semibold text-white mb-1">🏛️ Enterprise Moduły</h2>
+                  <p className="text-xs text-slate-400 mb-3">Kliknij aby zobaczyć szczegóły</p>
+                  <div className="space-y-1.5 max-h-72 overflow-y-auto">
                     {[
-                      { label: "💼 Sales (CRM)", emoji: "💼" },
-                      { label: "🏭 Production (MES)", emoji: "🏭" },
-                      { label: "📦 Inventory (WMS)", emoji: "📦" },
-                      { label: "💰 Finance (ERP)", emoji: "💰" },
-                      { label: "📱 Marketing (SEO + Social)", emoji: "📱" },
-                      { label: "🧠 AI Insights", emoji: "🧠" }
+                      { id: "sales", label: "💼 Sales (CRM)" },
+                      { id: "production", label: "🏭 Production (MES)" },
+                      { id: "inventory", label: "📦 Inventory (WMS)" },
+                      { id: "finance", label: "💰 Finance (ERP)" },
+                      { id: "marketing", label: "📱 Marketing (SEO+Social)" },
+                      { id: "ai_insights", label: "🧠 AI Insights" }
                     ].map(module => (
                       <button
-                        key={module.label}
-                        onClick={() => handleDemoSelect("enterprise")}
-                        className="w-full p-3.5 rounded-lg border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 transition-all text-left text-sm font-medium text-purple-200 flex items-center gap-2">
-                        <span className="text-lg">{module.emoji}</span>
+                        key={module.id}
+                        onClick={() => setSelectedModule(module.id)}
+                        className="w-full p-2.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/15 transition-all text-left text-xs font-medium text-purple-300">
                         {module.label}
                       </button>
                     ))}
                   </div>
-                  <div className="mt-4 text-center">
-                    <button onClick={() => { setMode("demo-select"); setError(""); }}
+                  <div className="mt-3 text-center">
+                    <button onClick={() => { setMode("demo-select"); setError(""); setSelectedModule(null); }}
                       className="text-xs text-slate-400 hover:text-white transition-colors">
-                      ← Wróć do wyboru
+                      ← Wróć
                     </button>
                   </div>
+                </>
+                ) : selectedModule ? (
+                /* MODULE DETAILS */
+                <>
+                  <button onClick={() => setSelectedModule(null)} className="flex items-center gap-1 text-xs text-slate-400 hover:text-white mb-3">
+                    ← Wróć do listy
+                  </button>
+                  <ModuleDetails module={selectedModule} />
                 </>
                 ) : mode === "register" ? (
               /* REGISTRATION */

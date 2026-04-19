@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useHub } from "@/lib/HubContext";
 import { base44 } from "@/api/base44Client";
+import EnterpriseModuleViewer from "../components/enterprise/EnterpriseModuleViewer";
 import {
   GraduationCap, Briefcase, Globe, Settings, Plug2,
   BookOpen, Users, CreditCard, BarChart3, Building2, Layers,
@@ -237,6 +238,7 @@ export default function WelcomeScreen() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedModule, setSelectedModule] = useState(null);
 
   useEffect(() => {
     base44.auth.me().then(u => {
@@ -267,6 +269,11 @@ export default function WelcomeScreen() {
 
   const userDisplay = user?.full_name || user?.email?.split('@')[0] || "TexiSEO";
   const userInitial = userDisplay.charAt(0).toUpperCase();
+
+  // Show module viewer if selected
+  if (selectedModule) {
+    return <EnterpriseModuleViewer module={selectedModule} onClose={() => setSelectedModule(null)} />;
+  }
 
   return (
     <div
