@@ -4,7 +4,8 @@ import {
   Shield, Search, Building2, GraduationCap, Briefcase, BarChart3,
   TrendingUp, Network, FileText, Link2, BookOpen, Play,
   ShieldCheck, Globe, Zap, Users, Layers, Sparkles,
-  Video, CreditCard, MessageSquare, Calendar, Settings, Plug2
+  Video, CreditCard, MessageSquare, Calendar, Settings, Plug2,
+  Megaphone, Brain
 } from "lucide-react";
 
 const HUBS = [
@@ -104,6 +105,22 @@ const HUBS = [
       { label: "Magazyn", to: "/business", icon: Layers },
       { label: "Produkcja", to: "/business", icon: Network },
       { label: "Dostawcy", to: "/business", icon: Users },
+    ],
+  },
+  {
+    id: "self_promotion",
+    label: "SEO Autopromocja",
+    sublabel: "TexiSEO.ai · LinguaTons",
+    to: "/self-promotion",
+    gradient: "from-violet-700 to-purple-900",
+    glowColor: "shadow-violet-900/60",
+    Icon: Megaphone,
+    iconColor: "text-violet-200",
+    sublinks: [
+      { label: "Generator treści", to: "/self-promotion", icon: Sparkles },
+      { label: "Analiza konkurencji", to: "/self-promotion", icon: TrendingUp },
+      { label: "Mapa słów klucz.", to: "/self-promotion", icon: Search },
+      { label: "Agent SEO AI", to: "/self-promotion", icon: Brain },
     ],
   },
 ];

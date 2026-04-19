@@ -39,6 +39,7 @@ import BusinessDirectory from './pages/BusinessDirectory';
 import DemoLogin from './pages/DemoLogin';
 import TeacherHub from './pages/TeacherHub';
 import BusinessHub from './pages/BusinessHub';
+import SelfPromotionHub from './pages/SelfPromotionHub';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -94,6 +95,7 @@ const AuthenticatedApp = () => {
         <Route path="/directory" element={<BusinessDirectory />} />
         <Route path="/teachers" element={<TeacherHub />} />
         <Route path="/business" element={<BusinessHub />} />
+        <Route path="/self-promotion" element={<SelfPromotionHub />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
