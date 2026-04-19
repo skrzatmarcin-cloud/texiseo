@@ -126,6 +126,7 @@ function LoginGateInner({ children }) {
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [error, setError]       = useState("");
+  const [loading, setLoading]   = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [resetSent, setResetSent]       = useState(false);
   const [blocked, setBlocked]   = useState(false);
@@ -184,19 +185,18 @@ function LoginGateInner({ children }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const ip = ipData?.ip || "unknown";
 
     // Check block
     if (isBlocked(ip)) {
       setBlocked(true);
       setMinsLeft(minutesLeft(ip));
+      setLoading(false);
       return;
     }
 
     const isCorrect =
-      username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
-
-    const isAdmin =
       username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
 
     const { browser, os } = getBrowserInfo();
@@ -254,6 +254,7 @@ function LoginGateInner({ children }) {
         setError(`Nieprawidłowe dane logowania. Pozostało prób: ${remaining}`);
       }
     }
+    setLoading(false);
   };
 
   const handleDemo = () => {
@@ -438,9 +439,9 @@ function LoginGateInner({ children }) {
                     </div>
                   )}
 
-                  <button type="submit"
-                    className="w-full bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors mt-2">
-                    {t.login_btn || "Zaloguj się"}
+                  <button type="submit" disabled={loading}
+                    className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors mt-2">
+                    {loading ? "Logowanie…" : (t.login_btn || "Zaloguj się")}
                   </button>
                 </form>
 
