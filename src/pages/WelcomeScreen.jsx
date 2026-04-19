@@ -163,7 +163,9 @@ function HubIcon({ Icon, iconColor, gradient, frozen }) {
 
 function HubCard({ hub, onSelect, user }) {
   const navigate = useNavigate();
-  const isFrozen = hub.id === "website" && !user?.website_url;
+  const isAdmin = user?.role === "admin";
+  // Website & SEO jest odblokowany dla admina (ma Linguatoons.com)
+  const isFrozen = hub.id === "website" && !isAdmin && !user?.website_url;
 
   const handleClick = (e) => {
     e.stopPropagation();
