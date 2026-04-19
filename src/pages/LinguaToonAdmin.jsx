@@ -10,21 +10,33 @@ import {
 } from "lucide-react";
 
 const ADMIN_SECTIONS = [
-  { id: "dashboard", label: "Kokpit", icon: LayoutDashboard },
-  { id: "ai-content", label: "Sztuczna inteligencja dla treści", icon: Sparkles },
-  { id: "link-genius", label: "Link Genius", icon: Link2 },
-  { id: "analytics", label: "Analityka", icon: BarChart3 },
-  { id: "settings", label: "Ustawienia ogólne", icon: Settings },
-  { id: "meta", label: "Tytuły i dane meta", icon: BookOpen },
-  { id: "sitemap", label: "Ustawienia mapy witryny", icon: Zap },
-  { id: "schema", label: "Schema Templates", icon: FileText },
-  { id: "indexing", label: "Natychmiasowe indeksowanie", icon: Bell },
-  { id: "roles", label: "Menedżer ról", icon: Shield },
-  { id: "404", label: "Monitor 404", icon: AlertTriangle },
-  { id: "redirects", label: "Przekierowania", icon: ChevronRight },
-  { id: "analyzer", label: "Analyzer SEO", icon: BarChart3 },
-  { id: "status", label: "Status i narządzenia", icon: TrendingUp },
-  { id: "help", label: "Pomoc i wsparcie", icon: BookOpen },
+  { category: "STRONA WWW", items: [
+    { id: "dashboard", label: "Kokpit", icon: LayoutDashboard },
+    { id: "content-ideas", label: "Pomysły treści", icon: Lightbulb },
+    { id: "clusters", label: "Klastry tematyczne", icon: Network },
+    { id: "pages", label: "Strony", icon: FileText },
+    { id: "brief-builder", label: "Brief Builder", icon: ClipboardList },
+    { id: "content-engine", label: "Content Engine", icon: Sparkles },
+    { id: "seo-qa", label: "SEO QA", icon: CheckCircle2 },
+    { id: "backlinks", label: "Backlink System", icon: Link2 },
+    { id: "analytics", label: "Google Analytics", icon: BarChart3 },
+    { id: "competitors", label: "Konkurenci", icon: TrendingUp },
+    { id: "seo-autopilot", label: "SEO Autopilot", icon: Zap },
+    { id: "refresh", label: "Refresh Center", icon: RefreshCw },
+    { id: "execution", label: "Execution Center", icon: Play },
+    { id: "faq", label: "FAQ Schema", icon: BookOpen },
+    { id: "requests", label: "Zgłoszenia", icon: Bell },
+    { id: "automations", label: "Automations", icon: Zap },
+    { id: "integrations", label: "Integracje", icon: Sparkles },
+    { id: "keywords", label: "Słowa kluczowe", icon: Search },
+    { id: "brand-rules", label: "Reguły marki", icon: Shield },
+  ]},
+  { category: "ADMINISTRACJA", items: [
+    { id: "admin-settings", label: "Ustawienia admina", icon: Settings },
+    { id: "admin-users", label: "Użytkownicy serwisu", icon: Users },
+    { id: "admin-logs", label: "Logi systemu", icon: FileText },
+    { id: "help", label: "Pomoc i wsparcie", icon: BookOpen },
+  ]},
 ];
 
 function StatCard({ label, value, icon: Icon, color }) {
@@ -65,6 +77,18 @@ export default function LinguaToonAdmin() {
 
   const renderContent = () => {
     const commonClasses = "bg-card border border-border rounded-xl p-6";
+
+    // Brand Rules content
+    const BRAND_RULES = [
+      { title: "Prioritize service page support", priority: "Krytyczny", desc: "All informational content should include clear paths to relevant service pages (English, Spanish, French, Polish lessons)." },
+      { title: "Target parent decision-makers", priority: "Wysoki", desc: "Content about children's lessons must address parent concerns: safety, methodology, screen time, and learning outcomes." },
+      { title: "Support adult comparison journey", priority: "Wysoki", desc: "Adult-focused content should help compare lesson formats, pricing, and learning methods to drive informed decisions." },
+      { title: "Polish for foreigners opportunity", priority: "Wysoki", desc: "Prioritize content for the Polish-for-foreigners niche as it has lower competition and high local demand." },
+      { title: "No generic educational fluff", priority: "Krytyczny", desc: "Avoid broad, irrelevant educational content that doesn't connect to Linguatoons services. Every piece must serve business goals." },
+      { title: "No keyword stuffing", priority: "Krytyczny", desc: "Maintain natural, reader-first language. Keywords must fit organically within helpful, well-structured content." },
+      { title: "Premium expert tone", priority: "Średni", desc: "All content should reflect Linguatoons' warm, professional, expert brand voice. No cheap clickbait or aggressive sales tactics." },
+      { title: "Connect to conversion paths", priority: "Wysoki", desc: "Ensure every piece of content guides users toward enrollment, trial lessons, or premium courses." },
+    ];
 
     if (selectedOption === "dashboard") {
       return (
@@ -316,6 +340,86 @@ export default function LinguaToonAdmin() {
       );
     }
 
+    if (selectedOption === "brand-rules") {
+      return (
+        <div className="space-y-4">
+          <div className={commonClasses}>
+            <h3 className="text-lg font-bold mb-4">Reguły marki - Wytyczne strategii treści</h3>
+            <p className="text-sm text-muted-foreground mb-6">Kierują wszystkimi decyzjami SEO dla LinguaToons</p>
+          </div>
+          {BRAND_RULES.map((rule, idx) => {
+            const priorityColor = rule.priority === "Krytyczny" ? "bg-red-50 text-red-700" : rule.priority === "Wysoki" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700";
+            return (
+              <div key={idx} className={`${commonClasses} border-l-4 ${rule.priority === "Krytyczny" ? "border-l-red-500" : rule.priority === "Wysoki" ? "border-l-amber-500" : "border-l-blue-500"}`}>
+                <div className="flex items-start justify-between mb-3">
+                  <h4 className="font-bold text-sm">{rule.title}</h4>
+                  <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${priorityColor}`}>{rule.priority}</span>
+                </div>
+                <p className="text-sm text-muted-foreground">{rule.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    if (selectedOption === "content-ideas") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Pomysły treści</h3><p className="text-muted-foreground mt-2">Generuj i zarządzaj pomysłami na artykuły SEO</p></div>;
+    }
+    if (selectedOption === "clusters") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Klastry tematyczne</h3><p className="text-muted-foreground mt-2">Organizuj treść w tematyczne grupy słów kluczowych</p></div>;
+    }
+    if (selectedOption === "pages") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Strony</h3><p className="text-muted-foreground mt-2">Zarządzaj wszystkimi stronami witryny i ich SEO</p></div>;
+    }
+    if (selectedOption === "brief-builder") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Brief Builder</h3><p className="text-muted-foreground mt-2">Twórz briefs dla pisarzy i zespołu redakcyjnego</p></div>;
+    }
+    if (selectedOption === "content-engine") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Content Engine</h3><p className="text-muted-foreground mt-2">Generuj treść AI dla wielu platform jednocześnie</p></div>;
+    }
+    if (selectedOption === "seo-qa") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">SEO QA Checker</h3><p className="text-muted-foreground mt-2">Sprawdzaj jakość SEO każdej strony przed publikacją</p></div>;
+    }
+    if (selectedOption === "backlinks") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Backlink System</h3><p className="text-muted-foreground mt-2">Szukaj oportuności backlinks i buduj strategię</p></div>;
+    }
+    if (selectedOption === "competitors") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Analiza konkurencji</h3><p className="text-muted-foreground mt-2">Monitoruj pozycje i strategie konkurentów</p></div>;
+    }
+    if (selectedOption === "seo-autopilot") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">SEO Autopilot</h3><p className="text-muted-foreground mt-2">Automatyzuj zadania SEO za pomocą AI</p></div>;
+    }
+    if (selectedOption === "refresh") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Refresh Center</h3><p className="text-muted-foreground mt-2">Odświeżaj stare artykuły aby utrzymać ranking</p></div>;
+    }
+    if (selectedOption === "execution") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Execution Center</h3><p className="text-muted-foreground mt-2">Śledź postęp publikacji i realizacji zadań</p></div>;
+    }
+    if (selectedOption === "faq") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">FAQ Schema</h3><p className="text-muted-foreground mt-2">Twórz struktury FAQ dla bogatszych wyników</p></div>;
+    }
+    if (selectedOption === "requests") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Zgłoszenia</h3><p className="text-muted-foreground mt-2">Zarządzaj zgłoszeniami i feedback od użytkowników</p></div>;
+    }
+    if (selectedOption === "automations") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Automations</h3><p className="text-muted-foreground mt-2">Ustaw automatyczne zadania i workflow</p></div>;
+    }
+    if (selectedOption === "integrations") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Integracje</h3><p className="text-muted-foreground mt-2">Połącz WordPress, GSC, Analytics i inne narzędzia</p></div>;
+    }
+    if (selectedOption === "keywords") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Słowa kluczowe</h3><p className="text-muted-foreground mt-2">Badaj, planuj i monitoruj słowa kluczowe</p></div>;
+    }
+    if (selectedOption === "admin-settings") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Ustawienia admina</h3><p className="text-muted-foreground mt-2">Skonfiguruj ogólne parametry systemu</p></div>;
+    }
+    if (selectedOption === "admin-users") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Użytkownicy serwisu</h3><p className="text-muted-foreground mt-2">Zarządzaj dostępem i uprawnieniami użytkowników</p></div>;
+    }
+    if (selectedOption === "admin-logs") {
+      return <div className={commonClasses}><h3 className="text-lg font-bold">Logi systemu</h3><p className="text-muted-foreground mt-2">Przeglądaj historię działań i zdarzeń</p></div>;
+    }
     if (selectedOption === "help") {
       return (
         <div className={commonClasses}>
@@ -338,8 +442,8 @@ export default function LinguaToonAdmin() {
 
     return (
       <div className={commonClasses}>
-        <h3 className="text-lg font-bold mb-2">{ADMIN_SECTIONS.find(o => o.id === selectedOption)?.label}</h3>
-        <p className="text-muted-foreground text-sm">Funkcjonalność dostępna wkrótce...</p>
+        <h3 className="text-lg font-bold mb-2">Sekcja</h3>
+        <p className="text-muted-foreground text-sm">Zawartość...</p>
       </div>
     );
   };
@@ -364,28 +468,35 @@ export default function LinguaToonAdmin() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          <nav className="p-3 space-y-1">
-            {ADMIN_SECTIONS.map(section => {
-              const SectionIcon = section.icon;
-              return (
-                <button
-                  key={section.id}
-                  onClick={() => {
-                    setSelectedOption(section.id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={cn(
-                    "w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-colors text-left",
-                    selectedOption === section.id
-                      ? "bg-primary text-white font-semibold"
-                      : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                  )}
-                >
-                  <SectionIcon className="h-4 w-4 flex-shrink-0" />
-                  {section.label}
-                </button>
-              );
-            })}
+          <nav className="p-3 space-y-4">
+            {ADMIN_SECTIONS.map(category => (
+              <div key={category.category}>
+                <p className="text-xs font-semibold text-slate-500 uppercase px-3 mb-2">{category.category}</p>
+                <div className="space-y-1">
+                  {category.items.map(section => {
+                    const SectionIcon = section.icon;
+                    return (
+                      <button
+                        key={section.id}
+                        onClick={() => {
+                          setSelectedOption(section.id);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={cn(
+                          "w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-colors text-left",
+                          selectedOption === section.id
+                            ? "bg-primary text-white font-semibold"
+                            : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                        )}
+                      >
+                        <SectionIcon className="h-4 w-4 flex-shrink-0" />
+                        {section.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </nav>
         </div>
 
@@ -407,7 +518,9 @@ export default function LinguaToonAdmin() {
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
-          <h2 className="text-xl font-bold">{ADMIN_SECTIONS.find(o => o.id === selectedOption)?.label}</h2>
+          <h2 className="text-xl font-bold">
+            {ADMIN_SECTIONS.flatMap(c => c.items).find(o => o.id === selectedOption)?.label || "Panel"}
+          </h2>
           <button onClick={loadData} className="p-2 hover:bg-secondary rounded-lg">
             <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
           </button>
