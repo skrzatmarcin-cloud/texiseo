@@ -7,7 +7,8 @@ import {
   TrendingUp, Network, FileText, Link2, BookOpen, Play,
   ShieldCheck, Globe, Zap, Users, Layers, Sparkles,
   Video, CreditCard, MessageSquare, Calendar, Settings, Plug2,
-  Megaphone, Brain, Crown, DollarSign, Wand2, Share2
+  Megaphone, Brain, Crown, DollarSign, Wand2, Share2, Lightbulb,
+  ClipboardList, CheckCircle2, RefreshCw
 } from "lucide-react";
 
 const HUBS = [
@@ -54,15 +55,21 @@ const HUBS = [
     Icon: GraduationCap,
     iconColor: "text-purple-200",
     sublinks: [
-      { label: "Admin Panel", to: "/linguatoons-admin", icon: BarChart3 },
-      { label: "SEO Tools", to: "/content-ideas", icon: Sparkles },
-      { label: "Klastry", to: "/clusters", icon: Network },
+      { label: "Kokpit", to: "/linguatoons-admin", icon: BarChart3 },
+      { label: "Pomysły treści", to: "/content-ideas", icon: Lightbulb },
+      { label: "Klastry tematyczne", to: "/clusters", icon: Network },
       { label: "Strony", to: "/pages", icon: FileText },
+      { label: "Brief Builder", to: "/brief-builder", icon: ClipboardList },
       { label: "Content Engine", to: "/content-engine", icon: Wand2 },
-      { label: "Analityka", to: "/analytics", icon: BarChart3 },
+      { label: "SEO QA", to: "/seo-qa", icon: CheckCircle2 },
+      { label: "Backlink System", to: "/backlinks", icon: Link2 },
+      { label: "Google Analytics", to: "/analytics", icon: BarChart3 },
+      { label: "Konkurenci", to: "/competitors", icon: TrendingUp },
+      { label: "SEO Autopilot", to: "/seo-autopilot", icon: Zap },
+      { label: "Refresh Center", to: "/refresh-center", icon: RefreshCw },
+      { label: "Execution Center", to: "/execution-center", icon: Play },
       { label: "Integracje SEO", to: "/integrations", icon: Plug2 },
       { label: "WordPress", to: "/wordpress", icon: Globe },
-      { label: "Backlinki", to: "/backlinks", icon: Link2 },
       { label: "Social Media", to: "/social-media", icon: Share2 },
       { label: "Autopromocja", to: "/self-promotion", icon: Megaphone },
       { label: "Ustawienia", to: "/settings", icon: Settings },
