@@ -455,10 +455,10 @@ function LoginGateInner({ children }) {
                      <p className="text-xs text-emerald-300/70 mt-1">Szukaj nauczycieli, zapisz się na kursy, śledź postęp</p>
                    </button>
                    <button
-                     onClick={() => handleDemoSelect("enterprise")}
+                     onClick={() => setMode("demo-enterprise")}
                      className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
                      <p className="font-semibold text-purple-200 text-sm">🏛️ Demo Enterprise</p>
-                     <p className="text-xs text-purple-300/70 mt-1">CRM, WMS, ERP, MRP, MES — kompleksne systemy zarządzania</p>
+                     <p className="text-xs text-purple-300/70 mt-1">Sales • Production • Inventory • Finance • Marketing • AI</p>
                    </button>
                  </div>
                 <div className="mt-4 text-center">
@@ -467,8 +467,38 @@ function LoginGateInner({ children }) {
                     ← Wróć do logowania
                   </button>
                 </div>
-              </>
-              ) : mode === "register" ? (
+                </>
+                ) : mode === "demo-enterprise" ? (
+                /* ENTERPRISE MODULES SELECTION */
+                <>
+                  <h2 className="text-lg font-semibold text-white mb-2">🏛️ Enterprise Moduły</h2>
+                  <p className="text-xs text-slate-400 mb-4">Wybierz moduł do demonstracji</p>
+                  <div className="space-y-2.5">
+                    {[
+                      { label: "💼 Sales (CRM)", emoji: "💼" },
+                      { label: "🏭 Production (MES)", emoji: "🏭" },
+                      { label: "📦 Inventory (WMS)", emoji: "📦" },
+                      { label: "💰 Finance (ERP)", emoji: "💰" },
+                      { label: "📱 Marketing (SEO + Social)", emoji: "📱" },
+                      { label: "🧠 AI Insights", emoji: "🧠" }
+                    ].map(module => (
+                      <button
+                        key={module.label}
+                        onClick={() => handleDemoSelect("enterprise")}
+                        className="w-full p-3.5 rounded-lg border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 transition-all text-left text-sm font-medium text-purple-200 flex items-center gap-2">
+                        <span className="text-lg">{module.emoji}</span>
+                        {module.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mt-4 text-center">
+                    <button onClick={() => { setMode("demo-select"); setError(""); }}
+                      className="text-xs text-slate-400 hover:text-white transition-colors">
+                      ← Wróć do wyboru
+                    </button>
+                  </div>
+                </>
+                ) : mode === "register" ? (
               /* REGISTRATION */
               <>
                 <h2 className="text-lg font-semibold text-white mb-2">✍️ Załóż konto</h2>
