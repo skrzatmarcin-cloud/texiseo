@@ -7,7 +7,7 @@ import {
   TrendingUp, Network, FileText, Link2, BookOpen, Play,
   ShieldCheck, Globe, Zap, Users, Layers, Sparkles,
   Video, CreditCard, MessageSquare, Calendar, Settings, Plug2,
-  Megaphone, Brain, Crown, DollarSign
+  Megaphone, Brain, Crown, DollarSign, Wand2, Share2
 } from "lucide-react";
 
 const HUBS = [
