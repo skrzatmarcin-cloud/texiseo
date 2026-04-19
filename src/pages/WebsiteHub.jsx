@@ -321,13 +321,27 @@ export default function WebsiteHub() {
               </div>
             )}
 
-            {/* SEO TOOLS — LOCKED IF NO DOMAIN */}
+            {/* SEO TOOLS */}
             {activeTab === "seo" && (
               isDomainVerified ? (
                 <div className="space-y-4">
-                  <div className="text-center text-slate-400 py-8">
-                    <Sparkles className="h-12 w-12 text-slate-400/30 mx-auto mb-3" />
-                    <p>SEO Tools będą dostępne wkrótce</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {[
+                      { name: "📝 Content Ideas", link: "/content-ideas", desc: "Pomysły artykułów" },
+                      { name: "🎯 Klastry", link: "/clusters", desc: "Klastry słów kluczowych" },
+                      { name: "📄 Strony", link: "/pages", desc: "Zarządzaj stronami" },
+                      { name: "✏️ Briefs", link: "/brief-builder", desc: "Briefs dla pisarzy" },
+                      { name: "🔗 Linki", link: "/internal-links", desc: "Linki wewnętrzne" },
+                      { name: "🔐 FAQ Schema", link: "/faq-schema", desc: "FAQ struktury" },
+                      { name: "🔄 Refresh", link: "/refresh-center", desc: "Odśwież artykuły" },
+                      { name: "✅ SEO QA", link: "/seo-qa", desc: "QA sprawdzenie" },
+                      { name: "📊 Analytics", link: "/analytics", desc: "Google Analytics" },
+                    ].map((tool, i) => (
+                      <a key={i} href={tool.link} className="p-4 bg-gradient-to-br from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-xl hover:border-purple-500 transition-all text-left">
+                        <p className="font-semibold text-sm text-white">{tool.name}</p>
+                        <p className="text-xs text-slate-300 mt-1">{tool.desc}</p>
+                      </a>
+                    ))}
                   </div>
                 </div>
               ) : (
