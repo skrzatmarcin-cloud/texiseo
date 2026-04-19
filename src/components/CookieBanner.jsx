@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { X, Cookie, ExternalLink } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 export default function CookieBanner() {
   const [showBanner, setShowBanner] = useState(false);
@@ -71,9 +70,9 @@ export default function CookieBanner() {
               <p className="text-sm text-foreground/80 mb-6">
                 Używamy ciasteczek aby zapewnić najlepsze doświadczenie. Obejmuje to ciasteczka niezbędne do funkcjonowania strony, 
                 analityczne (aby zrozumieć jak jej używasz) i marketingowe (aby pokazać Ci istotne treści).
-                <Link to="/privacy" className="ml-1 text-primary hover:underline inline-flex items-center gap-1">
+                <a href="/privacy" className="ml-1 text-primary hover:underline inline-flex items-center gap-1">
                   Polityka Prywatności <ExternalLink className="h-3 w-3" />
-                </Link>
+                </a>
               </p>
 
               {/* Action Buttons */}
