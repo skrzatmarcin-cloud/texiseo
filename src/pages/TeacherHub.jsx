@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Users, Calendar, MessageSquare, BookOpen, CreditCard,
-  Video, BarChart3, Zap
+  Video, BarChart3, Zap, Globe
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import TeacherPlanner from "../components/teachers/TeacherPlanner";
@@ -11,10 +11,12 @@ import TeacherPayroll from "../components/teachers/TeacherPayroll";
 import TeacherStats from "../components/teachers/TeacherStats";
 import LiveLessonsPanel from "../components/teachers/LiveLessonsPanel";
 import TestBuilder from "../components/teachers/TestBuilder";
+import MasterStudyLMS from "../components/teachers/MasterStudyLMS";
 
 const TABS = [
   { id: "courses", label: "Moje kursy", icon: BookOpen, desc: "Kursy i klastry" },
   { id: "tests", label: "Testy & Quizy", icon: Zap, desc: "Quizy, gry, egzaminy" },
+  { id: "masterstudy", label: "MasterStudy LMS", icon: Globe, desc: "WordPress LMS sync" },
   { id: "planner", label: "Planer lekcji", icon: Calendar, desc: "Harmonogram" },
   { id: "live", label: "Lekcje live", icon: Video, desc: "Google Meet/Zoom" },
   { id: "chat", label: "Wiadomości", icon: MessageSquare, desc: "Czat ze studentami" },
@@ -71,6 +73,7 @@ export default function TeacherHub() {
       <div className="flex-1 overflow-auto bg-background">
         {tab === "courses" && <TeacherCourseManager />}
         {tab === "tests" && <TestBuilder />}
+        {tab === "masterstudy" && <MasterStudyLMS />}
         {tab === "planner" && <TeacherPlanner />}
         {tab === "live" && <LiveLessonsPanel />}
         {tab === "chat" && <TeacherChat />}
