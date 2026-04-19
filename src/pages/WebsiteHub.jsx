@@ -154,6 +154,14 @@ export default function WebsiteHub() {
 
   useEffect(() => {
     base44.auth.me().then(u => {
+      // Jeśli użytkownik nie ma domeny, ustaw Linguatoons.com jako domyślną
+      if (!u?.website_url) {
+        u = {
+          ...u,
+          website_url: "https://linguatoons.com",
+          domain_name: "linguatoons.com"
+        };
+      }
       setUser(u);
       setLoading(false);
     }).catch(() => setLoading(false));
