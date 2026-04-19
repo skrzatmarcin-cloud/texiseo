@@ -7,10 +7,11 @@ import {
   Users, Calendar, Video, CreditCard, MessageSquare, BookOpen, BarChart3,
   Wand2, Share2, Play, Layers, Package, LogOut
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/LanguageContext";
 import { useHub, HUBS_CONFIG } from "@/lib/HubContext";
+import { base44 } from "@/api/base44Client";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 function handleLogout() {
@@ -47,8 +48,17 @@ export default function Layout() {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userCompany, setUserCompany] = useState("linguatoons.com");
   const { t, showLangSwitcher } = useLanguage();
   const { activeHub, setActiveHub } = useHub();
+
+  useEffect(() => {
+    base44.auth.me().then(user => {
+      // Spróbuj pobrać nazwę firmy z danych użytkownika
+      if (user?.company_name) setUserCompany(user.company_name);
+      else if (user?.full_name) setUserCompany(user.full_name);
+    }).catch(() => setUserCompany("linguatoons.com"));
+  }, []);
 
   const hubConfig = HUBS_CONFIG[activeHub] || HUBS_CONFIG["welcome"];
   const navItems = hubConfig.navItems;
@@ -234,7 +244,7 @@ export default function Layout() {
                 {hubConfig.label}
               </span>
             )}
-            <span className="text-xs text-muted-foreground font-medium hidden sm:block">linguatoons.com</span>
+            <span className="text-xs text-muted-foreground font-medium hidden sm:block">{userCompany}</span>
             <div className="h-7 w-7 rounded-full bg-primary flex items-center justify-center">
               <span className="text-[11px] font-semibold text-primary-foreground">T</span>
             </div>

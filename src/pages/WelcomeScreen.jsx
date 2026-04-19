@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useHub } from "@/lib/HubContext";
+import { base44 } from "@/api/base44Client";
 import {
   Shield, Search, Building2, GraduationCap, Briefcase, BarChart3,
   TrendingUp, Network, FileText, Link2, BookOpen, Play,
@@ -211,6 +214,15 @@ function HubCard({ hub, onSelect }) {
 export default function WelcomeScreen() {
   const { setActiveHub, activeHub } = useHub();
   const navigate = useNavigate();
+  const [userCompany, setUserCompany] = useState("TexiSEO");
+
+  useEffect(() => {
+    base44.auth.me().then(user => {
+      if (user?.company_name) setUserCompany(user.company_name);
+      else if (user?.full_name) setUserCompany(user.full_name);
+      else setUserCompany("TexiSEO");
+    }).catch(() => setUserCompany("TexiSEO"));
+  }, []);
 
   const handleSelect = (hubId) => {
     setActiveHub(hubId);
@@ -225,7 +237,7 @@ export default function WelcomeScreen() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-black text-white tracking-tight">
-            Witaj w TexiSEO AI & Enterprise!
+            Witaj w {userCompany}! 🚀
           </h2>
           <p className="text-blue-300/70 text-sm mt-0.5">
             Wybierz interesującą Cię sekcję:
@@ -233,7 +245,7 @@ export default function WelcomeScreen() {
         </div>
         <div className="hidden sm:flex items-center gap-2 text-xs text-blue-300/70 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
           <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          linguatoons.com — aktywny
+          {userCompany} — aktywny
         </div>
       </div>
 
