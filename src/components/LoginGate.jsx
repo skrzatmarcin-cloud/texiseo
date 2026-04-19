@@ -88,7 +88,7 @@ function LoginGateInner({ children }) {
   const [phase, setPhase]       = useState("scanning"); // scanning | login
   const [ipData, setIpData]     = useState(null);
   const [loggedIn, setLoggedIn] = useState(() => sessionStorage.getItem("lg_auth") === "1");
-  const [mode, setMode]         = useState("login");
+  const [mode, setMode]         = useState("login"); // login | register | demo-select | forgot
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
@@ -97,6 +97,12 @@ function LoginGateInner({ children }) {
   const [resetSent, setResetSent]       = useState(false);
   const [blocked, setBlocked]   = useState(false);
   const [minsLeft, setMinsLeft] = useState(0);
+  // Register mode
+  const [regEmail, setRegEmail] = useState("");
+  const [regPassword, setRegPassword] = useState("");
+  const [regFullName, setRegFullName] = useState("");
+  const [regUserType, setRegUserType] = useState("student");
+  const [regLoading, setRegLoading] = useState(false);
 
   // Run security scan once on mount
   useEffect(() => {
@@ -219,6 +225,42 @@ function LoginGateInner({ children }) {
   const handleDemoSelect = (type) => {
     sessionStorage.setItem("lg_demo_type", type);
     setLoggedIn(true);
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!regEmail || !regPassword || !regFullName) {
+      setError("Wypełnij wszystkie pola");
+      return;
+    }
+
+    if (regPassword.length < 6) {
+      setError("Hasło musi mieć co najmniej 6 znaków");
+      return;
+    }
+
+    setRegLoading(true);
+    try {
+      // Rejestracja użytkownika poprzez Base44
+      await base44.users.inviteUser(regEmail, regUserType === "enterprise" ? "admin" : "user");
+
+      // Zapisz dane rejestracji w session storage
+      sessionStorage.setItem("lg_auth", "1");
+      sessionStorage.setItem("lg_user_email", regEmail);
+      sessionStorage.setItem("lg_user_name", regFullName);
+      sessionStorage.setItem("lg_user_type", regUserType);
+
+      if (regUserType === "enterprise") {
+        sessionStorage.setItem("lg_is_admin", "1");
+      }
+
+      setLoggedIn(true);
+    } catch (err) {
+      setError("Błąd rejestracji: " + (err.message || "Spróbuj ponownie"));
+    }
+    setRegLoading(false);
   };
 
   const handleForgotPassword = async (e) => {
@@ -368,9 +410,16 @@ function LoginGateInner({ children }) {
                       {t.forgot_password || "Zapomniałeś hasła?"}
                     </button>
                   </div>
-                  <div className="text-center text-xs text-slate-400">
-                    lub
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-px bg-white/10" />
+                    <span className="text-xs text-slate-400">lub</span>
+                    <div className="flex-1 h-px bg-white/10" />
                   </div>
+                  <button
+                    onClick={() => { setMode("register"); setError(""); }}
+                    className="w-full h-10 bg-blue-500/20 border border-blue-500/30 text-blue-300 hover:bg-blue-500/30 font-medium rounded-lg text-xs transition-all">
+                    ✍️ Załóż konto
+                  </button>
                   <button
                     onClick={handleDemo}
                     className="w-full h-10 bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/30 font-medium rounded-lg text-xs transition-all">
@@ -416,7 +465,91 @@ function LoginGateInner({ children }) {
                   </button>
                 </div>
               </>
-            ) : (
+              ) : mode === "register" ? (
+              /* REGISTRATION */
+              <>
+                <h2 className="text-lg font-semibold text-white mb-2">✍️ Załóż konto</h2>
+                <p className="text-xs text-slate-400 mb-6">Wybierz typ konta i wypełnij dane</p>
+
+                <form onSubmit={handleRegister} className="space-y-4">
+                  <div>
+                    <label className="text-xs font-medium text-slate-300 block mb-2">Typ konta *</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { value: "student", label: "👨‍🎓 Student" },
+                        { value: "teacher", label: "👨‍🏫 Nauczyciel" },
+                        { value: "enterprise", label: "🏛️ Enterprise" }
+                      ].map(opt => (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          onClick={() => setRegUserType(opt.value)}
+                          className={`p-2 rounded-lg border-2 text-xs font-medium transition-all ${
+                            regUserType === opt.value
+                              ? "border-primary bg-primary/20 text-primary"
+                              : "border-white/10 bg-white/5 text-slate-300 hover:border-white/20"
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-slate-300 block mb-1.5">Pełne imię i nazwisko *</label>
+                    <input
+                      type="text"
+                      value={regFullName}
+                      onChange={e => { setRegFullName(e.target.value); setError(""); }}
+                      placeholder="Jan Kowalski"
+                      className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-slate-300 block mb-1.5">Email *</label>
+                    <input
+                      type="email"
+                      value={regEmail}
+                      onChange={e => { setRegEmail(e.target.value); setError(""); }}
+                      placeholder="jan@example.com"
+                      className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-medium text-slate-300 block mb-1.5">Hasło (minimum 6 znaków) *</label>
+                    <input
+                      type="password"
+                      value={regPassword}
+                      onChange={e => { setRegPassword(e.target.value); setError(""); }}
+                      placeholder="••••••••"
+                      className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    />
+                  </div>
+
+                  {error && (
+                    <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+                      <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
+                      <p className="text-xs text-red-400">{error}</p>
+                    </div>
+                  )}
+
+                  <button type="submit" disabled={regLoading}
+                    className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors">
+                    {regLoading ? "Rejestruję…" : "Załóż konto"}
+                  </button>
+                </form>
+
+                <div className="mt-4 text-center">
+                  <button onClick={() => { setMode("login"); setError(""); }}
+                    className="text-xs text-slate-400 hover:text-white transition-colors">
+                    ← Wróć do logowania
+                  </button>
+                </div>
+              </>
+              ) : (
               /* FORGOT PASSWORD */
               <>
                 <h2 className="text-lg font-semibold text-white mb-2">{t.reset_title || "Reset hasła"}</h2>
