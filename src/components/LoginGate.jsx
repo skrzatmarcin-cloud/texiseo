@@ -5,8 +5,8 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "@/lib/LanguageContext";
 import SecurityScanAnimation from "./SecurityScanAnimation";
 
-const ADMIN_CREDENTIALS = { username: "Marcin",      password: "Marcinek2026!" };
-const ADMIN_EMAIL       = "skrzatmarcin@gmail.com";
+const ADMIN_CREDENTIALS = { username: "admin",      password: "demo123456" };
+const ADMIN_EMAIL       = "admin@example.com";
 const MAX_FAILS         = 3;
 const BLOCK_MINUTES     = 30;
 
@@ -203,12 +203,6 @@ function LoginGateInner({ children }) {
       if (fails >= MAX_FAILS) {
         setBlocked(true);
         setMinsLeft(BLOCK_MINUTES);
-        // Alert admin
-        base44.integrations.Core.SendEmail({
-          to: ADMIN_EMAIL,
-          subject: `⚠️ [TexiSEO Security] IP ZABLOKOWANY — ${ip}`,
-          body: `Wykryto ${MAX_FAILS} nieudane próby logowania.\n\nIP: ${ip}\nKraj: ${ipData?.country || "brak"}\nMiasto: ${ipData?.city || "brak"}\nPrzeglądarka: ${browser} / ${os}\nLogin próbowany: ${username}\n\nIP zablokowany na ${BLOCK_MINUTES} minut.\n\n---\nTexiSEO Security AI`,
-        }).catch(() => {});
       } else {
         setError(`Nieprawidłowe dane logowania. Pozostało prób: ${remaining}`);
       }
@@ -290,7 +284,7 @@ function LoginGateInner({ children }) {
                   </p>
                 </div>
                 <p className="text-xs text-white/30 mt-4">
-                  Jeśli to pomyłka, skontaktuj się: {ADMIN_EMAIL}
+                  Blokada wygaśnie automatycznie — spróbuj ponownie za kilka minut.
                 </p>
               </div>
             ) : mode === "login" ? (
@@ -384,14 +378,11 @@ function LoginGateInner({ children }) {
                   </button>
                 </div>
 
-                {/* IP info strip */}
-                {ipData?.ip && ipData.ip !== "unknown" && (
-                  <div className="mt-4 flex items-center justify-center gap-2 text-[10px] text-white/20">
-                    <span>🔒</span>
-                    <span>IP: {ipData.ip}{ipData.country ? ` · ${ipData.country}` : ""}</span>
-                    <span>· Szyfrowane</span>
-                  </div>
-                )}
+                {/* Demo credentials info */}
+                <div className="mt-4 pt-4 border-t border-white/20 text-center">
+                  <p className="text-[10px] text-white/40 mb-2">Demo credentials:</p>
+                  <p className="text-[10px] text-white/30 font-mono">admin / demo123456</p>
+                </div>
               </>
             ) : mode === "demo-select" ? (
               /* DEMO SELECTION */
