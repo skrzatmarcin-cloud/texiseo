@@ -400,13 +400,19 @@ function LoginGateInner({ children }) {
                     onClick={() => handleDemoSelect("teacher")}
                     className="w-full p-4 rounded-xl border-2 border-blue-400/30 bg-blue-500/10 hover:bg-blue-500/20 text-left transition-all">
                     <p className="font-semibold text-blue-200 text-sm">👨‍🏫 Demo Nauczyciel</p>
-                    <p className="text-xs text-blue-300/70 mt-1">Zobacz dashboard nauczycielski z fikcyjnymi uczniami i lekcjami</p>
+                    <p className="text-xs text-blue-300/70 mt-1">Dashboard nauczycielski — kursy, lekcje, zarobki</p>
+                  </button>
+                  <button
+                    onClick={() => handleDemoSelect("student")}
+                    className="w-full p-4 rounded-xl border-2 border-emerald-400/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-left transition-all">
+                    <p className="font-semibold text-emerald-200 text-sm">👨‍🎓 Demo Student</p>
+                    <p className="text-xs text-emerald-300/70 mt-1">Szukaj nauczycieli, zapisz się na kursy, śledź postęp</p>
                   </button>
                   <button
                     onClick={() => handleDemoSelect("business")}
                     className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
                     <p className="font-semibold text-purple-200 text-sm">🏢 Demo Enterprise</p>
-                    <p className="text-xs text-purple-300/70 mt-1">Zobacz panel zarządzania firmą, magazyn i katalog biznesu</p>
+                    <p className="text-xs text-purple-300/70 mt-1">Panel zarządzania firmą, magazyn, katalog biznesu</p>
                   </button>
                 </div>
                 <div className="mt-4 text-center">

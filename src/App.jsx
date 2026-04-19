@@ -42,6 +42,7 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TeacherDashboard from './pages/TeacherDashboard';
 import AdminTeacherManagement from './pages/AdminTeacherManagement';
 import ClientSEODashboard from './pages/ClientSEODashboard';
+import StudentDashboard from './pages/StudentDashboard';
 import CookieBanner from './components/CookieBanner';
 import BusinessHub from './pages/BusinessHub';
 import SelfPromotionHub from './pages/SelfPromotionHub';
@@ -131,6 +132,8 @@ const AuthenticatedApp = () => {
   if (isDemoMode) {
     if (demoType === "teacher") {
       return <Routes><Route element={<Layout />}><Route path="/*" element={<TeacherHub />} /></Route></Routes>;
+    } else if (demoType === "student") {
+      return <Routes><Route element={<Layout />}><Route path="/*" element={<StudentDashboard />} /></Route></Routes>;
     } else if (demoType === "business") {
       return <Routes><Route element={<Layout />}><Route path="/*" element={<BusinessHub />} /></Route></Routes>;
     }
