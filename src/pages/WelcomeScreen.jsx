@@ -5,7 +5,7 @@ import {
   TrendingUp, Network, FileText, Link2, BookOpen, Play,
   ShieldCheck, Globe, Zap, Users, Layers, Sparkles,
   Video, CreditCard, MessageSquare, Calendar, Settings, Plug2,
-  Megaphone, Brain
+  Megaphone, Brain, Crown
 } from "lucide-react";
 
 const HUBS = [
@@ -121,6 +121,22 @@ const HUBS = [
       { label: "Analiza konkurencji", to: "/self-promotion", icon: TrendingUp },
       { label: "Mapa słów klucz.", to: "/self-promotion", icon: Search },
       { label: "Agent SEO AI", to: "/self-promotion", icon: Brain },
+    ],
+  },
+  {
+    id: "texiseo_admin",
+    label: "TexiSEO Admin",
+    sublabel: "Panel Administratora",
+    to: "/texiseo-admin",
+    gradient: "from-slate-900 to-slate-700",
+    glowColor: "shadow-slate-900/80",
+    Icon: Crown,
+    iconColor: "text-yellow-300",
+    sublinks: [
+      { label: "Dashboard", to: "/texiseo-admin", icon: BarChart3 },
+      { label: "Zgłoszenia", to: "/texiseo-admin", icon: MessageSquare },
+      { label: "Użytkownicy", to: "/texiseo-admin", icon: Users },
+      { label: "Płatności", to: "/texiseo-admin", icon: CreditCard },
     ],
   },
 ];

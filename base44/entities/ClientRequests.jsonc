@@ -1,0 +1,98 @@
+{
+  "name": "ClientRequests",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "title": "Typ zg\u0142oszenia",
+      "enum": [
+        "question",
+        "feature_request",
+        "lead",
+        "complaint",
+        "field_request",
+        "security_issue"
+      ],
+      "default": "question"
+    },
+    "client_name": {
+      "type": "string",
+      "title": "Imi\u0119 / Nazwa"
+    },
+    "client_email": {
+      "type": "string",
+      "title": "Email"
+    },
+    "message": {
+      "type": "string",
+      "title": "Tre\u015b\u0107 zg\u0142oszenia"
+    },
+    "ai_response": {
+      "type": "string",
+      "title": "Odpowied\u017a AI"
+    },
+    "field_name": {
+      "type": "string",
+      "title": "Nazwa pola (je\u015bli feature)"
+    },
+    "field_details": {
+      "type": "string",
+      "title": "Szczeg\u00f3\u0142y pola / zmiany"
+    },
+    "security_risk": {
+      "type": "string",
+      "title": "Ocena ryzyka",
+      "enum": [
+        "none",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "none"
+    },
+    "auto_implemented": {
+      "type": "boolean",
+      "title": "Auto-wdro\u017cone",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "new",
+        "pending_review",
+        "implemented",
+        "escalated",
+        "rejected",
+        "resolved"
+      ],
+      "default": "new"
+    },
+    "admin_notes": {
+      "type": "string",
+      "title": "Notatki admina"
+    },
+    "email_sent": {
+      "type": "boolean",
+      "title": "Email wys\u0142any",
+      "default": false
+    },
+    "priority": {
+      "type": "string",
+      "title": "Priorytet",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "default": "medium"
+    }
+  },
+  "required": [
+    "type",
+    "message",
+    "status"
+  ]
+}

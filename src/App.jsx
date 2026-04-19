@@ -8,7 +8,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { LanguageProvider } from '@/lib/LanguageContext';
 import { HubProvider } from '@/lib/HubContext';
-import AIChat from './components/AIChat';
+import PublicSupportChat from './components/PublicSupportChat';
 import Layout from './components/Layout';
 import WelcomeScreen from './pages/WelcomeScreen';
 import ContentIdeas from './pages/ContentIdeas';
@@ -40,6 +40,7 @@ import DemoLogin from './pages/DemoLogin';
 import TeacherHub from './pages/TeacherHub';
 import BusinessHub from './pages/BusinessHub';
 import SelfPromotionHub from './pages/SelfPromotionHub';
+import TexiSEOAdmin from './pages/TexiSEOAdmin';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -96,6 +97,7 @@ const AuthenticatedApp = () => {
         <Route path="/teachers" element={<TeacherHub />} />
         <Route path="/business" element={<BusinessHub />} />
         <Route path="/self-promotion" element={<SelfPromotionHub />} />
+        <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Route>
@@ -121,7 +123,7 @@ function App() {
               </Routes>
             </Router>
             <Toaster />
-            <AIChat />
+            <PublicSupportChat />
           </QueryClientProvider>
         </HubProvider>
       </AuthProvider>

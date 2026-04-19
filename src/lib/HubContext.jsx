@@ -88,6 +88,19 @@ export const HUBS_CONFIG = {
       { to: "/settings", label: "Ustawienia", icon: "Settings" },
     ],
   },
+  texiseo_admin: {
+    id: "texiseo_admin",
+    label: "TexiSEO Admin",
+    navItems: [
+      { to: "/", label: "← Strona Główna", icon: "Home" },
+      { to: "/texiseo-admin", label: "Dashboard", icon: "BarChart3" },
+      { to: "/texiseo-admin", label: "Zgłoszenia klientów", icon: "MessageSquare" },
+      { to: "/texiseo-admin", label: "Użytkownicy", icon: "Users" },
+      { to: "/texiseo-admin", label: "Płatności", icon: "CreditCard" },
+      { to: "/self-promotion", label: "SEO Autopromocja", icon: "Sparkles" },
+      { to: "/settings", label: "Ustawienia", icon: "Settings" },
+    ],
+  },
 };
 
 const HubContext = createContext({ activeHub: "welcome", setActiveHub: () => {} });
