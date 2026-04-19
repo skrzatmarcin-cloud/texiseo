@@ -22,6 +22,14 @@ export default function DemoLogin() {
     setLoading(true);
     setError(null);
     try {
+      // Czyszczenie danych demo przed logowaniem
+      const keys = [...Object.keys(sessionStorage), ...Object.keys(localStorage)];
+      keys.forEach(key => {
+        if (key.startsWith("lg_") || key.startsWith("demo_") || key.includes("cache")) {
+          sessionStorage.removeItem(key);
+          localStorage.removeItem(key);
+        }
+      });
       await base44.auth.redirectToLogin();
     } catch (err) {
       setError("Logowanie demo — użyj danych pokazanych na ekranie.");
