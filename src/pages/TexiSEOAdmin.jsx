@@ -4,13 +4,14 @@ import { cn } from "@/lib/utils";
 import {
   Users, CreditCard, MessageSquare, BarChart3, Shield, Bell,
   Check, X, Clock, AlertTriangle, Loader2, Mail, Eye,
-  TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw, Lock
+  TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw, Lock, GraduationCap
 } from "lucide-react";
 
 const TABS = [
   { id: "dashboard", label: "Dashboard", icon: BarChart3 },
   { id: "requests", label: "Zgłoszenia", icon: MessageSquare },
   { id: "users", label: "Użytkownicy", icon: Users },
+  { id: "linguatoons", label: "LinguaToons Admin", icon: GraduationCap },
   { id: "payments", label: "Płatności", icon: CreditCard },
 ];
 
@@ -405,6 +406,80 @@ function TexiSEOAdminInner() {
                 {users.length === 0 && (
                   <p className="text-center py-8 text-sm text-muted-foreground">Brak użytkowników</p>
                 )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ===== LINGUATOONS ADMIN ===== */}
+        {!loading && tab === "linguatoons" && (
+          <div className="max-w-6xl mx-auto space-y-5">
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 text-white">
+              <div className="flex items-center gap-4">
+                <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center">
+                  <GraduationCap className="h-8 w-8" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold">LinguaToons Admin Panel</h2>
+                  <p className="text-blue-100/80 text-sm mt-0.5">Pełne zarządzanie platformą nauczycieli, kursów i lekcji</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { label: "Nauczyciele", icon: Users, color: "bg-blue-50 text-blue-600", to: "/teachers" },
+                { label: "Lekcje", icon: BookOpen, color: "bg-emerald-50 text-emerald-600", to: "/teachers" },
+                { label: "Kursy", icon: Zap, color: "bg-violet-50 text-violet-600", to: "/teachers" },
+                { label: "Rozliczenia", icon: CreditCard, color: "bg-amber-50 text-amber-600", to: "/teachers" },
+                { label: "Prowizje", icon: TrendingUp, color: "bg-rose-50 text-rose-600", to: "/teachers" },
+                { label: "Statystyki", icon: BarChart3, color: "bg-cyan-50 text-cyan-600", to: "/teachers" },
+              ].map(item => (
+                <button
+                  key={item.label}
+                  onClick={() => window.location.href = item.to}
+                  className={`p-5 rounded-2xl border-2 border-border hover:border-primary transition-all text-left ${item.color}`}
+                >
+                  <div className={`h-10 w-10 rounded-xl flex items-center justify-center mb-3 ${item.color}`}>
+                    <item.icon className="h-5 w-5" />
+                  </div>
+                  <p className="font-bold text-sm">{item.label}</p>
+                  <p className="text-xs opacity-60 mt-0.5">Zarządzaj i edytuj</p>
+                </button>
+              ))}
+            </div>
+
+            <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
+              <p className="text-sm font-bold">Szybkie Statystyki</p>
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div className="bg-secondary/40 rounded-xl p-3 text-center">
+                  <p className="text-xs text-muted-foreground mb-1">Aktywni Nauczyciele</p>
+                  <p className="text-2xl font-black text-primary">—</p>
+                  <p className="text-[10px] text-muted-foreground/60 mt-1">Załaduj panel Teachers</p>
+                </div>
+                <div className="bg-secondary/40 rounded-xl p-3 text-center">
+                  <p className="text-xs text-muted-foreground mb-1">Zaplanowane Lekcje</p>
+                  <p className="text-2xl font-black text-emerald-600">—</p>
+                  <p className="text-[10px] text-muted-foreground/60 mt-1">Załaduj panel Lekcje</p>
+                </div>
+                <div className="bg-secondary/40 rounded-xl p-3 text-center">
+                  <p className="text-xs text-muted-foreground mb-1">Kursy Dostępne</p>
+                  <p className="text-2xl font-black text-violet-600">—</p>
+                  <p className="text-[10px] text-muted-foreground/60 mt-1">Załaduj panel Kursy</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5">
+              <div className="flex items-start gap-3">
+                <Shield className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-bold text-blue-900">Admin Rights</p>
+                  <p className="text-xs text-blue-700 mt-1">
+                    Masz pełny dostęp do edycji wszystkich nauczycieli, lekcji, kursów, rozliczeń i prowizji. 
+                    Wszelkie zmiany są zapisywane natychmiast w bazie danych.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
