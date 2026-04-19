@@ -46,6 +46,7 @@ const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const isDemoMode = sessionStorage.getItem("lg_demo_mode") === "1";
   const demoType = sessionStorage.getItem("lg_demo_type");
+  const isAdmin = sessionStorage.getItem("lg_is_admin") === "1";
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -65,6 +66,47 @@ const AuthenticatedApp = () => {
       navigateToLogin();
       return null;
     }
+  }
+
+  // Admin gets full access to all routes
+  if (isAdmin) {
+    return (
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<WelcomeScreen />} />
+          <Route path="/content-ideas" element={<ContentIdeas />} />
+          <Route path="/clusters" element={<Clusters />} />
+          <Route path="/clusters/:id" element={<ClusterDetail />} />
+          <Route path="/pages" element={<PagesModule />} />
+          <Route path="/pages/:id" element={<PageDetail />} />
+          <Route path="/brief-builder" element={<BriefBuilder />} />
+          <Route path="/brief-builder/:id" element={<BriefDetail />} />
+          <Route path="/internal-links" element={<InternalLinks />} />
+          <Route path="/faq-schema" element={<FAQSchema />} />
+          <Route path="/refresh-center" element={<RefreshCenter />} />
+          <Route path="/seo-qa" element={<SEOQAChecker />} />
+          <Route path="/publishing-queue" element={<PublishingQueue />} />
+          <Route path="/wordpress" element={<WordPress />} />
+          <Route path="/automations" element={<Automations />} />
+          <Route path="/integrations" element={<Integrations />} />
+          <Route path="/backlinks" element={<BacklinkSystem />} />
+          <Route path="/content-engine" element={<ContentEngine />} />
+          <Route path="/social-media" element={<SocialMedia />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/execution-center" element={<ExecutionCenter />} />
+          <Route path="/competitors" element={<CompetitorIntel />} />
+          <Route path="/seo-autopilot" element={<SEOAutopilot />} />
+          <Route path="/security" element={<SecurityMonitor />} />
+          <Route path="/directory" element={<BusinessDirectory />} />
+          <Route path="/teachers" element={<TeacherHub />} />
+          <Route path="/business" element={<BusinessHub />} />
+          <Route path="/self-promotion" element={<SelfPromotionHub />} />
+          <Route path="/texiseo-admin" element={<TexiSEOAdmin />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
+      </Routes>
+    );
   }
 
   // If demo mode, route to appropriate demo hub
