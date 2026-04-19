@@ -3,7 +3,8 @@ import { base44 } from "@/api/base44Client";
 import { cn } from "@/lib/utils";
 import {
   Search, BookOpen, BarChart3, Settings, Users, Star, MessageSquare,
-  Home, LogOut, Clock, CheckCircle2, Loader2, Award
+  Home, LogOut, Clock, CheckCircle2, Loader2, Award, Calendar, CheckSquare,
+  User, TrendingUp
 } from "lucide-react";
 
 export default function StudentDashboard() {
@@ -13,6 +14,18 @@ export default function StudentDashboard() {
   const [enrolledCourses] = useState([
     { id: 1, title: "Angielski B1 Conversational", teacher: "Maria K.", progress: 65, lessons: "12/18" },
     { id: 2, title: "Business English", teacher: "John D.", progress: 40, lessons: "8/20" }
+  ]);
+  const [myLessons] = useState([
+    { id: 1, date: "2026-04-20", time: "18:00", teacher: "Maria K.", language: "Angielski", status: "scheduled", duration: 50 },
+    { id: 2, date: "2026-04-18", time: "19:00", teacher: "John D.", language: "Angielski", status: "completed", duration: 50 },
+  ]);
+  const [homeworks] = useState([
+    { id: 1, title: "Quiz - Past Tense", teacher: "Maria K.", dueDate: "2026-04-22", status: "pending", points: "0/10" },
+    { id: 2, title: "Conversation Recording", teacher: "John D.", dueDate: "2026-04-21", status: "submitted", points: "9/10" },
+  ]);
+  const [myTeachers] = useState([
+    { id: 1, name: "Maria Kowalski", language: "Angielski", level: "B1-C1", rating: 4.9, hourlyRate: 75, lessonsTotal: 12 },
+    { id: 2, name: "John Davis", language: "Angielski", level: "A1-B2", rating: 4.7, hourlyRate: 65, lessonsTotal: 8 },
   ]);
   const [availableTeachers] = useState([
     { id: 1, name: "Maria Kowalski", language: "Angielski", level: "B1-C1", rating: 4.9, students: 42, hourlyRate: 75 },
@@ -57,10 +70,11 @@ export default function StudentDashboard() {
         <nav className="flex-1 p-3 space-y-1">
           {[
             { id: "find-teacher", label: "Znajdź nauczyciela", icon: Search },
+            { id: "my-lessons", label: "Moje lekcje", icon: Calendar },
+            { id: "homeworks", label: "Zadania domowe", icon: CheckSquare },
+            { id: "my-teachers", label: "Nauczyciele", icon: User },
             { id: "courses", label: "Kursy online", icon: BookOpen },
-            { id: "my-learning", label: "Moja nauka", icon: Award },
-            { id: "messages", label: "Wiadomości", icon: MessageSquare },
-            { id: "progress", label: "Postęp", icon: BarChart3 },
+            { id: "progress", label: "Postęp", icon: TrendingUp },
             { id: "settings", label: "Ustawienia", icon: Settings },
           ].map(item => (
             <button
@@ -96,10 +110,11 @@ export default function StudentDashboard() {
         <header className="bg-card border-b border-border px-6 py-4">
           <h1 className="text-2xl font-bold">
             {activeTab === "find-teacher" && "🔍 Znajdź idealnego nauczyciela"}
+            {activeTab === "my-lessons" && "📅 Moje lekcje"}
+            {activeTab === "homeworks" && "✅ Zadania domowe"}
+            {activeTab === "my-teachers" && "👨‍🏫 Moi nauczyciele"}
             {activeTab === "courses" && "📚 Kursy online"}
-            {activeTab === "my-learning" && "🎓 Moja nauka"}
-            {activeTab === "messages" && "💬 Wiadomości"}
-            {activeTab === "progress" && "📊 Mój postęp"}
+            {activeTab === "progress" && "📈 Mój postęp"}
             {activeTab === "settings" && "⚙️ Ustawienia"}
           </h1>
         </header>
@@ -195,34 +210,103 @@ export default function StudentDashboard() {
               </div>
             )}
 
-            {/* MY LEARNING TAB */}
-            {activeTab === "my-learning" && (
+            {/* MY LESSONS TAB */}
+            {activeTab === "my-lessons" && (
               <div className="space-y-4">
-                {enrolledCourses.length === 0 ? (
+                {myLessons.length === 0 ? (
                   <div className="bg-card border border-border rounded-xl p-8 text-center">
-                    <BookOpen className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
-                    <p className="text-muted-foreground">Nie zapisałeś się jeszcze na żaden kurs</p>
+                    <Calendar className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
+                    <p className="text-muted-foreground">Brak zaplanowanych lekcji</p>
                   </div>
                 ) : (
-                  enrolledCourses.map(course => (
-                    <div key={course.id} className="bg-card border border-border rounded-xl p-5">
-                      <div className="flex items-center justify-between mb-3">
+                  myLessons.map(lesson => (
+                    <div key={lesson.id} className={cn("bg-card border border-border rounded-xl p-5", lesson.status === "completed" ? "opacity-75" : "")}>
+                      <div className="flex items-start justify-between mb-3">
                         <div>
-                          <h3 className="font-bold text-sm">{course.title}</h3>
-                          <p className="text-xs text-muted-foreground">Nauczyciel: {course.teacher}</p>
+                          <h3 className="font-bold text-sm">{lesson.language}</h3>
+                          <p className="text-xs text-muted-foreground">Nauczyciel: {lesson.teacher}</p>
                         </div>
-                        <span className="text-xs font-bold text-primary">{course.lessons}</span>
+                        <span className={cn("text-xs px-2 py-1 rounded-full font-medium", lesson.status === "completed" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700")}>
+                          {lesson.status === "completed" ? "✓ Ukończona" : "Zaplanowana"}
+                        </span>
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1 h-2 bg-secondary rounded-full overflow-hidden">
-                            <div className="h-full bg-primary" style={{ width: `${course.progress}%` }} />
-                          </div>
-                          <span className="text-xs font-bold">{course.progress}%</span>
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
+                        <span>📅 {lesson.date}</span>
+                        <span>🕐 {lesson.time}</span>
+                        <span>⏱️ {lesson.duration} min</span>
+                      </div>
+                      {lesson.status === "scheduled" && (
+                        <button className="text-xs text-primary hover:underline">Otwórz wideokonferencję</button>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {/* HOMEWORKS TAB */}
+            {activeTab === "homeworks" && (
+              <div className="space-y-4">
+                {homeworks.length === 0 ? (
+                  <div className="bg-card border border-border rounded-xl p-8 text-center">
+                    <CheckSquare className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
+                    <p className="text-muted-foreground">Brak zadań domowych</p>
+                  </div>
+                ) : (
+                  homeworks.map(hw => (
+                    <div key={hw.id} className="bg-card border border-border rounded-xl p-5">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h3 className="font-bold text-sm">{hw.title}</h3>
+                          <p className="text-xs text-muted-foreground">{hw.teacher}</p>
                         </div>
-                        <button className="text-xs text-primary hover:underline">
-                          ➜ Kontynuuj naukę
-                        </button>
+                        <span className={cn("text-xs px-2 py-1 rounded-full font-medium", hw.status === "submitted" ? "bg-green-100 text-green-700" : "bg-amber-100 text-amber-700")}>
+                          {hw.status === "submitted" ? "✓ Oddane" : "Do zrobienia"}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground">📅 Termin: {hw.dueDate}</span>
+                        <span className="font-bold">Punkty: {hw.points}</span>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {/* MY TEACHERS TAB */}
+            {activeTab === "my-teachers" && (
+              <div className="space-y-4">
+                {myTeachers.length === 0 ? (
+                  <div className="bg-card border border-border rounded-xl p-8 text-center">
+                    <User className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
+                    <p className="text-muted-foreground">Brak przypisanych nauczycieli</p>
+                  </div>
+                ) : (
+                  myTeachers.map(teacher => (
+                    <div key={teacher.id} className="bg-card border border-border rounded-xl p-5">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h3 className="font-bold text-sm">{teacher.name}</h3>
+                          <p className="text-xs text-muted-foreground">{teacher.language} • {teacher.level}</p>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                          <span className="text-xs font-bold">{teacher.rating}</span>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-3 mb-3 text-xs pt-3 border-t border-border">
+                        <div>
+                          <p className="text-muted-foreground">Lekcji razem</p>
+                          <p className="font-bold mt-1">{teacher.lessonsTotal}</p>
+                        </div>
+                        <div>
+                          <p className="text-muted-foreground">Stawka</p>
+                          <p className="font-bold mt-1">{teacher.hourlyRate} PLN/h</p>
+                        </div>
+                        <div>
+                          <button className="text-primary hover:underline">Wiadomość</button>
+                        </div>
                       </div>
                     </div>
                   ))
