@@ -139,7 +139,7 @@ Wygeneruj kompletną, gotową do publikacji treść.`;
     const res = await base44.integrations.Core.InvokeLLM({
       prompt: fullPrompt,
       add_context_from_internet: true,
-      model: "claude_sonnet_4_6"
+      model: "gemini_3_flash"
     });
     setResult(res);
     setGenerating(false);
@@ -149,7 +149,7 @@ Wygeneruj kompletną, gotową do publikacji treść.`;
   const analyzeCompetitors = async () => {
     setLoadingComp(true);
     const res = await base44.integrations.Core.InvokeLLM({
-      prompt: `Przeprowadź dogłębną analizę SEO tych konkurentów dla TexiSEO.ai/LinguaTons:
+      prompt: `Przeprowadź dogłębną analizę SEO tych konkurentów dla TexiSEO.ai/LinguaTons (użyj najświeższych danych z wyszukiwarki):
 1. profi-lingua.pl
 2. e-korepetycje.net (marketplace korepetycji, 38k+ ogłoszeń angielski, silny blog)
 3. superprof.pl
@@ -192,7 +192,7 @@ Na końcu podaj TOP 5 quick wins dla TexiSEO.ai.`,
   const generateKeywordMap = async () => {
     setLoadingKw(true);
     const res = await base44.integrations.Core.InvokeLLM({
-      prompt: `Stwórz pełną mapę słów kluczowych dla TexiSEO.ai (platforma korepetycji językowych online, Polska).
+      prompt: `Stwórz pełną mapę słów kluczowych dla TexiSEO.ai (platforma korepetycji językowych online, Polska) — używaj bieżących danych z wyszukiwarek.
 Grupy:
 1. Korepetycje językowe online (angielski, hiszpański, francuski, niemiecki)
 2. Nauka dla dzieci (angielski dla dzieci, kursy dla dzieci)
