@@ -176,7 +176,7 @@ function HubCard({ hub, onSelect }) {
 }
 
 export default function WelcomeScreen() {
-  const { setActiveHub } = useHub();
+  const { setActiveHub, activeHub } = useHub();
   const navigate = useNavigate();
 
   const handleSelect = (hubId) => {
@@ -185,7 +185,7 @@ export default function WelcomeScreen() {
 
   return (
     <div
-      className="min-h-full rounded-2xl p-6 space-y-5"
+      className="min-h-full p-6 space-y-5"
       style={{ background: "linear-gradient(135deg, #0a1628 0%, #0d1f3c 50%, #0a1628 100%)" }}
     >
       {/* Header */}

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { base44 } from "@/api/base44Client";
+import { useNavigate } from "react-router-dom";
+import { useHub } from "@/lib/HubContext";
 import { Loader2, Sparkles, ArrowRight, Check, Globe, Users, BookOpen, FileText, Tag, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +14,8 @@ const STEPS = [
 ];
 
 export default function SEOAutopilot() {
+  const navigate = useNavigate();
+  const { setActiveHub } = useHub();
   const [step, setStep] = useState(1);
 
   // Step 1
@@ -191,7 +195,7 @@ export default function SEOAutopilot() {
     setDone(true);
   };
 
-  if (done) return <SuccessScreen />;
+  if (done) return <SuccessScreen onGoHome={() => { setActiveHub("welcome"); navigate("/"); }} />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 text-white">
@@ -456,7 +460,7 @@ function Step5({ keywords, loading, onFinish, onBack }) {
 /* ============================================================
    SUCCESS SCREEN
    ============================================================ */
-function SuccessScreen() {
+function SuccessScreen({ onGoHome }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 flex items-center justify-center px-6">
       <div className="text-center max-w-md">
@@ -464,10 +468,10 @@ function SuccessScreen() {
           <Sparkles className="h-10 w-10 text-white" />
         </div>
         <h1 className="text-3xl font-bold text-white mb-3">SEO Autopilot is Live! 🚀</h1>
-        <p className="text-white/60 mb-8">Competitors added to monitoring. Articles saved to Content Ideas. Linguatoons is now on Auto-Pilot.</p>
-        <a href="/" className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl transition-all">
-          Go to Dashboard <ArrowRight className="h-4 w-4" />
-        </a>
+        <p className="text-white/60 mb-8">Competitors added to monitoring. Articles saved to Content Ideas. TexiSEO is now on Auto-Pilot.</p>
+        <button onClick={onGoHome} className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl transition-all">
+          Wróć do menu głównego <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );

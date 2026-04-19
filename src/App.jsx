@@ -11,7 +11,6 @@ import { HubProvider } from '@/lib/HubContext';
 import AIChat from './components/AIChat';
 import Layout from './components/Layout';
 import WelcomeScreen from './pages/WelcomeScreen';
-import Dashboard from './pages/Dashboard';
 import ContentIdeas from './pages/ContentIdeas';
 import Clusters from './pages/Clusters';
 import ClusterDetail from './pages/ClusterDetail';
@@ -106,24 +105,24 @@ const AuthenticatedApp = () => {
 function App() {
   return (
     <LanguageProvider>
-      <HubProvider>
       <AuthProvider>
-        <QueryClientProvider client={queryClientInstance}>
-          <Router>
-            <Routes>
-              <Route path="/demo" element={<DemoLogin />} />
-              <Route path="/*" element={
-                <LoginGate>
-                  <AuthenticatedApp />
-                </LoginGate>
-              } />
-            </Routes>
-          </Router>
-          <Toaster />
-          <AIChat />
-        </QueryClientProvider>
+        <HubProvider>
+          <QueryClientProvider client={queryClientInstance}>
+            <Router>
+              <Routes>
+                <Route path="/demo" element={<DemoLogin />} />
+                <Route path="/*" element={
+                  <LoginGate>
+                    <AuthenticatedApp />
+                  </LoginGate>
+                } />
+              </Routes>
+            </Router>
+            <Toaster />
+            <AIChat />
+          </QueryClientProvider>
+        </HubProvider>
       </AuthProvider>
-      </HubProvider>
     </LanguageProvider>
   )
 }

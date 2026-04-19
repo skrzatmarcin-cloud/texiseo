@@ -5,7 +5,7 @@ import {
   Lightbulb, Network, FileText, ClipboardList, Link2, CalendarClock,
   HelpCircle, RefreshCw, Building2, TrendingUp, Sparkles,
   Users, Calendar, Video, CreditCard, MessageSquare, BookOpen, BarChart3,
-  Wand2, Share2, Play, Layers, Factory, LogOut
+  Wand2, Share2, Play, Layers, Package, LogOut
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -25,8 +25,9 @@ const ICON_MAP = {
   Lightbulb, Network, FileText, ClipboardList, Link2, CalendarClock,
   HelpCircle, RefreshCw, Building2, TrendingUp, Sparkles, LayoutDashboard,
   Users, Calendar, Video, CreditCard, MessageSquare, BookOpen, BarChart3,
-  Wand2, Share2, Play, Layers, Factory, Search,
+  Wand2, Share2, Play, Layers, Package, Search,
   Crosshair: TrendingUp, // alias
+  Factory: Package, // alias
 };
 
 const HUB_COLORS = {
@@ -243,8 +244,24 @@ export default function Layout() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto">
-          <Outlet />
+        <main className="flex-1 overflow-auto flex flex-col">
+          {/* Hub back button strip — shown when not on welcome screen and not on "/" */}
+          {activeHub !== "welcome" && location.pathname !== "/" && (
+            <div className="flex items-center gap-2 px-4 py-1.5 border-b border-border/50 bg-sidebar/30 text-xs">
+              <button
+                onClick={handleGoHome}
+                className="flex items-center gap-1.5 text-sidebar-foreground/60 hover:text-primary transition-colors font-medium"
+              >
+                <Home className="h-3 w-3" />
+                <span>Wróć do menu głównego</span>
+              </button>
+              <span className="text-border/80 mx-1">·</span>
+              <span className="text-muted-foreground font-semibold">{hubConfig.label}</span>
+            </div>
+          )}
+          <div className="flex-1 overflow-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
