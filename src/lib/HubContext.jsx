@@ -102,15 +102,67 @@ export const HUBS_CONFIG = {
   },
   texiseo_admin: {
     id: "texiseo_admin",
-    label: "TexiSEO Admin",
+    label: "TexiSEO Admin — SUPERADMIN",
     navItems: [
-      { to: "/", label: "← Strona Główna", icon: "Home" },
-      { to: "/texiseo-admin?tab=dashboard", label: "Dashboard", icon: "BarChart3" },
-      { to: "/texiseo-admin?tab=requests", label: "Zgłoszenia klientów", icon: "MessageSquare" },
-      { to: "/texiseo-admin?tab=users", label: "Użytkownicy", icon: "Users" },
-      { to: "/texiseo-admin?tab=payments", label: "Płatności", icon: "CreditCard" },
-      { to: "/self-promotion", label: "SEO Autopromocja", icon: "Sparkles" },
-      { to: "/settings", label: "Ustawienia", icon: "Settings" },
+      // ===== SEO & CONTENT =====
+      { to: "/content-ideas", label: "📝 Pomysły treści", icon: "Sparkles" },
+      { to: "/clusters", label: "🔗 Klastry tematyczne", icon: "Network" },
+      { to: "/pages", label: "📄 Strony", icon: "FileText" },
+      { to: "/brief-builder", label: "📋 Brief Builder", icon: "ClipboardList" },
+      { to: "/publishing-queue", label: "🚀 Publikacje", icon: "CalendarClock" },
+      { to: "/content-engine", label: "⚙️ Content Engine", icon: "Wand2" },
+      { to: "/seo-qa", label: "✅ SEO QA", icon: "ShieldCheck" },
+      
+      // ===== LINKI & BACKLINKI =====
+      { to: "/backlinks", label: "🔗 Backlink System", icon: "ExternalLink" },
+      { to: "/internal-links", label: "🔗 Linki wewnętrzne", icon: "Link2" },
+      
+      // ===== WORDPRESS & BEZPIECZEŃSTWO =====
+      { to: "/wordpress", label: "🖥️ WordPress", icon: "Globe" },
+      { to: "/security", label: "🔒 Security Monitor", icon: "ShieldCheck" },
+      
+      // ===== ANALITYKA & RAPORTOWANIE =====
+      { to: "/analytics", label: "📊 Google Analytics", icon: "BarChart3" },
+      { to: "/competitors", label: "🏆 Konkurenci", icon: "TrendingUp" },
+      { to: "/seo-autopilot", label: "🤖 SEO Autopilot", icon: "Zap" },
+      { to: "/refresh-center", label: "🔄 Refresh Center", icon: "RefreshCw" },
+      { to: "/faq-schema", label: "❓ FAQ Schema", icon: "HelpCircle" },
+      
+      // ===== SOCIAL & EXECUTION =====
+      { to: "/social-media", label: "📱 Social Media", icon: "Share2" },
+      { to: "/execution-center", label: "▶️ Execution Center", icon: "Play" },
+      
+      // ===== BUSINESS & KATALOG =====
+      { to: "/business?tab=companies", label: "🏢 Firmy (Business)", icon: "Building2" },
+      { to: "/business?tab=inventory", label: "📦 Magazyn", icon: "Layers" },
+      { to: "/business?tab=production", label: "🏭 Produkcja", icon: "Factory" },
+      { to: "/business?tab=suppliers", label: "🚚 Dostawcy", icon: "Users" },
+      { to: "/directory", label: "📚 Katalog Firm", icon: "Building2" },
+      
+      // ===== NAUCZYCIELE & KURSY =====
+      { to: "/teachers?tab=marketplace", label: "👨‍🏫 Teacher Marketplace", icon: "Users" },
+      { to: "/teachers?tab=courses_market", label: "📚 Kursy", icon: "BookOpen" },
+      { to: "/teachers?tab=payroll", label: "💰 Rozliczenia lekcji", icon: "CreditCard" },
+      
+      // ===== ADMIN PANEL =====
+      { to: "/texiseo-admin?tab=dashboard", label: "📊 Admin Dashboard", icon: "BarChart3" },
+      { to: "/texiseo-admin?tab=requests", label: "💬 Zgłoszenia", icon: "MessageSquare" },
+      { to: "/texiseo-admin?tab=users", label: "👥 Użytkownicy", icon: "Users" },
+      { to: "/texiseo-admin?tab=payments", label: "💳 Płatności", icon: "CreditCard" },
+      { to: "/texiseo-admin?tab=enterprise", label: "🏢 Enterprise Panel", icon: "Building2" },
+      
+      // ===== AUTOMATIONS & INTEGRACJE =====
+      { to: "/automations", label: "⚡ Automations", icon: "Zap" },
+      { to: "/integrations", label: "🔌 Integracje", icon: "Plug2" },
+      
+      // ===== SELF-PROMOTION =====
+      { to: "/self-promotion?tab=generator", label: "✍️ Generator treści", icon: "Sparkles" },
+      { to: "/self-promotion?tab=competitors", label: "🎯 Analiza konkurencji", icon: "TrendingUp" },
+      { to: "/self-promotion?tab=keywords", label: "🔍 Słowa kluczowe", icon: "Search" },
+      
+      // ===== SETTINGS =====
+      { to: "/settings", label: "⚙️ Ustawienia", icon: "Settings" },
+      { to: "/", label: "← Wróć do Menu", icon: "Home" },
     ],
   },
 };
