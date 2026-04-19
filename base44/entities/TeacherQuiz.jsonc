@@ -1,0 +1,87 @@
+{
+  "name": "TeacherQuiz",
+  "type": "object",
+  "properties": {
+    "teacher_id": {
+      "type": "string",
+      "title": "ID nauczyciela"
+    },
+    "quiz_title": {
+      "type": "string",
+      "title": "Tytu\u0142 quizu"
+    },
+    "description": {
+      "type": "string",
+      "title": "Opis"
+    },
+    "course_id": {
+      "type": "string",
+      "title": "ID kursu (je\u015bli przypisany)"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "angielski",
+        "hiszpa\u0144ski",
+        "francuski",
+        "niemiecki"
+      ],
+      "title": "J\u0119zyk"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "title": "Poziom trudno\u015bci"
+    },
+    "question_count": {
+      "type": "number",
+      "title": "Liczba pyta\u0144"
+    },
+    "time_limit_minutes": {
+      "type": "number",
+      "title": "Limit czasu (minuty)"
+    },
+    "passing_score": {
+      "type": "number",
+      "title": "Wymagany wynik (%)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "archived"
+      ],
+      "default": "draft",
+      "title": "Status"
+    },
+    "attempts_allowed": {
+      "type": "number",
+      "title": "Dozwolone podej\u015bcia",
+      "default": 3
+    },
+    "total_attempts": {
+      "type": "number",
+      "title": "\u0141\u0105czne podej\u015bcia",
+      "default": 0
+    },
+    "average_score": {
+      "type": "number",
+      "title": "\u015aredni wynik (%)"
+    },
+    "created_date": {
+      "type": "string",
+      "title": "Data utworzenia"
+    }
+  },
+  "required": [
+    "teacher_id",
+    "quiz_title",
+    "question_count",
+    "status"
+  ]
+}

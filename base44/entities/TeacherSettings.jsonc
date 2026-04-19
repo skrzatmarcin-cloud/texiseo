@@ -1,0 +1,92 @@
+{
+  "name": "TeacherSettings",
+  "type": "object",
+  "properties": {
+    "teacher_id": {
+      "type": "string",
+      "title": "ID nauczyciela"
+    },
+    "teacher_email": {
+      "type": "string",
+      "title": "Email nauczyciela"
+    },
+    "subscription_status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "inactive",
+        "suspended",
+        "trial"
+      ],
+      "title": "Status subskrypcji"
+    },
+    "subscription_plan": {
+      "type": "string",
+      "enum": [
+        "free",
+        "starter",
+        "pro",
+        "enterprise"
+      ],
+      "title": "Plan subskrypcji",
+      "default": "free"
+    },
+    "subscription_start_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Data rozpocz\u0119cia subskrypcji"
+    },
+    "subscription_end_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Data zako\u0144czenia subskrypcji"
+    },
+    "total_students": {
+      "type": "number",
+      "title": "Liczba aktywnych student\u00f3w",
+      "default": 0
+    },
+    "hourly_rate_pln": {
+      "type": "number",
+      "title": "Stawka godzinowa (PLN)",
+      "default": 50
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "bank_transfer",
+        "stripe",
+        "paypal",
+        "pending"
+      ],
+      "title": "Metoda p\u0142atno\u015bci"
+    },
+    "bank_account": {
+      "type": "string",
+      "title": "Konto bankowe (encrypted)"
+    },
+    "stripe_customer_id": {
+      "type": "string",
+      "title": "Stripe Customer ID"
+    },
+    "auto_renewal": {
+      "type": "boolean",
+      "title": "Auto-odnowienie subskrypcji",
+      "default": true
+    },
+    "notify_expiry": {
+      "type": "boolean",
+      "title": "Powiadom przed wyga\u015bni\u0119ciem",
+      "default": true
+    },
+    "created_at": {
+      "type": "string",
+      "title": "Data utworzenia"
+    }
+  },
+  "required": [
+    "teacher_id",
+    "teacher_email",
+    "subscription_status"
+  ]
+}

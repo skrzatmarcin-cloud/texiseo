@@ -1,0 +1,87 @@
+{
+  "name": "TeacherCourse",
+  "type": "object",
+  "properties": {
+    "teacher_id": {
+      "type": "string",
+      "title": "ID nauczyciela"
+    },
+    "course_name": {
+      "type": "string",
+      "title": "Nazwa kursu"
+    },
+    "description": {
+      "type": "string",
+      "title": "Opis kursu"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "angielski",
+        "hiszpa\u0144ski",
+        "francuski",
+        "niemiecki"
+      ],
+      "title": "J\u0119zyk"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "C1",
+        "C2"
+      ],
+      "title": "Poziom"
+    },
+    "course_type": {
+      "type": "string",
+      "enum": [
+        "individual",
+        "group",
+        "self-paced"
+      ],
+      "title": "Typ kursu"
+    },
+    "duration_weeks": {
+      "type": "number",
+      "title": "Czas trwania (tygodnie)"
+    },
+    "max_students": {
+      "type": "number",
+      "title": "Max. liczba student\u00f3w"
+    },
+    "current_students": {
+      "type": "number",
+      "title": "Obecni studenci",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "active",
+        "archived"
+      ],
+      "default": "draft",
+      "title": "Status"
+    },
+    "price_per_month_pln": {
+      "type": "number",
+      "title": "Cena miesi\u0119czna (PLN)"
+    },
+    "created_date": {
+      "type": "string",
+      "title": "Data utworzenia"
+    }
+  },
+  "required": [
+    "teacher_id",
+    "course_name",
+    "language",
+    "level",
+    "status"
+  ]
+}
