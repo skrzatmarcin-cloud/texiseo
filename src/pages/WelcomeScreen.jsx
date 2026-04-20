@@ -37,10 +37,10 @@ const ALL_HUBS = [
     Icon: Briefcase,
     iconColor: "text-slate-300",
     sublinks: [
-      { label: "Firmy", icon: Building2 },
-      { label: "Magazyn", icon: Layers },
-      { label: "Produkcja", icon: Building2 },
-      { label: "Dostawcy", icon: Users },
+      { label: "CRM (Firmy)", icon: Building2, tab: "companies" },
+      { label: "WMS (Magazyn)", icon: Layers, tab: "inventory" },
+      { label: "MES (Produkcja)", icon: Building2, tab: "production" },
+      { label: "ERP (Raporty)", icon: BarChart3, tab: "reports" },
     ],
   },
 
@@ -165,7 +165,6 @@ function HubIcon({ Icon, iconColor, gradient, frozen }) {
 function HubCard({ hub, onSelect, user }) {
   const navigate = useNavigate();
   const isAdmin = user?.role === "admin";
-  // Website & SEO jest odblokowany dla admina (ma Linguatoons.com)
   const isFrozen = hub.id === "website" && !isAdmin && !user?.website_url;
 
   const handleClick = (e) => {
@@ -173,6 +172,15 @@ function HubCard({ hub, onSelect, user }) {
     if (!isFrozen) {
       onSelect(hub.id);
       navigate(hub.to);
+    }
+  };
+
+  const handleSublinkClick = (e, sub) => {
+    e.stopPropagation();
+    if (!isFrozen) {
+      onSelect(hub.id);
+      const url = sub.tab ? `${hub.to}?tab=${sub.tab}` : hub.to;
+      navigate(url);
     }
   };
 
@@ -215,7 +223,8 @@ function HubCard({ hub, onSelect, user }) {
           {hub.sublinks.map((sub) => (
             <div
               key={sub.label}
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/5 text-left"
+              onClick={(e) => handleSublinkClick(e, sub)}
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-colors text-left cursor-pointer"
             >
               <sub.icon className="h-3 w-3 text-blue-300/70 flex-shrink-0" />
               <span className="text-[11px] text-blue-100/70 font-medium truncate">

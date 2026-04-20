@@ -158,7 +158,16 @@ const AuthenticatedApp = () => {
     } else if (demoType === "student") {
       return <Routes><Route element={<Layout />}><Route path="/*" element={<Suspense fallback={<PageLoader />}><StudentDashboard /></Suspense>} /></Route></Routes>;
     } else if (demoType === "enterprise") {
-      return <Routes><Route element={<Layout />}><Route path="/*" element={<Suspense fallback={<PageLoader />}><BusinessHub /></Suspense>} /></Route></Routes>;
+      const enterpriseTab = sessionStorage.getItem("lg_enterprise_tab");
+      return (
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Suspense fallback={<PageLoader />}><WelcomeScreen /></Suspense>} />
+            <Route path="/business" element={<Suspense fallback={<PageLoader />}><BusinessHub /></Suspense>} />
+            <Route path="/*" element={<Suspense fallback={<PageLoader />}><BusinessHub /></Suspense>} />
+          </Route>
+        </Routes>
+      );
     }
   }
 

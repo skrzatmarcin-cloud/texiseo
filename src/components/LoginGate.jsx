@@ -504,26 +504,32 @@ function LoginGateInner({ children }) {
                 /* ENTERPRISE MODULES SELECTION */
                 <>
                   <h2 className="text-lg font-semibold text-white mb-1">🏛️ Enterprise Moduły</h2>
-                  <p className="text-xs text-slate-400 mb-3">Kliknij moduł aby wejść do demo</p>
+                  <p className="text-xs text-slate-400 mb-3">Kliknij moduł aby wejść do odpowiedniej sekcji</p>
                   <div className="space-y-1.5 max-h-72 overflow-y-auto">
                     {[
-                      { id: "sales", label: "💼 Sales (CRM)" },
-                      { id: "production", label: "🏭 Production (MES)" },
-                      { id: "inventory", label: "📦 Inventory (WMS)" },
-                      { id: "finance", label: "💰 Finance (ERP)" },
-                      { id: "marketing", label: "📱 Marketing (SEO+Social)" },
-                      { id: "ai_insights", label: "🧠 AI Insights" }
-                    ].map(module => (
+                      { id: "companies", label: "💼 Sales (CRM) — Zarządzanie klientami" },
+                      { id: "production", label: "🏭 Production (MES) — Zlecenia produkcji" },
+                      { id: "inventory", label: "📦 Inventory (WMS) — Magazyn" },
+                      { id: "reports", label: "💰 Finance (ERP) — Raporty finansowe" },
+                      { id: "suppliers", label: "📱 Marketing & Dostawcy" },
+                      { id: "companies", label: "🧠 AI Insights — Analityka firm" }
+                    ].map((module, idx) => (
                       <button
-                        key={module.id}
-                        onClick={() => handleDemoSelect("enterprise")}
+                        key={idx}
+                        onClick={() => {
+                          sessionStorage.setItem("lg_auth", "1");
+                          sessionStorage.setItem("lg_demo_mode", "1");
+                          sessionStorage.setItem("lg_demo_type", "enterprise");
+                          sessionStorage.setItem("lg_enterprise_tab", module.id);
+                          setLoggedIn(true);
+                        }}
                         className="w-full p-2.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/15 transition-all text-left text-xs font-medium text-purple-300">
                         {module.label}
                       </button>
                     ))}
                   </div>
                   <div className="mt-3 text-center">
-                    <button onClick={() => { setMode("demo-select"); setError(""); setSelectedModule(null); }}
+                    <button onClick={() => { setMode("demo-select"); setError(""); }}
                       className="text-xs text-slate-400 hover:text-white transition-colors">
                       ← Wróć
                     </button>
