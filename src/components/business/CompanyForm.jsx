@@ -80,25 +80,13 @@ export default function CompanyForm({ company, onSave, onClose }) {
               <Input value={form.address} onChange={e => set("address", e.target.value)} placeholder="ul. Przykładowa 1" className="text-sm" />
             </div>
             <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-1">{t.city} (wybierz lub wpisz swoje)</label>
-              <div className="flex gap-2">
-                <Select value={form.city} onValueChange={handleCityChange}>
-                  <SelectTrigger className="text-sm h-9"><SelectValue placeholder="Wybierz z listy lub wpisz poniżej" /></SelectTrigger>
-                  <SelectContent className="max-h-60">
-                    {ALL_CITIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-                <span className="text-[10px] text-muted-foreground self-center whitespace-nowrap">lub wpisz</span>
-              </div>
-              <Input 
-                value={form.city} 
-                onChange={e => { 
-                  set("city", e.target.value); 
-                  setCityCodes([]);
-                }} 
-                placeholder="Twoje miasto / miasteczko" 
-                className="text-sm mt-1" 
-              />
+              <label className="text-xs font-medium text-muted-foreground block mb-1">{t.city}</label>
+              <Select value={form.city} onValueChange={handleCityChange}>
+                <SelectTrigger className="text-sm h-9"><SelectValue placeholder="Wybierz miasto" /></SelectTrigger>
+                <SelectContent className="max-h-60">
+                  {ALL_CITIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground block mb-1">{t.postal_code}</label>

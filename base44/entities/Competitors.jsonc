@@ -2,79 +2,51 @@
   "name": "Competitors",
   "type": "object",
   "properties": {
-    "site_name": {
+    "name": {
       "type": "string",
-      "title": "Site Name"
+      "title": "Nazwa konkurenta"
     },
-    "domain": {
+    "url": {
       "type": "string",
-      "title": "Domain"
+      "title": "URL strony"
     },
-    "category": {
+    "language": {
       "type": "string",
+      "title": "J\u0119zyk",
       "enum": [
-        "global",
-        "regional",
-        "academic",
-        "niche"
-      ],
-      "title": "Category"
+        "pl",
+        "en",
+        "es",
+        "fr"
+      ]
     },
-    "languages_offered": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "title": "Languages Offered"
-    },
-    "pricing_model": {
+    "niche": {
       "type": "string",
+      "title": "Nisza",
       "enum": [
-        "freemium",
-        "subscription",
-        "pay-per-lesson",
-        "marketplace"
-      ],
-      "title": "Pricing Model"
+        "language_school",
+        "tutoring",
+        "e-learning",
+        "content_site",
+        "other"
+      ]
     },
-    "primary_target": {
+    "notes": {
       "type": "string",
-      "title": "Primary Target Audience"
+      "title": "Notatki"
     },
-    "strengths": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "title": "Key Strengths"
+    "active": {
+      "type": "boolean",
+      "title": "Aktywny monitoring",
+      "default": true
     },
-    "weaknesses": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "title": "Identified Weaknesses"
-    },
-    "last_analyzed": {
+    "last_analyzed_at": {
       "type": "string",
-      "format": "date-time",
-      "title": "Last Analysis Date"
-    },
-    "analysis_status": {
-      "type": "string",
-      "enum": [
-        "active",
-        "inactive",
-        "archived"
-      ],
-      "title": "Analysis Status",
-      "default": "active"
+      "title": "Ostatnia analiza"
     }
   },
   "required": [
-    "site_name",
-    "domain",
-    "category",
-    "analysis_status"
+    "name",
+    "url"
   ]
 }

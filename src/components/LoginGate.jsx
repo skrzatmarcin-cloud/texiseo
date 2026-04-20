@@ -5,8 +5,9 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "@/lib/LanguageContext";
 import SecurityScanAnimation from "./SecurityScanAnimation";
 
-const ADMIN_CREDENTIALS = { username: "Marcin",      password: "Cinek123" };
-const ADMIN_EMAIL       = "marcin@linguatoons.com";
+const CREDENTIALS      = { username: "Marcin",      password: "Marcinek2026!" };
+const ADMIN_CREDENTIALS = { username: "TexiAdmin",   password: "TxSEO@Admin2026!" };
+const ADMIN_EMAIL       = "skrzatmarcin@gmail.com";
 const MAX_FAILS         = 3;
 const BLOCK_MINUTES     = 30;
 
@@ -80,39 +81,6 @@ function recordFail(ip) {
 
 function clearFails(ip) { setFailData(ip, {}); }
 
-// ── Module Details Component ─────────────────────────────────────────────────
-
-function ModuleDetails({ module }) {
-  const MODULE_COLORS = {
-    sales: "from-blue-600 to-indigo-700",
-    production: "from-amber-600 to-orange-700",
-    inventory: "from-green-600 to-emerald-700",
-    finance: "from-purple-600 to-pink-700",
-    marketing: "from-cyan-600 to-blue-700",
-    ai_insights: "from-violet-600 to-purple-700"
-  };
-  const MODULE_LABELS = {
-    sales: "💼 Sales (CRM)",
-    production: "🏭 Production (MES)",
-    inventory: "📦 Inventory (WMS)",
-    finance: "💰 Finance (ERP)",
-    marketing: "📱 Marketing (SEO+Social)",
-    ai_insights: "🧠 AI Insights"
-  };
-
-  return (
-    <div className={`bg-gradient-to-br ${MODULE_COLORS[module]} rounded-xl p-4 text-white space-y-3`}>
-      <h3 className="font-bold text-sm">{MODULE_LABELS[module]}</h3>
-      <div className="space-y-2 text-xs">
-        <div className="bg-white/10 rounded p-2"><span className="text-slate-300">Status:</span> <span className="font-semibold">Active</span></div>
-        <div className="bg-white/10 rounded p-2"><span className="text-slate-300">Users:</span> <span className="font-semibold">0</span></div>
-        <div className="bg-white/10 rounded p-2"><span className="text-slate-300">Features:</span> <span className="font-semibold">Multiple</span></div>
-      </div>
-      <p className="text-[10px] text-white/60 italic">Demo mode — dane przykładowe</p>
-    </div>
-  );
-}
-
 // ── Main component ────────────────────────────────────────────────────────────
 
 function LoginGateInner({ children }) {
@@ -121,23 +89,15 @@ function LoginGateInner({ children }) {
   const [phase, setPhase]       = useState("scanning"); // scanning | login
   const [ipData, setIpData]     = useState(null);
   const [loggedIn, setLoggedIn] = useState(() => sessionStorage.getItem("lg_auth") === "1");
-  const [mode, setMode]         = useState("login"); // login | register | demo-select | forgot
+  const [mode, setMode]         = useState("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [error, setError]       = useState("");
-  const [loading, setLoading]   = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [resetSent, setResetSent]       = useState(false);
   const [blocked, setBlocked]   = useState(false);
   const [minsLeft, setMinsLeft] = useState(0);
-  const [selectedModule, setSelectedModule] = useState(null);
-  // Register mode
-  const [regEmail, setRegEmail] = useState("");
-  const [regPassword, setRegPassword] = useState("");
-  const [regFullName, setRegFullName] = useState("");
-  const [regUserType, setRegUserType] = useState("student");
-  const [regLoading, setRegLoading] = useState(false);
 
   // Run security scan once on mount
   useEffect(() => {
@@ -185,18 +145,20 @@ function LoginGateInner({ children }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const ip = ipData?.ip || "unknown";
 
     // Check block
     if (isBlocked(ip)) {
       setBlocked(true);
       setMinsLeft(minutesLeft(ip));
-      setLoading(false);
       return;
     }
 
     const isCorrect =
+      (username === CREDENTIALS.username      && password === CREDENTIALS.password) ||
+      (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password);
+
+    const isAdmin =
       username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password;
 
     const { browser, os } = getBrowserInfo();
@@ -204,20 +166,8 @@ function LoginGateInner({ children }) {
     if (isCorrect) {
       clearFails(ip);
       sessionStorage.setItem("lg_auth", "1");
-      
-      // Fetch user role from Base44
-      try {
-        const userData = await base44.auth.me();
-        if (userData?.role === 'admin') {
-          sessionStorage.setItem("lg_is_admin", "1");
-          console.log("✅ ADMIN MODE ENABLED");
-        } else {
-          sessionStorage.removeItem("lg_is_admin");
-          console.log(`👤 USER MODE - Role: ${userData?.role || 'user'}`);
-        }
-      } catch {
-        sessionStorage.removeItem("lg_is_admin");
-      }
+      if (isAdmin) sessionStorage.setItem("lg_is_admin", "1");
+      else sessionStorage.removeItem("lg_is_admin");
 
       base44.entities.LoginAttempts.create({
         ip_address: ip,
@@ -250,16 +200,20 @@ function LoginGateInner({ children }) {
       if (fails >= MAX_FAILS) {
         setBlocked(true);
         setMinsLeft(BLOCK_MINUTES);
+        // Alert admin
+        base44.integrations.Core.SendEmail({
+          to: ADMIN_EMAIL,
+          subject: `⚠️ [TexiSEO Security] IP ZABLOKOWANY — ${ip}`,
+          body: `Wykryto ${MAX_FAILS} nieudane próby logowania.\n\nIP: ${ip}\nKraj: ${ipData?.country || "brak"}\nMiasto: ${ipData?.city || "brak"}\nPrzeglądarka: ${browser} / ${os}\nLogin próbowany: ${username}\n\nIP zablokowany na ${BLOCK_MINUTES} minut.\n\n---\nTexiSEO Security AI`,
+        }).catch(() => {});
       } else {
         setError(`Nieprawidłowe dane logowania. Pozostało prób: ${remaining}`);
       }
     }
-    setLoading(false);
   };
 
   const handleDemo = () => {
     sessionStorage.removeItem("lg_is_admin");
-    sessionStorage.removeItem("lg_demo_type");
     sessionStorage.setItem("lg_auth", "1");
     sessionStorage.setItem("lg_demo_mode", "1");
     setMode("demo-select");
@@ -270,45 +224,13 @@ function LoginGateInner({ children }) {
     setLoggedIn(true);
   };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    if (!regEmail || !regPassword || !regFullName) {
-      setError("Wypełnij wszystkie pola");
-      return;
-    }
-
-    if (regPassword.length < 6) {
-      setError("Hasło musi mieć co najmniej 6 znaków");
-      return;
-    }
-
-    // Zapisz dane w sessionStorage i zaloguj jako demo
-    sessionStorage.setItem("lg_auth", "1");
-    sessionStorage.setItem("lg_demo_mode", "1");
-    sessionStorage.setItem("lg_user_email", regEmail);
-    sessionStorage.setItem("lg_user_name", regFullName);
-    sessionStorage.setItem("lg_user_type", regUserType);
-
-    if (regUserType === "enterprise") {
-      sessionStorage.setItem("lg_demo_type", "enterprise");
-    } else if (regUserType === "teacher") {
-      sessionStorage.setItem("lg_demo_type", "teacher");
-    } else {
-      sessionStorage.setItem("lg_demo_type", "student");
-    }
-
-    setLoggedIn(true);
-  };
-
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     setEmailLoading(true);
     await base44.integrations.Core.SendEmail({
       to: ADMIN_EMAIL,
       subject: "Reset hasła — TexiSEO AI & Enterprise",
-      body: `Cześć!\n\nOtrzymaliśmy prośbę o reset hasła.\n\nLink do resetowania hasła zostanie wysłany na tę skrzynkę pocztową.\n\n---\nTexiSEO System`,
+      body: `Cześć Marcin!\n\nOtrzymaliśmy prośbę o reset hasła.\n\nDane logowania:\n• Użytkownik: Marcin\n• Hasło: Marcinek2026!\n\n---\nTexiSEO System`,
     });
     setEmailLoading(false);
     setResetSent(true);
@@ -365,7 +287,7 @@ function LoginGateInner({ children }) {
                   </p>
                 </div>
                 <p className="text-xs text-white/30 mt-4">
-                  Blokada wygaśnie automatycznie — spróbuj ponownie za kilka minut.
+                  Jeśli to pomyłka, skontaktuj się: {ADMIN_EMAIL}
                 </p>
               </div>
             ) : mode === "login" ? (
@@ -436,9 +358,9 @@ function LoginGateInner({ children }) {
                     </div>
                   )}
 
-                  <button type="submit" disabled={loading}
-                    className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors mt-2">
-                    {loading ? "Logowanie…" : (t.login_btn || "Zaloguj się")}
+                  <button type="submit"
+                    className="w-full bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors mt-2">
+                    {t.login_btn || "Zaloguj się"}
                   </button>
                 </form>
 
@@ -449,16 +371,9 @@ function LoginGateInner({ children }) {
                       {t.forgot_password || "Zapomniałeś hasła?"}
                     </button>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 h-px bg-white/10" />
-                    <span className="text-xs text-slate-400">lub</span>
-                    <div className="flex-1 h-px bg-white/10" />
+                  <div className="text-center text-xs text-slate-400">
+                    lub
                   </div>
-                  <button
-                    onClick={() => { setMode("register"); setError(""); }}
-                    className="w-full h-10 bg-blue-500/20 border border-blue-500/30 text-blue-300 hover:bg-blue-500/30 font-medium rounded-lg text-xs transition-all">
-                    ✍️ Załóż konto
-                  </button>
                   <button
                     onClick={handleDemo}
                     className="w-full h-10 bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/30 font-medium rounded-lg text-xs transition-all">
@@ -466,152 +381,34 @@ function LoginGateInner({ children }) {
                   </button>
                 </div>
 
-
+                {/* IP info strip */}
+                {ipData?.ip && ipData.ip !== "unknown" && (
+                  <div className="mt-4 flex items-center justify-center gap-2 text-[10px] text-white/20">
+                    <span>🔒</span>
+                    <span>IP: {ipData.ip}{ipData.country ? ` · ${ipData.country}` : ""}</span>
+                    <span>· Szyfrowane</span>
+                  </div>
+                )}
               </>
             ) : mode === "demo-select" ? (
-               /* DEMO SELECTION */
-               <>
-                 <h2 className="text-lg font-semibold text-white mb-2">🎬 Wybierz tryb demo</h2>
-                 <p className="text-xs text-slate-400 mb-6">Jaki rodzaj konta chcesz zobaczyć w akcji?</p>
-                 <div className="space-y-3">
-                   <button
-                     onClick={() => handleDemoSelect("teacher")}
-                     className="w-full p-4 rounded-xl border-2 border-blue-400/30 bg-blue-500/10 hover:bg-blue-500/20 text-left transition-all">
-                     <p className="font-semibold text-blue-200 text-sm">👨‍🏫 Demo Nauczyciel</p>
-                     <p className="text-xs text-blue-300/70 mt-1">Kursy, lekcje, testy & quizy, zarobki</p>
-                   </button>
-                   <button
-                     onClick={() => handleDemoSelect("student")}
-                     className="w-full p-4 rounded-xl border-2 border-emerald-400/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-left transition-all">
-                     <p className="font-semibold text-emerald-200 text-sm">👨‍🎓 Demo Student</p>
-                     <p className="text-xs text-emerald-300/70 mt-1">Szukaj nauczycieli, zapisz się na kursy, śledź postęp</p>
-                   </button>
-                   <button
-                     onClick={() => setMode("demo-enterprise")}
-                     className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
-                     <p className="font-semibold text-purple-200 text-sm">🏛️ Demo Enterprise</p>
-                     <p className="text-xs text-purple-300/70 mt-1">Sales • Production • Inventory • Finance • Marketing • AI</p>
-                   </button>
-                 </div>
-                <div className="mt-4 text-center">
-                  <button onClick={() => { setMode("login"); setError(""); }}
-                    className="text-xs text-slate-400 hover:text-white transition-colors">
-                    ← Wróć do logowania
+              /* DEMO SELECTION */
+              <>
+                <h2 className="text-lg font-semibold text-white mb-2">🎬 Wybierz tryb demo</h2>
+                <p className="text-xs text-slate-400 mb-6">Jaki rodzaj konta chcesz zobaczyć w akcji?</p>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => handleDemoSelect("teacher")}
+                    className="w-full p-4 rounded-xl border-2 border-blue-400/30 bg-blue-500/10 hover:bg-blue-500/20 text-left transition-all">
+                    <p className="font-semibold text-blue-200 text-sm">👨‍🏫 Demo Nauczyciel</p>
+                    <p className="text-xs text-blue-300/70 mt-1">Zobacz dashboard nauczycielski z fikcyjnymi uczniami i lekcjami</p>
+                  </button>
+                  <button
+                    onClick={() => handleDemoSelect("business")}
+                    className="w-full p-4 rounded-xl border-2 border-purple-400/30 bg-purple-500/10 hover:bg-purple-500/20 text-left transition-all">
+                    <p className="font-semibold text-purple-200 text-sm">🏢 Demo Enterprise</p>
+                    <p className="text-xs text-purple-300/70 mt-1">Zobacz panel zarządzania firmą, magazyn i katalog biznesu</p>
                   </button>
                 </div>
-                </>
-                ) : mode === "demo-enterprise" ? (
-                /* ENTERPRISE MODULES SELECTION */
-                <>
-                  <h2 className="text-lg font-semibold text-white mb-1">🏛️ Enterprise Moduły</h2>
-                  <p className="text-xs text-slate-400 mb-3">Kliknij moduł aby wejść do odpowiedniej sekcji</p>
-                  <div className="space-y-1.5 max-h-72 overflow-y-auto">
-                    {[
-                      { id: "companies", label: "💼 Sales (CRM) — Zarządzanie klientami" },
-                      { id: "production", label: "🏭 Production (MES) — Zlecenia produkcji" },
-                      { id: "inventory", label: "📦 Inventory (WMS) — Magazyn" },
-                      { id: "reports", label: "💰 Finance (ERP) — Raporty finansowe" },
-                      { id: "suppliers", label: "📱 Marketing & Dostawcy" },
-                      { id: "companies", label: "🧠 AI Insights — Analityka firm" }
-                    ].map((module, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => {
-                          sessionStorage.setItem("lg_auth", "1");
-                          sessionStorage.setItem("lg_demo_mode", "1");
-                          sessionStorage.setItem("lg_demo_type", "enterprise");
-                          sessionStorage.setItem("lg_enterprise_tab", module.id);
-                          setLoggedIn(true);
-                        }}
-                        className="w-full p-2.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/15 transition-all text-left text-xs font-medium text-purple-300">
-                        {module.label}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="mt-3 text-center">
-                    <button onClick={() => { setMode("demo-select"); setError(""); }}
-                      className="text-xs text-slate-400 hover:text-white transition-colors">
-                      ← Wróć
-                    </button>
-                  </div>
-                </>
-                ) : mode === "register" ? (
-              /* REGISTRATION */
-              <>
-                <h2 className="text-lg font-semibold text-white mb-2">✍️ Załóż konto</h2>
-                <p className="text-xs text-slate-400 mb-6">Wybierz typ konta i wypełnij dane</p>
-
-                <form onSubmit={handleRegister} className="space-y-4">
-                  <div>
-                    <label className="text-xs font-medium text-slate-300 block mb-2">Typ konta *</label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {[
-                        { value: "student", label: "👨‍🎓 Student" },
-                        { value: "teacher", label: "👨‍🏫 Nauczyciel" },
-                        { value: "enterprise", label: "🏛️ Enterprise" }
-                      ].map(opt => (
-                        <button
-                          key={opt.value}
-                          type="button"
-                          onClick={() => setRegUserType(opt.value)}
-                          className={`p-2 rounded-lg border-2 text-xs font-medium transition-all ${
-                            regUserType === opt.value
-                              ? "border-primary bg-primary/20 text-primary"
-                              : "border-white/10 bg-white/5 text-slate-300 hover:border-white/20"
-                          }`}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-medium text-slate-300 block mb-1.5">Pełne imię i nazwisko *</label>
-                    <input
-                      type="text"
-                      value={regFullName}
-                      onChange={e => { setRegFullName(e.target.value); setError(""); }}
-                      placeholder="Jan Kowalski"
-                      className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-medium text-slate-300 block mb-1.5">Email *</label>
-                    <input
-                      type="email"
-                      value={regEmail}
-                      onChange={e => { setRegEmail(e.target.value); setError(""); }}
-                      placeholder="jan@example.com"
-                      className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-xs font-medium text-slate-300 block mb-1.5">Hasło (minimum 6 znaków) *</label>
-                    <input
-                      type="password"
-                      value={regPassword}
-                      onChange={e => { setRegPassword(e.target.value); setError(""); }}
-                      placeholder="••••••••"
-                      className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-
-                  {error && (
-                    <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
-                      <AlertCircle className="h-4 w-4 text-red-400 flex-shrink-0" />
-                      <p className="text-xs text-red-400">{error}</p>
-                    </div>
-                  )}
-
-                  <button type="submit" disabled={regLoading}
-                    className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 text-white font-semibold rounded-lg py-2.5 text-sm transition-colors">
-                    {regLoading ? "Rejestruję…" : "Załóż konto"}
-                  </button>
-                </form>
-
                 <div className="mt-4 text-center">
                   <button onClick={() => { setMode("login"); setError(""); }}
                     className="text-xs text-slate-400 hover:text-white transition-colors">
@@ -619,7 +416,7 @@ function LoginGateInner({ children }) {
                   </button>
                 </div>
               </>
-              ) : (
+            ) : (
               /* FORGOT PASSWORD */
               <>
                 <h2 className="text-lg font-semibold text-white mb-2">{t.reset_title || "Reset hasła"}</h2>

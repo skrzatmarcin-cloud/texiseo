@@ -14,22 +14,14 @@ export default function DemoLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("demo@linguatoons.com");
+  const [password, setPassword] = useState("demo123");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
-      // Czyszczenie danych demo przed logowaniem
-      const keys = [...Object.keys(sessionStorage), ...Object.keys(localStorage)];
-      keys.forEach(key => {
-        if (key.startsWith("lg_") || key.startsWith("demo_") || key.includes("cache")) {
-          sessionStorage.removeItem(key);
-          localStorage.removeItem(key);
-        }
-      });
       await base44.auth.redirectToLogin();
     } catch (err) {
       setError("Logowanie demo — użyj danych pokazanych na ekranie.");
@@ -75,14 +67,27 @@ export default function DemoLogin() {
             ))}
           </div>
 
-          {/* Demo info */}
+          {/* Demo credentials highlight */}
           <div className="bg-gradient-to-r from-teal-500/20 to-purple-500/20 border border-teal-400/30 rounded-2xl p-4">
             <p className="text-xs font-bold text-teal-300 uppercase tracking-widest mb-3 flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5" />Wirtualny pokaz systemu
+              <CheckCircle2 className="h-3.5 w-3.5" />Dane dostępowe — DEMO
             </p>
-            <p className="text-xs text-teal-200">
-              Wypróbuj wszystkie funkcje platformy TexiSEO w trybie demonstracyjnym — bez rzeczywistych zmian w systemie. Idealne do zapoznania się z możliwościami!
-            </p>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between bg-white/10 rounded-xl px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <User className="h-3.5 w-3.5 text-teal-300" />
+                  <span className="text-xs text-white/60">Login / Email</span>
+                </div>
+                <code className="text-sm font-bold text-teal-200 select-all">demo-użytkownik</code>
+              </div>
+              <div className="flex items-center justify-between bg-white/10 rounded-xl px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <Lock className="h-3.5 w-3.5 text-teal-300" />
+                  <span className="text-xs text-white/60">Hasło</span>
+                </div>
+                <code className="text-sm font-bold text-teal-200 select-all">demo</code>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -91,36 +96,45 @@ export default function DemoLogin() {
           <h3 className="text-white text-xl font-bold mb-2">Zaloguj się do systemu</h3>
           <p className="text-white/50 text-sm mb-6">Wypróbuj pełną funkcjonalność bez rejestracji</p>
 
+          {/* Quick fill demo button */}
+          <button
+            onClick={() => { setEmail("demo@linguatoons.com"); setPassword("demo"); }}
+            className="w-full mb-4 py-2.5 rounded-xl border border-teal-400/40 bg-teal-400/10 text-teal-300 text-sm font-medium hover:bg-teal-400/20 transition-all flex items-center justify-center gap-2"
+          >
+            <Zap className="h-4 w-4" />
+            Użyj konta DEMO (kliknij aby uzupełnić)
+          </button>
+
           <div className="flex items-center gap-3 mb-4">
-             <div className="flex-1 h-px bg-white/10" />
-             <span className="text-xs text-white/30">Zaloguj się aby rozpocząć demo</span>
-             <div className="flex-1 h-px bg-white/10" />
-           </div>
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="text-xs text-white/30">lub zaloguj własne konto</span>
+            <div className="flex-1 h-px bg-white/10" />
+          </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-               <label className="text-xs text-white/50 mb-1.5 block">Email / Login</label>
-               <div className="relative">
-                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
-                 <input
-                   value={email}
-                   onChange={e => setEmail(e.target.value)}
-                   placeholder="Wpisz email"
-                   className="w-full h-12 pl-10 pr-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                 />
-               </div>
-             </div>
-             <div>
-               <label className="text-xs text-white/50 mb-1.5 block">Hasło</label>
-               <div className="relative">
-                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
-                 <input
-                   type={showPassword ? "text" : "password"}
-                   value={password}
-                   onChange={e => setPassword(e.target.value)}
-                   placeholder="Wpisz hasło"
-                   className="w-full h-12 pl-10 pr-10 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                 />
+              <label className="text-xs text-white/50 mb-1.5 block">Email / Login</label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
+                <input
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="demo-użytkownik"
+                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs text-white/50 mb-1.5 block">Hasło</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="demo"
+                  className="w-full h-12 pl-10 pr-10 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/30 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70">
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>

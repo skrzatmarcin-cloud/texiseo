@@ -3,18 +3,7 @@ import { base44 } from "@/api/base44Client";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Shield, AlertCircle, Globe, Eye, Trash2, Lock } from "lucide-react";
+import { Shield, AlertCircle, Globe, Eye } from "lucide-react";
 import { useLanguage } from "@/lib/LanguageContext";
 import { LANGUAGES } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -22,35 +11,15 @@ import { cn } from "@/lib/utils";
 export default function SettingsPage() {
   const [rules, setRules] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [deletingAccount, setDeletingAccount] = useState(false);
   const { lang, setLang, showLangSwitcher, setShowLangSwitcher, t } = useLanguage();
 
   useEffect(() => {
-    Promise.all([
-      base44.entities.BrandRules.list().then(r => setRules(r)),
-      base44.auth.me().then(u => setUser(u))
-    ]).then(() => setLoading(false));
+    base44.entities.BrandRules.list().then(r => { setRules(r); setLoading(false); });
   }, []);
 
   const toggleRule = async (rule) => {
     await base44.entities.BrandRules.update(rule.id, { active: !rule.active });
     setRules(prev => prev.map(r => r.id === rule.id ? { ...r, active: !r.active } : r));
-  };
-
-  const handleDeleteAccount = async () => {
-    setDeletingAccount(true);
-    try {
-      // In production, this would call a backend function to handle account deletion
-      // For now, we'll just logout
-      sessionStorage.removeItem("lg_auth");
-      sessionStorage.removeItem("lg_is_admin");
-      window.location.href = '/';
-    } catch (error) {
-      console.error('Error deleting account:', error);
-    }
-    setDeletingAccount(false);
   };
 
   if (loading) {
@@ -122,7 +91,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Brand Rules */}
-      <div className="bg-card rounded-xl border border-border mb-6">
+      <div className="bg-card rounded-xl border border-border">
         <div className="px-5 py-4 border-b border-border">
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 text-amber-500" />
@@ -147,69 +116,6 @@ export default function SettingsPage() {
           ))}
         </div>
       </div>
-
-      {/* Security & Account */}
-      <div className="bg-card rounded-xl border border-border">
-        <div className="px-5 py-4 border-b border-border">
-          <div className="flex items-center gap-2">
-            <Lock className="h-4 w-4 text-blue-500" />
-            <h3 className="text-sm font-semibold">Bezpieczeństwo & Konto</h3>
-          </div>
-          <p className="text-xs text-muted-foreground mt-0.5">Zarządzaj swoim kontem i ustawieniami bezpieczeństwa</p>
-        </div>
-        <div className="divide-y divide-border/50">
-          {/* Account Info */}
-          <div className="px-5 py-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium">Email</p>
-                <p className="text-sm text-muted-foreground mt-1">{user?.email}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Delete Account */}
-          <div className="px-5 py-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs font-medium text-destructive">Usuń konto</p>
-                <p className="text-[11px] text-muted-foreground mt-1">Bezpowrotnie usuń swoje konto i wszystkie dane</p>
-              </div>
-              <Button
-                onClick={() => setShowDeleteDialog(true)}
-                variant="outline"
-                size="sm"
-                className="flex-shrink-0 border-destructive text-destructive hover:bg-destructive/10 gap-2 h-9"
-              >
-                <Trash2 className="h-4 w-4" />
-                Usuń
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Delete Account Dialog */}
-      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Usuń konto?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Ta akcja jest nieodwracalna. Wszystkie twoje dane, kursy, uczniowie i historia będą trwale usunięte.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Anuluj</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteAccount}
-              disabled={deletingAccount}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
-              {deletingAccount ? 'Usuwam...' : 'Usuń konto'}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

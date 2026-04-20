@@ -1,34 +1,39 @@
 import { useState } from "react";
 import {
   Users, Calendar, MessageSquare, BookOpen, CreditCard,
-  Video, BarChart3, Zap, Globe
+  Video, BarChart3, Store, Percent, ShieldCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import TeacherList from "../components/teachers/TeacherList";
 import TeacherPlanner from "../components/teachers/TeacherPlanner";
 import TeacherChat from "../components/teachers/TeacherChat";
 import TeacherCourseManager from "../components/teachers/TeacherCourseManager";
 import TeacherPayroll from "../components/teachers/TeacherPayroll";
 import TeacherStats from "../components/teachers/TeacherStats";
 import LiveLessonsPanel from "../components/teachers/LiveLessonsPanel";
-import TestBuilder from "../components/teachers/TestBuilder";
-import MasterStudyLMS from "../components/teachers/MasterStudyLMS";
+import MarketplaceView from "../components/teachers/MarketplaceView";
+import CourseMarketplace from "../components/teachers/CourseMarketplace";
+import CommissionPanel from "../components/teachers/CommissionPanel";
+import AdminPanel from "../components/teachers/AdminPanel";
 
 const TABS = [
-  { id: "courses", label: "Moje kursy", icon: BookOpen, desc: "Kursy i klastry" },
-  { id: "tests", label: "Testy & Quizy", icon: Zap, desc: "Quizy, gry, egzaminy" },
-  { id: "masterstudy", label: "MasterStudy LMS", icon: Globe, desc: "WordPress LMS sync" },
-  { id: "planner", label: "Planer lekcji", icon: Calendar, desc: "Harmonogram" },
-  { id: "live", label: "Lekcje live", icon: Video, desc: "Google Meet/Zoom" },
-  { id: "chat", label: "Wiadomości", icon: MessageSquare, desc: "Czat ze studentami" },
-  { id: "payroll", label: "Rozliczenia", icon: CreditCard, desc: "Zarobki i wypłaty" },
-  { id: "stats", label: "Statystyki", icon: BarChart3, desc: "Moje statystyki" },
+  { id: "marketplace", label: "Marketplace", icon: Store, desc: "Katalog nauczycieli", badge: null },
+  { id: "courses_market", label: "Kursy", icon: BookOpen, desc: "Sprzedaż kursów" },
+  { id: "teachers", label: "Nauczyciele", icon: Users, desc: "Baza i profile" },
+  { id: "planner", label: "Planer", icon: Calendar, desc: "Harmonogram" },
+  { id: "live", label: "Live", icon: Video, desc: "Google Meet" },
+  { id: "chat", label: "Wiadomości", icon: MessageSquare, desc: "Czat" },
+  { id: "payroll", label: "Rozliczenia", icon: CreditCard, desc: "Wypłaty" },
+  { id: "commissions", label: "Prowizje", icon: Percent, desc: "System prowizji" },
+  { id: "stats", label: "Statystyki", icon: BarChart3, desc: "Analityka" },
+  { id: "admin", label: "Admin", icon: ShieldCheck, desc: "Panel administratora" },
 ];
 
 export default function TeacherHub() {
   const [tab, setTab] = useState(() => {
     const p = new URLSearchParams(window.location.search).get("tab");
-    const valid = ["courses","tests","planner","live","chat","payroll","stats"];
-    return valid.includes(p) ? p : "courses";
+    const valid = ["marketplace","courses_market","teachers","planner","live","chat","payroll","commissions","stats","admin"];
+    return valid.includes(p) ? p : "marketplace";
   });
 
   return (
@@ -39,12 +44,12 @@ export default function TeacherHub() {
           <div>
             <h1 className="text-xl font-bold text-foreground flex items-center gap-2">
               <span className="h-8 w-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Users className="h-4 w-4 text-primary" />
+                <Store className="h-4 w-4 text-primary" />
               </span>
-              Moja platforma
+              Teacher Marketplace
             </h1>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Nauczyciel — moje kursy, lekcje, zarobki i statystyki
+              Platforma nauczycieli — Superprof + Teachable style · sprzedaż kursów · prowizje · panel admina
             </p>
           </div>
         </div>
@@ -71,14 +76,16 @@ export default function TeacherHub() {
 
       {/* Content */}
       <div className="flex-1 overflow-auto bg-background">
-        {tab === "courses" && <TeacherCourseManager />}
-        {tab === "tests" && <TestBuilder />}
-        {tab === "masterstudy" && <MasterStudyLMS />}
+        {tab === "marketplace" && <MarketplaceView />}
+        {tab === "courses_market" && <CourseMarketplace />}
+        {tab === "teachers" && <TeacherList />}
         {tab === "planner" && <TeacherPlanner />}
         {tab === "live" && <LiveLessonsPanel />}
         {tab === "chat" && <TeacherChat />}
         {tab === "payroll" && <TeacherPayroll />}
+        {tab === "commissions" && <CommissionPanel />}
         {tab === "stats" && <TeacherStats />}
+        {tab === "admin" && <AdminPanel />}
       </div>
     </div>
   );

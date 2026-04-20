@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --font-inter: 'Poppins', sans-serif;
+    --font-inter: 'Inter', sans-serif;
     --background: 220 20% 97%;
     --foreground: 224 30% 12%;
     --card: 0 0% 100%;
@@ -92,25 +92,5 @@
   }
   body {
     @apply bg-background text-foreground font-inter;
-    overscroll-behavior: none;
-    padding-top: max(0, env(safe-area-inset-top));
-    padding-bottom: max(0, env(safe-area-inset-bottom));
-    padding-left: max(0, env(safe-area-inset-left));
-    padding-right: max(0, env(safe-area-inset-right));
   }
-  button, a, [role="button"] {
-    @apply select-none;
-  }
-}
-
-/* Ensure 44px minimum tap targets for mobile */
-@media (max-width: 1024px) {
-  button, a, [role="button"], [role="tab"] {
-    @apply min-h-[44px] min-w-[44px];
-  }
-}
-
-/* Prevent rubber-banding on scroll containers */
-.overscroll-none {
-  overscroll-behavior: none;
 }

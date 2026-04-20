@@ -13,10 +13,6 @@ import { useLanguage } from "@/lib/LanguageContext";
 import { useHub, HUBS_CONFIG } from "@/lib/HubContext";
 import { base44 } from "@/api/base44Client";
 import LanguageSwitcher from "./LanguageSwitcher";
-import NativeHeader from "./mobile/NativeHeader";
-import BottomTabs from "./mobile/BottomTabs";
-import PullToRefresh from "./mobile/PullToRefresh";
-import RouteTransition from "./RouteTransition";
 
 function handleLogout() {
   sessionStorage.removeItem("lg_auth");
@@ -75,15 +71,12 @@ export default function Layout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
-      {/* Mobile Header */}
-      <NativeHeader onMenuOpen={() => setMobileOpen(true)} hubLabel={hubConfig?.label} />
-
       {mobileOpen && (
-        <div className="fixed inset-0 z-30 bg-black/50 lg:hidden" onClick={() => setMobileOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setMobileOpen(false)} />
       )}
 
       <aside className={cn(
-        "fixed lg:relative z-40 h-full flex flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300 lg:max-w-none top-14 lg:top-0",
+        "fixed lg:relative z-50 h-full flex flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border transition-all duration-300",
         collapsed ? "w-[68px]" : "w-[220px]",
         mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
       )}>
@@ -230,69 +223,61 @@ export default function Layout() {
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header className="h-12 sm:h-14 flex items-center justify-between px-2 sm:px-4 lg:px-6 border-b border-border bg-card/50 backdrop-blur-sm flex-shrink-0 gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-1 rounded-md hover:bg-secondary flex-shrink-0">
-              <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
+        <header className="h-14 flex items-center justify-between px-4 lg:px-6 border-b border-border bg-card/50 backdrop-blur-sm flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-1.5 rounded-md hover:bg-secondary">
+              <Menu className="h-5 w-5" />
             </button>
             <div className="relative hidden sm:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder={t.search || "Szukaj..."}
-                className="h-8 w-48 sm:w-64 pl-8 pr-3 rounded-lg bg-secondary/70 border-none text-xs sm:text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="h-9 w-64 pl-9 pr-4 rounded-lg bg-secondary/70 border-none text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
             </div>
           </div>
-          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <div className="flex items-center gap-2">
             {showLangSwitcher && <LanguageSwitcher mini />}
             {activeHub !== "welcome" && (
-              <span className={cn("text-[10px] sm:text-xs font-semibold hidden sm:block px-1.5 py-0.5 rounded-md bg-sidebar-accent", accentColor)}>
+              <span className={cn("text-xs font-semibold hidden sm:block px-2 py-0.5 rounded-md bg-sidebar-accent", accentColor)}>
                 {hubConfig.label}
               </span>
             )}
-            <span className="text-[10px] sm:text-xs text-muted-foreground font-medium hidden sm:block truncate">{userCompany}</span>
-            <div className="h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-              <span className="text-[9px] sm:text-[11px] font-semibold text-primary-foreground">T</span>
+            <span className="text-xs text-muted-foreground font-medium hidden sm:block">{userCompany}</span>
+            <div className="h-7 w-7 rounded-full bg-primary flex items-center justify-center">
+              <span className="text-[11px] font-semibold text-primary-foreground">T</span>
             </div>
             <button
               onClick={handleLogout}
               title="Wyloguj się"
-              className="h-6 w-6 sm:h-7 sm:w-7 flex items-center justify-center rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors flex-shrink-0"
+              className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
             >
-              <LogOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <LogOut className="h-4 w-4" />
             </button>
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto flex flex-col min-w-0 pb-24 lg:pb-0 mt-14 lg:mt-0 overscroll-none">
-           {/* Hub back button strip — shown when not on welcome screen and not on "/" */}
-           {activeHub !== "welcome" && location.pathname !== "/" && (
-             <div className="hidden lg:flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 border-b border-border/50 bg-sidebar/30 text-[11px] sm:text-xs">
-               <button
-                 onClick={handleGoHome}
-                 className="flex items-center gap-0.5 sm:gap-1.5 text-sidebar-foreground/60 hover:text-primary transition-colors font-medium whitespace-nowrap"
-               >
-                 <Home className="h-3 w-3 flex-shrink-0" />
-                 <span className="hidden sm:inline">Wróć do menu głównego</span>
-                 <span className="sm:hidden">Wróć</span>
-               </button>
-               <span className="text-border/80 hidden sm:inline">·</span>
-               <span className="text-muted-foreground font-semibold truncate">{hubConfig.label}</span>
-             </div>
-           )}
-           <PullToRefresh onRefresh={() => window.location.reload()}>
-             <div className="flex-1 overflow-auto w-full lg:pb-0 overscroll-none">
-               <RouteTransition>
-                 <Outlet />
-               </RouteTransition>
-             </div>
-           </PullToRefresh>
+        <main className="flex-1 overflow-auto flex flex-col">
+          {/* Hub back button strip — shown when not on welcome screen and not on "/" */}
+          {activeHub !== "welcome" && location.pathname !== "/" && (
+            <div className="flex items-center gap-2 px-4 py-1.5 border-b border-border/50 bg-sidebar/30 text-xs">
+              <button
+                onClick={handleGoHome}
+                className="flex items-center gap-1.5 text-sidebar-foreground/60 hover:text-primary transition-colors font-medium"
+              >
+                <Home className="h-3 w-3" />
+                <span>Wróć do menu głównego</span>
+              </button>
+              <span className="text-border/80 mx-1">·</span>
+              <span className="text-muted-foreground font-semibold">{hubConfig.label}</span>
+            </div>
+          )}
+          <div className="flex-1 overflow-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
-
-      {/* Mobile Bottom Tabs */}
-      <BottomTabs />
     </div>
   );
 }

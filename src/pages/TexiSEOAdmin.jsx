@@ -1,48 +1,18 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { cn } from "@/lib/utils";
-import RequestsTab from "../components/admin/RequestsTab";
 import {
   Users, CreditCard, MessageSquare, BarChart3, Shield, Bell,
   Check, X, Clock, AlertTriangle, Loader2, Mail, Eye,
-  TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw, Lock, GraduationCap,
-  Building2, DollarSign, Lock as LockIcon, Unlock, AlertCircle, Briefcase,
-  Sparkles, Search, Link2, Globe, Settings, FileText
+  TrendingUp, Zap, BookOpen, Star, ChevronRight, RefreshCw, Lock, GraduationCap
 } from "lucide-react";
 
-const BRANDS = [
-  { id: "texiseo", label: "TexiSEO.ai", icon: Sparkles, color: "from-indigo-600 to-purple-600", desc: "SEO, Backlinki, Content" },
-  { id: "linguatoons", label: "LinguaToons", icon: GraduationCap, color: "from-blue-600 to-cyan-600", desc: "Platform Nauczycieli" },
-  { id: "enterprise", label: "Enterprise", icon: Building2, color: "from-slate-600 to-slate-800", desc: "Zarządzanie Firmami" },
-];
-
-const TEXISEO_TABS = [
+const TABS = [
   { id: "dashboard", label: "Dashboard", icon: BarChart3 },
-  { id: "seo", label: "SEO Tools", icon: Search },
-  { id: "backlinks", label: "Backlinki", icon: Link2 },
-  { id: "wordpress", label: "WordPress", icon: Globe },
   { id: "requests", label: "Zgłoszenia", icon: MessageSquare },
-];
-
-const LINGUATOONS_TABS = [
-  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
-  { id: "teachers", label: "Nauczyciele", icon: Users },
-  { id: "lessons", label: "Lekcje", icon: BookOpen },
-  { id: "payments", label: "Rozliczenia", icon: CreditCard },
-];
-
-const ENTERPRISE_TABS = [
-  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
-  { id: "companies", label: "Firmy", icon: Building2 },
   { id: "users", label: "Użytkownicy", icon: Users },
+  { id: "linguatoons", label: "LinguaToons Admin", icon: GraduationCap },
   { id: "payments", label: "Płatności", icon: CreditCard },
-];
-
-const SECURITY_TABS = [
-  { id: "dashboard", label: "Dashboard", icon: BarChart3 },
-  { id: "logins", label: "Login Attempts", icon: Lock },
-  { id: "alerts", label: "Security Alerts", icon: AlertCircle },
-  { id: "settings", label: "Ustawienia", icon: Settings },
 ];
 
 const REQUEST_TYPE_LABELS = {
@@ -85,12 +55,8 @@ function StatCard({ label, value, icon: Icon, color, sub }) {
 }
 
 function AdminGuard({ children }) {
-  // Superadmin (Marcin) OR admin user
-  const isSuperadmin = sessionStorage.getItem("lg_is_admin") === "1";
-  const isLoggedIn = sessionStorage.getItem("lg_auth") === "1";
-  const canAccess = isSuperadmin || isLoggedIn;
-  
-  if (!canAccess) {
+  const isAdmin = sessionStorage.getItem("lg_is_admin") === "1";
+  if (!isAdmin) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 text-center px-6">
         <div className="h-16 w-16 bg-red-50 rounded-2xl flex items-center justify-center">
@@ -118,14 +84,9 @@ export default function TexiSEOAdmin() {
 }
 
 function TexiSEOAdminInner() {
-  const [brand, setBrand] = useState(() => {
-    const p = new URLSearchParams(window.location.search).get("brand");
-    return ["texiseo","linguatoons","enterprise","security"].includes(p) ? p : "texiseo";
-  });
-  
   const [tab, setTab] = useState(() => {
     const p = new URLSearchParams(window.location.search).get("tab");
-    return ["dashboard","seo","backlinks","wordpress","requests","teachers","lessons","payments","companies","users","logins","alerts","settings"].includes(p) ? p : "dashboard";
+    return ["dashboard","requests","users","payments"].includes(p) ? p : "dashboard";
   });
   const [requests, setRequests] = useState([]);
   const [users, setUsers] = useState([]);
@@ -169,57 +130,24 @@ function TexiSEOAdminInner() {
   const pending = requests.filter(r => r.status === "pending_review").length;
   const resolved = requests.filter(r => r.status === "resolved" || r.status === "implemented").length;
 
-  const currentBrand = BRANDS.find(b => b.id === brand);
-  const getTabs = () => {
-    if (brand === "texiseo") return TEXISEO_TABS;
-    if (brand === "linguatoons") return LINGUATOONS_TABS;
-    if (brand === "enterprise") return ENTERPRISE_TABS;
-    return SECURITY_TABS;
-  };
-  const currentTabs = getTabs();
-
   return (
     <div className="flex flex-col h-full">
-      {/* Brand Selector */}
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 pt-4 pb-3 border-b border-white/10">
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {BRANDS.map(b => {
-            const BrandIcon = b.icon;
-            return (
-              <button
-                key={b.id}
-                onClick={() => { setBrand(b.id); setTab("dashboard"); }}
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-xl border-2 transition-all whitespace-nowrap",
-                  brand === b.id
-                    ? `border-white bg-gradient-to-r ${b.color} text-white font-semibold`
-                    : "border-white/10 bg-white/5 text-white/60 hover:text-white/80"
-                )}
-              >
-                <BrandIcon className="h-4 w-4" />
-                {b.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       {/* Header */}
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 pt-4 pb-0">
+      <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 pt-6 pb-0">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-bold text-white flex items-center gap-2">
               <Shield className="h-5 w-5 text-blue-400" />
-              {currentBrand?.label}
+              Panel Admina — TexiSEO.ai
             </h1>
-            <p className="text-xs text-white/50 mt-0.5">{currentBrand?.desc}</p>
+            <p className="text-xs text-white/50 mt-0.5">Zarządzaj platformą, użytkownikami i zgłoszeniami klientów</p>
           </div>
           <button onClick={load} className="h-8 w-8 flex items-center justify-center rounded-lg bg-white/10 text-white/60 hover:text-white hover:bg-white/20 transition-colors">
             <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
           </button>
         </div>
         <div className="flex gap-0.5">
-          {currentTabs.map(t => (
+          {TABS.map(t => (
             <button key={t.id} onClick={() => setTab(t.id)}
               className={cn("flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium border-b-2 whitespace-nowrap transition-colors",
                 tab === t.id ? "border-blue-400 text-white" : "border-transparent text-white/40 hover:text-white/70"
@@ -241,118 +169,8 @@ function TexiSEOAdminInner() {
           </div>
         )}
 
-        {/* ===== TEXISEO BRAND ===== */}
-        {brand === "texiseo" && !loading && tab === "dashboard" && (
-          <div className="max-w-5xl mx-auto space-y-5">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <StatCard label="SEO Tools" value="—" icon={Search} color="bg-indigo-50 text-indigo-600" sub="pomysły, content" />
-              <StatCard label="Backlinki" value="—" icon={Link2} color="bg-blue-50 text-blue-600" sub="monitoring" />
-              <StatCard label="WordPress" value="—" icon={Globe} color="bg-emerald-50 text-emerald-600" sub="integracja" />
-              <StatCard label="Zgłoszenia" value={newReqs} icon={MessageSquare} color="bg-amber-50 text-amber-600" sub="nowe" />
-            </div>
-            <div className="bg-card border border-border rounded-2xl p-5 text-center text-muted-foreground">
-              <p className="text-sm">TexiSEO.ai Panel — Sekcje będą wkrótce dostępne</p>
-            </div>
-          </div>
-        )}
-
-        {brand === "texiseo" && !loading && tab === "seo" && (
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <Search className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-sm font-semibold text-muted-foreground">SEO Tools</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Generator pomysłów, content ideas, briefs — dostępne wkrótce</p>
-            </div>
-          </div>
-        )}
-
-        {brand === "texiseo" && !loading && tab === "backlinks" && (
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <Link2 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-sm font-semibold text-muted-foreground">Backlink System</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Zarządzanie backlinkkami, monitoring, strategia — dostępne wkrótce</p>
-            </div>
-          </div>
-        )}
-
-        {brand === "texiseo" && !loading && tab === "wordpress" && (
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <Globe className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-sm font-semibold text-muted-foreground">WordPress Integration</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Synchronizacja, publikacja, zarządzanie — dostępne wkrótce</p>
-            </div>
-          </div>
-        )}
-
-        {brand === "texiseo" && !loading && tab === "requests" && (
-          <RequestsTab requests={requests} newReqs={newReqs} pending={pending} leads={leads} selectedReq={selectedReq} setSelectedReq={setSelectedReq} updateRequest={updateRequest} sendAdminEmail={sendAdminEmail} updating={updating} />
-        )}
-
-        {/* ===== LINGUATOONS BRAND ===== */}
-        {brand === "linguatoons" && !loading && tab === "dashboard" && (
-          <div className="max-w-5xl mx-auto space-y-5">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <StatCard label="Nauczyciele" value="—" icon={Users} color="bg-blue-50 text-blue-600" sub="aktywni" />
-              <StatCard label="Lekcje" value="—" icon={BookOpen} color="bg-emerald-50 text-emerald-600" sub="zaplanowane" />
-              <StatCard label="Rozliczenia" value="—" icon={CreditCard} color="bg-amber-50 text-amber-600" sub="pending" />
-              <StatCard label="Kursy" value="—" icon={Sparkles} color="bg-purple-50 text-purple-600" sub="dostępne" />
-            </div>
-            <div className="bg-card border border-border rounded-2xl p-5 text-center text-muted-foreground">
-              <p className="text-sm">LinguaToons Platform — Sekcje będą wkrótce dostępne</p>
-            </div>
-          </div>
-        )}
-
-        {brand === "linguatoons" && !loading && (tab === "teachers" || tab === "lessons" || tab === "payments") && (
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <BarChart3 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-sm font-semibold text-muted-foreground">LinguaToons Management</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Zarządzanie nauczycielami, lekcjami i rozliczeniami — dostępne wkrótce</p>
-            </div>
-          </div>
-        )}
-
-        {/* ===== ENTERPRISE BRAND ===== */}
-        {brand === "enterprise" && !loading && tab === "dashboard" && (
-          <div className="max-w-5xl mx-auto space-y-5">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <StatCard label="Firmy" value="—" icon={Building2} color="bg-slate-50 text-slate-600" sub="aktywne" />
-              <StatCard label="Użytkownicy" value="—" icon={Users} color="bg-blue-50 text-blue-600" sub="registered" />
-              <StatCard label="Płatności" value="—" icon={CreditCard} color="bg-emerald-50 text-emerald-600" sub="pending" />
-              <StatCard label="Invoices" value="—" icon={FileText} color="bg-amber-50 text-amber-600" sub="issued" />
-            </div>
-            <div className="bg-card border border-border rounded-2xl p-5 text-center text-muted-foreground">
-              <p className="text-sm">Enterprise Panel — Zarządzanie firmami i użytkownikami</p>
-            </div>
-          </div>
-        )}
-
-        {brand === "enterprise" && !loading && (tab === "companies" || tab === "users" || tab === "payments") && (
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <Building2 className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-sm font-semibold text-muted-foreground">Enterprise Management</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Zarządzanie firmami, użytkownikami i płatności — dostępne wkrótce</p>
-            </div>
-          </div>
-        )}
-
-        {/* ===== SECURITY BRAND ===== */}
-        {brand === "security" && !loading && tab === "dashboard" && (
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-card border border-border rounded-2xl p-8 text-center">
-              <Shield className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-              <p className="text-sm font-semibold text-muted-foreground">Security Center</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Monitorowanie bezpieczeństwa, login attempts, security alerts</p>
-            </div>
-          </div>
-        )}
-
-        {/* ===== OLD DASHBOARD (for backward compatibility) ===== */}
-        {!loading && tab === "dashboard" && brand !== "texiseo" && brand !== "linguatoons" && brand !== "enterprise" && (
+        {/* ===== DASHBOARD ===== */}
+        {!loading && tab === "dashboard" && (
           <div className="max-w-5xl mx-auto space-y-5">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <StatCard label="Nowe zgłoszenia" value={newReqs} icon={Bell} color="bg-blue-50 text-blue-600" sub="do obsługi" />
@@ -588,153 +406,6 @@ function TexiSEOAdminInner() {
                 {users.length === 0 && (
                   <p className="text-center py-8 text-sm text-muted-foreground">Brak użytkowników</p>
                 )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ===== ENTERPRISE ===== */}
-        {!loading && tab === "enterprise" && (
-          <div className="max-w-6xl mx-auto space-y-5">
-            <div className="bg-gradient-to-r from-slate-700 to-slate-900 rounded-2xl p-6 text-white">
-              <div className="flex items-center gap-4">
-                <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center">
-                  <Building2 className="h-8 w-8" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold">Enterprise Panel</h2>
-                  <p className="text-slate-300/80 text-sm mt-0.5">Zarządzanie użytkownikami, dostępem, blokowaniem i płatności</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Users Management */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold">Zarządzanie Użytkownikami</h3>
-                <Users className="h-5 w-5 text-primary" />
-              </div>
-              <div className="space-y-3">
-                {users.slice(0, 5).map(user => (
-                  <div key={user.id} className="flex items-center justify-between bg-secondary/40 rounded-xl p-4">
-                    <div className="flex-1">
-                      <p className="font-semibold text-sm">{user.full_name || user.email}</p>
-                      <p className="text-xs text-muted-foreground">{user.email}</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={cn("text-[10px] px-2 py-1 rounded-full font-medium",
-                        user.role === "admin" ? "bg-violet-100 text-violet-700" : "bg-secondary text-muted-foreground"
-                      )}>
-                        {user.role || "user"}
-                      </span>
-                      <button onClick={() => alert(`Blokuj: ${user.email}`)} className="h-8 w-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-xs font-bold">
-                        <LockIcon className="h-3.5 w-3.5" />
-                      </button>
-                      <button onClick={() => alert(`Unlock: ${user.email}`)} className="h-8 w-8 flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition-colors text-xs font-bold">
-                        <Unlock className="h-3.5 w-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Access Control */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <Lock className="h-5 w-5 text-red-500" />
-                  <h3 className="font-bold text-sm">Zablokowanych</h3>
-                </div>
-                <p className="text-3xl font-black text-red-600">0</p>
-                <p className="text-xs text-muted-foreground mt-1">Użytkowników bez dostępu</p>
-              </div>
-              <div className="bg-card border border-border rounded-2xl p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <Unlock className="h-5 w-5 text-emerald-500" />
-                  <h3 className="font-bold text-sm">Aktywnych</h3>
-                </div>
-                <p className="text-3xl font-black text-emerald-600">{users.length}</p>
-                <p className="text-xs text-muted-foreground mt-1">Użytkowników z dostępem</p>
-              </div>
-            </div>
-
-            {/* Payments */}
-            <div className="bg-card border border-border rounded-2xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold">Status Płatności</h3>
-                <CreditCard className="h-5 w-5 text-primary" />
-              </div>
-              <div className="space-y-3">
-                {[
-                  { user: "user1@example.com", amount: "99 PLN", status: "oczekuje", date: "2026-04-18" },
-                  { user: "user2@example.com", amount: "199 PLN", status: "opłacone", date: "2026-04-17" },
-                  { user: "user3@example.com", amount: "49 PLN", status: "oczekuje", date: "2026-04-16" },
-                ].map((p, i) => (
-                  <div key={i} className="flex items-center justify-between bg-secondary/40 rounded-xl p-3">
-                    <div className="flex-1">
-                      <p className="text-xs font-medium">{p.user}</p>
-                      <p className="text-[10px] text-muted-foreground">{p.date}</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm">{p.amount}</span>
-                      <span className={cn("text-[9px] px-2 py-0.5 rounded-full font-bold",
-                        p.status === "opłacone" ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
-                      )}>
-                        {p.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Business AI Agent */}
-            <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-6 text-white">
-              <div className="flex items-start gap-4">
-                <div className="h-14 w-14 bg-white/20 rounded-2xl flex items-center justify-center">
-                  <span className="text-2xl">🤖</span>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold mb-1">Enterprise Business Agent</h3>
-                  <p className="text-emerald-100/90 text-sm mb-3">
-                    AI asystent do zarządzania bazą danych klientów, produktami, rozliczeniami i katalogiem firmy
-                  </p>
-                  <a
-                    href={base44.agents.getWhatsAppConnectURL("enterprise_business_agent")}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white font-bold px-4 py-2 rounded-xl transition-all text-sm"
-                  >
-                    <span>💬</span> Otwórz Business Agent na WhatsApp
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* All Admin Features for Superadmin */}
-            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-6">
-              <div className="flex items-start gap-3">
-                <Shield className="h-6 w-6 text-purple-600 mt-0.5 flex-shrink-0" />
-                <div className="flex-1">
-                  <h3 className="font-bold text-purple-900 mb-2">🔐 Superadmin Pełny Dostęp</h3>
-                  <p className="text-sm text-purple-800 mb-3">Konto Marcin ma dostęp do wszystkich opcji administracyjnych:</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                    {[
-                      "🔗 Backlinki", "🛡️ Security", "📊 Analytics", "🎯 SEO Tools",
-                      "📱 Social Media", "🔄 Automations", "🎬 Content Engine", "🏆 Competitors",
-                      "🚀 SEO Autopilot", "💼 WordPress", "📧 Email", "⚙️ Settings"
-                    ].map((f, i) => (
-                      <button
-                        key={i}
-                        onClick={() => alert(`Otwieram: ${f}`)}
-                        className="text-xs bg-white/60 hover:bg-white border border-purple-200 rounded-lg px-2 py-1.5 transition-all text-purple-900 font-medium"
-                      >
-                        {f}
-                      </button>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
           </div>
