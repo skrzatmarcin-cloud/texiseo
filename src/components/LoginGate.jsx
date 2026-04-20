@@ -259,6 +259,7 @@ function LoginGateInner({ children }) {
 
   const handleDemo = () => {
     sessionStorage.removeItem("lg_is_admin");
+    sessionStorage.removeItem("lg_demo_type");
     sessionStorage.setItem("lg_auth", "1");
     sessionStorage.setItem("lg_demo_mode", "1");
     setMode("demo-select");
@@ -283,26 +284,22 @@ function LoginGateInner({ children }) {
       return;
     }
 
-    setRegLoading(true);
-    try {
-      // Rejestracja użytkownika poprzez Base44
-      await base44.users.inviteUser(regEmail, regUserType === "enterprise" ? "admin" : "user");
+    // Zapisz dane w sessionStorage i zaloguj jako demo
+    sessionStorage.setItem("lg_auth", "1");
+    sessionStorage.setItem("lg_demo_mode", "1");
+    sessionStorage.setItem("lg_user_email", regEmail);
+    sessionStorage.setItem("lg_user_name", regFullName);
+    sessionStorage.setItem("lg_user_type", regUserType);
 
-      // Zapisz dane rejestracji w session storage
-      sessionStorage.setItem("lg_auth", "1");
-      sessionStorage.setItem("lg_user_email", regEmail);
-      sessionStorage.setItem("lg_user_name", regFullName);
-      sessionStorage.setItem("lg_user_type", regUserType);
-
-      if (regUserType === "enterprise") {
-        sessionStorage.setItem("lg_is_admin", "1");
-      }
-
-      setLoggedIn(true);
-    } catch (err) {
-      setError("Błąd rejestracji: " + (err.message || "Spróbuj ponownie"));
+    if (regUserType === "enterprise") {
+      sessionStorage.setItem("lg_demo_type", "enterprise");
+    } else if (regUserType === "teacher") {
+      sessionStorage.setItem("lg_demo_type", "teacher");
+    } else {
+      sessionStorage.setItem("lg_demo_type", "student");
     }
-    setRegLoading(false);
+
+    setLoggedIn(true);
   };
 
   const handleForgotPassword = async (e) => {
@@ -507,7 +504,7 @@ function LoginGateInner({ children }) {
                 /* ENTERPRISE MODULES SELECTION */
                 <>
                   <h2 className="text-lg font-semibold text-white mb-1">🏛️ Enterprise Moduły</h2>
-                  <p className="text-xs text-slate-400 mb-3">Kliknij aby zobaczyć szczegóły</p>
+                  <p className="text-xs text-slate-400 mb-3">Kliknij moduł aby wejść do demo</p>
                   <div className="space-y-1.5 max-h-72 overflow-y-auto">
                     {[
                       { id: "sales", label: "💼 Sales (CRM)" },
@@ -519,7 +516,7 @@ function LoginGateInner({ children }) {
                     ].map(module => (
                       <button
                         key={module.id}
-                        onClick={() => setSelectedModule(module.id)}
+                        onClick={() => handleDemoSelect("enterprise")}
                         className="w-full p-2.5 rounded-lg border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/15 transition-all text-left text-xs font-medium text-purple-300">
                         {module.label}
                       </button>
@@ -531,14 +528,6 @@ function LoginGateInner({ children }) {
                       ← Wróć
                     </button>
                   </div>
-                </>
-                ) : selectedModule ? (
-                /* MODULE DETAILS */
-                <>
-                  <button onClick={() => setSelectedModule(null)} className="flex items-center gap-1 text-xs text-slate-400 hover:text-white mb-3">
-                    ← Wróć do listy
-                  </button>
-                  <ModuleDetails module={selectedModule} />
                 </>
                 ) : mode === "register" ? (
               /* REGISTRATION */
