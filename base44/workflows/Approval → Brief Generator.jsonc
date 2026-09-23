@@ -1,0 +1,37 @@
+{
+  "name": "Approval \u2192 Brief Generator",
+  "description": "When a ContentIdea is updated to approved status, automatically generate a full SEO brief and place it in the Publishing Queue.",
+  "trigger": {
+    "condition": "${ ((.trigger.data.status == \"approved\") and (.trigger.changed_fields | index(\"status\") != null)) }",
+    "config": {
+      "trigger_type": "entity",
+      "events": [
+        "update"
+      ],
+      "entity_name": "ContentIdeas"
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "approval_brief_generator",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_function": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "approvalToBrief",
+            "args": {}
+          },
+          "then": "end"
+        }
+      }
+    ]
+  },
+  "x-base44-migrated-from-automation": {
+    "legacy_payload_function": "approvalToBrief"
+  }
+}
